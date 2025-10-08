@@ -26,6 +26,8 @@
             @yield('content')
         </main>
 
+        @include('shared.partials.footer')
+
         <!-- Authentication Modal -->
         @include('shared.components.modals.authentication')
 
