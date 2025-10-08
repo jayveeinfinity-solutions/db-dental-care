@@ -3,18 +3,30 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 
 class Service extends Model
 {
     protected $table = 'services';
     protected $fillable = ['name', 'category_id', 'price_min', 'price_max', 'is_featured', 'is_active'];
 
-    public function scopeActive($query) {
-        return $query->where('is_active', true);
+    /**
+     * Scope a query to only include active services.
+     */
+    #[Scope]
+    public function active(Builder $query): void
+    {
+        $query->where('is_active', true);
     }
 
-    public function scopeFeatured($query) {
-        return $query->active()
+    /**
+     * Scope a query to only include featured and active services.
+     */
+    #[Scope]
+    public function featured(Builder $query): void
+    {
+        $query->active()
             ->where('is_featured', true);
     }
 }
