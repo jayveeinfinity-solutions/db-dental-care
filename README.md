@@ -56,7 +56,7 @@ Contributors names and contact info
 
 John Vincent Bonza (Jayvee Infinity Solutions)
 
-[@jayveeinfinity](https://twitter.com/jayveeinfinity)
+[@jayveeinfinity](https://x.com/jayveeinfinity)
 
 ## Version History
 
