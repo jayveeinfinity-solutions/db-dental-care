@@ -13,8 +13,13 @@ This project is built using Laravel for the backend and Vue.js with Inertia.js f
 * Laravel 12
 * Alphine.js
 * Tailwind CSS
-* Flowbite
 * Vite
+
+### Additional Packages
+
+* Flowbite
+* Laravel Breeze
+* Laravel Socialite
 
 ### Installing
 
