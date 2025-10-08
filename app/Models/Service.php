@@ -15,7 +15,7 @@ class Service extends Model
      * Scope a query to only include active services.
      */
     #[Scope]
-    public function active(Builder $query): void
+    protected function active(Builder $query): void
     {
         $query->where('is_active', true);
     }
@@ -24,7 +24,7 @@ class Service extends Model
      * Scope a query to only include featured and active services.
      */
     #[Scope]
-    public function featured(Builder $query): void
+    protected function featured(Builder $query): void
     {
         $query->active()
             ->where('is_featured', true);
