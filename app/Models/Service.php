@@ -29,4 +29,8 @@ class Service extends Model
         $query->active()
             ->where('is_featured', true);
     }
+
+    public function category() {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
 }

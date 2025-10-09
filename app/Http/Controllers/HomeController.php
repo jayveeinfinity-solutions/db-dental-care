@@ -7,10 +7,16 @@ use App\Models\Service;
 class HomeController extends Controller
 {
     public function index() {
-        $services = Service::featured()
+        $featuredServices = Service::featured()
             ->get();
 
-        return view('pages.home', compact('services'));
+        $services = Service::with('category')
+            ->active()
+            ->orderBy('category_id')
+            ->orderBy('name')
+            ->get();
+
+        return view('pages.home', compact('featuredServices', 'services'));
     }
 
     public function services() {
