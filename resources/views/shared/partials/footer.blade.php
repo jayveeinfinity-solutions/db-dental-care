@@ -18,14 +18,11 @@
                 <div class="flex flex-wrap -mx-4">
                     <div class="w-full sm:w-1/2 lg:w-1/2 px-4">
                         <div class="widget">
-                            <h5>Company</h5>
+                            <h5>Links</h5>
                             <ul>                                        
-                                <li><a href="index.html">Home</a></li>
-                                <li><a href="services.html">Our Services</a></li>
-                                <li><a href="gallery.html">Gallery</a></li>
-                                <li><a href="about.html">About Us</a></li>
-                                <li><a href="blog.html">Blog</a></li>
-                                <li><a href="contact.html">Contact</a></li>
+                                <li><a href="{{ route('home') }}">Home</a></li>
+                                <li><a href="{{ route('services') }}">Services</a></li>
+                                <li><a href="{{ route('about') }}">About Us</a></li>
                             </ul>
                         </div>
                     </div>

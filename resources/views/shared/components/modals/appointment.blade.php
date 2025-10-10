@@ -1,5 +1,36 @@
 <x-modal name="appointment-modal" :show="false" :maxWidth="'md'">
-    <div class="relative p-4 w-full max-h-full">
+    <div class="relative p-4 w-full max-h-full"
+        x-data="{
+            form: {
+                service_id: '',
+                date: '',
+            },
+            message: '',
+            success: false,
+
+            async submit() {
+                this.message = '';
+                this.success = false;
+
+                try {
+                    await axios.get('/sanctum/csrf-cookie');
+                    const response = await axios.post('/api/appointments', this.form);
+                    this.message = response.data.message || 'Appointment booked successfully!';
+                    this.success = true;
+
+                    setTimeout(() => {
+                        this.$dispatch('close-modal', 'appointment-modal');
+                    }, 1500);
+
+                    this.form.service_id = '';
+                    this.form.date = '';
+                } catch (error) {
+                    this.success = false;
+                    this.message = error.response?.data?.message || 'Something went wrong. Please try again.';
+                }
+            }
+        }"
+    >
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
             <!-- Modal header -->
@@ -19,11 +50,11 @@
             </div>
             <!-- Modal body -->
             <div class="p-4 md:p-5 space-y-4">
-                <form class="max-w-sm mx-auto">
+                <form class="max-w-sm mx-auto"  @submit.prevent="submit">
                     <div class="mb-5">
                         <label for="services" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select service</label>
-                        <select id="services" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option selected disabled>Choose a service...</option>
+                        <select id="services" x-model="form.service_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                            <option value="" selected disabled>Choose a service...</option>
                             @php $category = ''; @endphp
                             @foreach($services as $service)
                                 @php $currentCategory = $service->category->name; @endphp
@@ -38,7 +69,7 @@
                     </div>
                     <div class="mb-5">
                         <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
-                        <input type="date" id="date" class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light" required />
+                        <input type="date" id="date" x-model="form.date" class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light" required />
                     </div>
                     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                 </form>

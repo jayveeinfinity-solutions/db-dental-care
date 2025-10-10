@@ -51,4 +51,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(GoogleUserInfo::class);
     }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
 }

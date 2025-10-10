@@ -16,7 +16,12 @@ class HomeController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('pages.home', compact('featuredServices', 'services'));
+        $userPendingAppointments = auth()->user()
+            ->appointments()
+            ->where('status', 'pending')
+            ->get();
+
+        return view('pages.home', compact('featuredServices', 'services', 'userPendingAppointments'));
     }
 
     public function services() {
