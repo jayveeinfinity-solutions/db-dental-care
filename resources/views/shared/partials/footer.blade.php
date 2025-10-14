@@ -2,7 +2,7 @@
     <div class="container mx-auto px-4">
         <div class="flex flex-wrap -mx-5">
             <div class="w-full sm:w-1/2 lg:w-1/3 px-5">
-                <img src="storage/images/logo.png" alt="DB Dental Care Logo" class="logo-footer">
+                <img src="/images/logo.png" alt="DB Dental Care Logo" class="logo-footer">
                 <div class="spacer-20"></div>
                 <p>At Dentia, we’re dedicated to providing high-quality, personalized dental care for patients of all ages. Our skilled team uses the latest technology to ensure comfortable, efficient treatments and beautiful, healthy smiles for life.</p>
 

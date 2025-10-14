@@ -14,7 +14,7 @@
 
                 try {
                     await axios.get('/sanctum/csrf-cookie');
-                    const response = await axios.post('/api/appointments', this.form);
+                    const response = await axios.post('/api/v1/appointments', this.form);
                     this.message = response.data.message || 'Appointment booked successfully!';
                     this.success = true;
 

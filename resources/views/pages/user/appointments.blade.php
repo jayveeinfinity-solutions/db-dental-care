@@ -75,15 +75,25 @@
     <div class="flex justify-center mt-5">
         <article class="w-full max-w-[335px] sm:max-w-md md:max-w-2xl lg:max-w-4xl flex flex-col gap-2 sm:gap-3 md:gap-4">
             <template x-for="appointment in appointments" :key="appointment.id">
-                <a href="#" class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                    <div class="flex flex-row gap-2 items-center">
-                        <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white" x-text="appointment.service.name"></h5>
+                <div class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                    <div class="flex flex-row justify-between items-center">
                         <div>
-                            <span class="bg-indigo-100 text-indigo-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-indigo-900 dark:text-indigo-300" x-text="appointment.status"></span>
+                            <div class="flex flex-row gap-2 items-center">
+                                <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white" x-text="appointment.service.name"></h5>
+                                <div>
+                                    <span class="bg-indigo-100 text-indigo-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-indigo-900 dark:text-indigo-300" x-text="appointment.status"></span>
+                                </div>
+                            </div>
+                            <p class="font-normal text-sm text-gray-700 dark:text-gray-400" x-text="appointment.formatted_date"></p>
+                        </div>
+                        <div>
+                            <button type="button"
+                                class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                                x-if="appointment.status === 'Pending'"
+                            >Cancel</button>
                         </div>
                     </div>
-                    <p class="font-normal text-sm text-gray-700 dark:text-gray-400" x-text="appointment.formatted_date"></p>
-                </a>
+                </div>
             </template>
             <template x-if="appointments.length === 0">
                 <div class="w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
@@ -115,7 +125,7 @@
                 this.fetchAppointments();
             },
             fetchAppointments() {
-                let url = '/api/appointments';
+                let url = '/api/v1/appointments';
 
                 if(this.active !== 'all') {
                     url += `?status=${this.active}`;

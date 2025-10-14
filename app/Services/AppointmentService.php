@@ -34,4 +34,11 @@ class AppointmentService
                 ->get()
         );
     }
+
+    public function countTodaysAppointments(): int
+    {
+        return $this->appointmentModel
+            ->whereDate('date', now()->toDateString())
+            ->count();
+    }
 }
