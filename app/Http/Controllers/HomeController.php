@@ -17,9 +17,9 @@ class HomeController extends Controller
             ->get();
 
         $userPendingAppointments = auth()->user()
-            ->appointments()
+            ?->appointments()
             ->where('status', 'pending')
-            ->get();
+            ->get() ?? collect();
 
         return view('pages.home', compact('featuredServices', 'services', 'userPendingAppointments'));
     }

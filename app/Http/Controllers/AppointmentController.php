@@ -4,23 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Models\Appointment;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Services\AppointmentService;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreAppointmentRequest;
 
 class AppointmentController extends Controller
 {
+    public function __construct(
+        protected AppointmentService $appointmentService
+    ) {}
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $status = $request->query('status', 'all');
+        $results = $this->appointmentService->getUserAppointments($status);
+
+        return response()->json([
+            'appointments' => $results
+        ], Response::HTTP_OK);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAppointmentRequest  $request)
+    public function store(StoreAppointmentRequest $request)
     {
         $appointment = Appointment::create([
             'service_id' => $request->service_id,
