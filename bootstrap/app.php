@@ -1,7 +1,9 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Application;
 use Illuminate\Auth\Middleware\Authenticate;
+use App\Http\Middleware\RestrictPatientAccess;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
@@ -28,6 +30,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->group('api', [
             SubstituteBindings::class,
             EnsureFrontendRequestsAreStateful::class,
+        ]);
+
+        $middleware->group('admin', [
+            Authenticate::class,
+            RestrictPatientAccess::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

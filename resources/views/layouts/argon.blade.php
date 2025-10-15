@@ -32,6 +32,7 @@
         <script src="https://unpkg.com/@popperjs/core@2"></script>
         <!-- Main Styling -->
         <link href="/assets/css/argon-dashboard-tailwind.css?v=1.0.1" rel="stylesheet" />
+        <link href="/assets/css/custom.css" rel="stylesheet" />
     </head>
 
     <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
@@ -43,10 +44,10 @@
             @yield('content')
         </main>
     </body>
-  <!-- plugin for charts  -->
-  <script src="/assets/js/plugins/chartjs.min.js" async></script>
-  <!-- plugin for scrollbar  -->
-  <script src="/assets/js/plugins/perfect-scrollbar.min.js" async></script>
-  <!-- main script file  -->
-  <script src="/assets/js/argon-dashboard-tailwind.js?v=1.0.1" async></script>
+    <!-- plugin for charts  -->
+    <script src="/assets/js/plugins/chartjs.min.js" async></script>
+    <!-- plugin for scrollbar  -->
+    <script src="/assets/js/plugins/perfect-scrollbar.min.js" async></script>
+    <!-- main script file  -->
+    <script src="/assets/js/argon-dashboard-tailwind.js?v=1.0.1" async></script>
 </html>
