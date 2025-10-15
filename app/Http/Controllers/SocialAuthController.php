@@ -46,6 +46,7 @@ class SocialAuthController extends Controller
                     'email' => $email,
                     'password' => bcrypt(Str::random(16)),
                 ]);
+                $user->assignRole('patient');
             }
 
             $googleInfo = $user->googleInfo()->create([
