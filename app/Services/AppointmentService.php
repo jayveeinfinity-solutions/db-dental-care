@@ -41,4 +41,26 @@ class AppointmentService
             ->whereDate('date', now()->toDateString())
             ->count();
     }
+
+    public function getAppointments($status = 'all')
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return collect();
+        }
+
+        $statusOrder = ['scheduled', 'pending', 'completed', 'cancelled'];
+
+        return AppointmentResource::collection(
+            $this->appointmentModel
+                ->with('service')
+                ->when($status !== 'all', function($query) use ($status) {
+                    $query->where('status', $status);
+                })
+                ->orderByRaw("FIELD(status, '" . implode("','", $statusOrder) . "')")
+                ->latest()
+                ->get()
+        );
+    }
 }

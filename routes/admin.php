@@ -2,12 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\AppointmentController;
 
-Route::middleware('admin')->group(function () {
-    Route::prefix('admin')->name('admin.')->group(function() {
-        Route::get('/', function() {
-            return redirect()->route('admin.dashboard.index');
-        });
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
-    });
+Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
+    Route::redirect('/', '/admin/dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
+    Route::get('/patients', [DashboardController::class, 'index'])->name('patients.index');
+    Route::get('/users', [DashboardController::class, 'index'])->name('users.index');
+    Route::get('/reports', [DashboardController::class, 'index'])->name('reports.index');
 });

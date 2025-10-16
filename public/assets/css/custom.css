@@ -1,3 +1,9 @@
 .bg-red-500 {
-    
+  background-color: rgba(251, 44, 54, 1) !important;
+}
+.h-sidenav-new {
+  height: calc(100vh - 180px) !important;
+}
+.\!right-\[15px\] {
+  right: 15px !important;
 }

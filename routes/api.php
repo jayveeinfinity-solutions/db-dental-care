@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AppointmentController;
 
 Route::middleware('auth:sanctum')->group(function() {
-    Route::prefix('v1')->group(function() {
+    Route::prefix('v1')->name('api.')->group(function() {
         Route::get('/version', function() {
             return response()->json(['version' => '1.0.0'], Response::HTTP_OK);
         });
