@@ -13,9 +13,11 @@ class DashboardController extends Controller
     ) {}
 
     public function index() {
-        $todaysAppointment = $this->dashboardService->getTodaysAppointmentCount();
-        $usersCount = $this->dashboardService->getUsersCount();
+        $todaysAppointments = $this->dashboardService->getTodaysAppointmentCount();
+        $pendingAppointments = 0;
+        $upcomingAppointments = 0;
+        $patientCount = 0;
 
-        return view('admin.dashboard.index', compact('todaysAppointment', 'usersCount'));
+        return view('admin.dashboard.index', compact('todaysAppointments', 'pendingAppointments', 'upcomingAppointments', 'patientCount'));
     }
 }

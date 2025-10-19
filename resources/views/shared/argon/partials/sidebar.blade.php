@@ -48,7 +48,7 @@
                     <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-2.5">
                         <i class="relative top-0 text-sm leading-normal text-emerald-500 fa-solid fa-hospital-user"></i>
                     </div>
-                    <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Patients</span>
+                    <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Patients Records</span>
                 </a>
             </li>
 
@@ -70,7 +70,7 @@
                 </a>
             </li>
 
-            <li class="w-full mt-4">
+            <!-- <li class="w-full mt-4">
                 <h6 class="pl-6 ml-2 text-xs font-bold leading-tight uppercase dark:text-white opacity-60">Settings</h6>
             </li>
 
@@ -99,7 +99,7 @@
                 </div>
                 <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">Sign Up</span>
                 </a>
-            </li>
+            </li> -->
         </ul>
     </div>
 
