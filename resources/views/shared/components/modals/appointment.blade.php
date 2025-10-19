@@ -50,29 +50,45 @@
             </div>
             <!-- Modal body -->
             <div class="p-4 md:p-5 space-y-4">
-                <form class="max-w-sm mx-auto"  @submit.prevent="submit">
-                    <div class="mb-5">
-                        <label for="services" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select service</label>
-                        <select id="services" x-model="form.service_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                            <option value="" selected disabled>Choose a service...</option>
-                            @php $category = ''; @endphp
-                            @foreach($services as $service)
-                                @php $currentCategory = $service->category->name; @endphp
-                                @if($category !== $currentCategory) {
-                                    <option class="font-bold" disabled>{{ str()->upper($currentCategory) }}</option>
-                                    @php $category = $currentCategory; @endphp
-                                }
-                                @endif
-                                <option class="ps-3" value="{{ $service->id }}">{{ $service->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-5">
-                        <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
-                        <input type="date" id="date" x-model="form.date" class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light" required />
-                    </div>
-                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-                </form>
+                @if($userPendingAppointments->count() > 0)
+                    <section class="w-full flex justify-center">
+                        <article class="w-full">
+                            <div id="alert-1" class="flex items-center w-full p-4 text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
+                                <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                                </svg>
+                                <span class="sr-only">Info</span>
+                                <div class="ms-3 text-sm font-medium">
+                                    <span class="font-medium">You have pending appointment!</span><br>Click <a class="underline" href="{{ route('appointments') }}">view appointment</a> to view.
+                                </div>
+                            </div>
+                        </article>
+                    </section>
+                @else
+                    <form class="max-w-sm mx-auto opacity-8"  @submit.prevent="submit">
+                        <div class="mb-5">
+                            <label for="services" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select service</label>
+                            <select id="services" x-model="form.service_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                <option value="" selected disabled>Choose a service...</option>
+                                @php $category = ''; @endphp
+                                @foreach($services as $service)
+                                    @php $currentCategory = $service->category->name; @endphp
+                                    @if($category !== $currentCategory) {
+                                        <option class="font-bold" disabled>{{ str()->upper($currentCategory) }}</option>
+                                        @php $category = $currentCategory; @endphp
+                                    }
+                                    @endif
+                                    <option class="ps-3" value="{{ $service->id }}">{{ $service->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-5">
+                            <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
+                            <input type="date" id="date" x-model="form.date" class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light" required/>
+                        </div>
+                        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                    </form>
+                @endif
             </div>
         </div>
     </div>

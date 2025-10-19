@@ -69,4 +69,15 @@ class AppointmentController extends Controller
     {
         //
     }
+
+    public function cancel(Appointment $appointment) {
+        $appointment->update([
+            'status' => 'cancel'
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Appointment has been cancelled'
+        ], Response::HTTP_OK);
+    }
 }

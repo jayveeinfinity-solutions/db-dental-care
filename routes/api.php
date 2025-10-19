@@ -14,6 +14,7 @@ Route::middleware('auth:sanctum')->group(function() {
             return $request->user();
         });
         Route::apiResource('appointments', AppointmentController::class);
+        Route::post('appointments/{appointment}/cancel', [AppointmentController::class, 'cancel']);
 
         Route::prefix('admin')->name('admin.')->group(function() {
             Route::apiResource('dashboard', AppointmentController::class);

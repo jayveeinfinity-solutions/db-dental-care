@@ -89,7 +89,7 @@
                         <div>
                             <button type="button"
                                 class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                                x-if="appointment.status === 'Pending'"
+                                x-if="appointment.status === 'Pending'" x-on:click="cancelAppointment(appointment.id)"
                             >Cancel</button>
                         </div>
                     </div>
@@ -135,7 +135,29 @@
                     .then(response => {
                         this.appointments = response.data.appointments;
                     });
-            }
+            },
+            cancelAppointment(id) {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You are able to cancel your appointment!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, cancel it!"
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        axios.post(`/api/v1/appointments/${id}/cancel`)
+                            .then((response) => {
+                                Swal.fire({
+                                    title: "Cancelled!",
+                                    text: "Your appointment has been cancelled.",
+                                    icon: "success"
+                                });
+                            });
+                    }
+                });
+            },
         }));
     });
 </script>

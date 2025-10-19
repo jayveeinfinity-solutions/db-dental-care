@@ -6,9 +6,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\UserProfileController;
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/services', [HomeController::class, 'services'])->name('services');
-Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::middleware('redirect.notpatient')->group(function() {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/services', [HomeController::class, 'services'])->name('services');
+    Route::get('/about', [HomeController::class, 'about'])->name('about');
+});
 
 Route::get('/auth/google/redirect', [SocialAuthController::class, 'redirectToGoogle'])->name('google.redirect');
 Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback'])->name('google.callback');
