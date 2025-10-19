@@ -23,7 +23,7 @@
                 </div>
                 <div class="px-3 text-right basis-1/3">
                     <div class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-blue-500 to-violet-500">
-                    <i class="ni leading-none ni-money-coins text-lg relative top-3.5 text-white"></i>
+                    <i class="ni leading-none ni-money-coins text-lg relative !top-[10px] text-white"></i>
                     </div>
                 </div>
                 </div>
@@ -48,7 +48,7 @@
                         </div>
                         <div class="px-3 text-right basis-1/3">
                             <div class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-red-600 to-orange-600">
-                            <i class="fa-solid fa-calendar-days leading-none text-lg relative top-3.5 text-white"></i>
+                            <i class="fa-solid fa-calendar-days leading-none text-lg relative !top-[10px] text-white"></i>
                             </div>
                         </div>
                     </div>
@@ -72,7 +72,7 @@
                         </div>
                         <div class="px-3 text-right basis-1/3">
                             <div class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-orange-500 to-yellow-500">
-                                <i class="fa-solid fa-calendar-check leading-none text-lg relative top-3.5 text-white"></i>
+                                <i class="fa-solid fa-calendar-check leading-none text-lg relative !top-[10px] text-white"></i>
                             </div>
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                 </div>
                 <div class="px-3 text-right basis-1/3">
                     <div class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-emerald-500 to-teal-400">
-                    <i class="fa-solid fa-users leading-none text-lg relative top-3.5 text-white"></i>
+                    <i class="fa-solid fa-users leading-none text-lg relative !top-[10px] text-white"></i>
                     </div>
                 </div>
                 </div>
@@ -168,7 +168,7 @@
 
     <!-- cards row 3 -->
 
-    <div class="flex flex-wrap mt-6 -mx-3">
+    <!-- <div class="flex flex-wrap mt-6 -mx-3">
     <div class="w-full max-w-full px-3 mt-0 mb-6 lg:mb-0 lg:w-7/12 lg:flex-none">
         <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl dark:bg-gray-950 border-black-125 rounded-2xl bg-clip-border">
         <div class="p-4 pb-0 mb-0 rounded-t-4">
@@ -375,40 +375,7 @@
         </div>
         </div>
     </div>
-    </div>
-
-    <footer class="pt-4">
-    <div class="w-full px-6 mx-auto">
-        <div class="flex flex-wrap items-center -mx-3 lg:justify-between">
-        <div class="w-full max-w-full px-3 mt-0 mb-6 shrink-0 lg:mb-0 lg:w-1/2 lg:flex-none">
-            <div class="text-sm leading-normal text-center text-slate-500 lg:text-left">
-            ©
-            <script>
-                document.write(new Date().getFullYear() + ",");
-            </script>
-            made with <i class="fa fa-heart"></i> by
-            <a href="https://www.creative-tim.com" class="font-semibold text-slate-700 dark:text-white" target="_blank">Creative Tim</a>
-            for a better web.
-            </div>
-        </div>
-        <div class="w-full max-w-full px-3 mt-0 shrink-0 lg:w-1/2 lg:flex-none">
-            <ul class="flex flex-wrap justify-center pl-0 mb-0 list-none lg:justify-end">
-            <li class="nav-item">
-                <a href="https://www.creative-tim.com" class="block px-4 pt-0 pb-1 text-sm font-normal transition-colors ease-in-out text-slate-500" target="_blank">Creative Tim</a>
-            </li>
-            <li class="nav-item">
-                <a href="https://www.creative-tim.com/presentation" class="block px-4 pt-0 pb-1 text-sm font-normal transition-colors ease-in-out text-slate-500" target="_blank">About Us</a>
-            </li>
-            <li class="nav-item">
-                <a href="https://creative-tim.com/blog" class="block px-4 pt-0 pb-1 text-sm font-normal transition-colors ease-in-out text-slate-500" target="_blank">Blog</a>
-            </li>
-            <li class="nav-item">
-                <a href="https://www.creative-tim.com/license" class="block px-4 pt-0 pb-1 pr-0 text-sm font-normal transition-colors ease-in-out text-slate-500" target="_blank">License</a>
-            </li>
-            </ul>
-        </div>
-        </div>
-    </div>
-    </footer>
+    </div> -->
+    @include('shared.argon.partials.footer')
 </div>
 @endsection

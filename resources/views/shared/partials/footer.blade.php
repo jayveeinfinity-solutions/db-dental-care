@@ -4,7 +4,7 @@
             <div class="w-full sm:w-1/2 lg:w-1/3 px-5">
                 <img src="/images/logo.png" alt="DB Dental Care Logo" class="logo-footer">
                 <div class="spacer-20"></div>
-                <p>At Dentia, we’re dedicated to providing high-quality, personalized dental care for patients of all ages. Our skilled team uses the latest technology to ensure comfortable, efficient treatments and beautiful, healthy smiles for life.</p>
+                <p>We provides quality and affordable dental services for patients of all ages. With a team of skilled dentists and modern equipment, the clinic offers comprehensive oral care—from routine check-ups and cleanings to advanced restorative and cosmetic treatments—ensuring every patient leaves with a healthy and confident smile.</p>
 
                 <div class="social-icons mb-sm-30">
                     <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
@@ -45,17 +45,17 @@
                 <div class="widget">
                     <h5>Contact Us</h5>
                     <div class="fw-bold text-white"><i class="icofont-location-pin me-2 id-color"></i>Clinic Location</div>
-                    100 S Main St, New York, NY
+                        Trece Martires City, Cavite, Philippines
 
                     <div class="spacer-20"></div>
 
                     <div class="fw-bold text-white"><i class="icofont-phone me-2 id-color"></i>Call Us</div>
-                    +1 123 456 789
+                    +63 9xx - xxx - xxxx
 
                     <div class="spacer-20"></div>
 
                     <div class="fw-bold text-white"><i class="icofont-envelope me-2 id-color"></i>Send a Message</div>
-                    <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4c2f2322382d2f380c28292238252d2f2d3e29622f2321">[email&#160;protected]</a>                            
+                    <a href="#" class="__cf_email__">email@example.com</a>                            
                 </div>
             </div>
         </div>

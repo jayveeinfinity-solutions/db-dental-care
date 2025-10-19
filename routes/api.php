@@ -15,6 +15,7 @@ Route::middleware('auth:sanctum')->group(function() {
         });
         Route::apiResource('appointments', AppointmentController::class);
         Route::post('appointments/{appointment}/cancel', [AppointmentController::class, 'cancel']);
+        Route::put('appointments/{appointment}/status', [AppointmentController::class, 'updateStatus']);
 
         Route::prefix('admin')->name('admin.')->group(function() {
             Route::apiResource('dashboard', AppointmentController::class);

@@ -22,7 +22,7 @@
             <label for="tabs" class="sr-only">Status</label>
             <select id="tabs" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option selected>All</option>
-                <option>Scheduled</option>
+                <option>Approved</option>
                 <option>Pending</option>
                 <option>Completed</option>
                 <option>Cancelled</option>
@@ -40,19 +40,19 @@
             </li>
             <li class="w-full focus-within:z-10">
                 <a href="#" class="inline-block w-full p-4 border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
-                    :class="active === 'scheduled'
-                        ? 'text-gray-900 bg-gray-100 active dark:bg-gray-700 dark:text-white'
-                        : 'bg-white hover:bg-gray-50'"
-                    x-on:click="setActive('scheduled')"
-                >Scheduled</a>
-            </li>
-            <li class="w-full focus-within:z-10">
-                <a href="#" class="inline-block w-full p-4 border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
                     :class="active === 'pending'
                         ? 'text-gray-900 bg-gray-100 active dark:bg-gray-700 dark:text-white'
                         : 'bg-white hover:bg-gray-50'"
                     x-on:click="setActive('pending')"
                 >Pending</a>
+            </li>
+            <li class="w-full focus-within:z-10">
+                <a href="#" class="inline-block w-full p-4 border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+                    :class="active === 'approved'
+                        ? 'text-gray-900 bg-gray-100 active dark:bg-gray-700 dark:text-white'
+                        : 'bg-white hover:bg-gray-50'"
+                    x-on:click="setActive('approved')"
+                >Approved</a>
             </li>
             <li class="w-full focus-within:z-10">
                 <a href="#" class="inline-block w-full p-4 border-s-0 border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
@@ -85,7 +85,7 @@
                                         class="text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm"
                                         :class="{
                                             'bg-blue-100 text-blue-800': appointment.status === 'pending',
-                                            'bg-slate-100 text-slate-800': appointment.status === 'scheduled',
+                                            'bg-slate-100 text-slate-800': appointment.status === 'approved',
                                             'bg-red-100 text-red-800': appointment.status === 'cancelled',
                                             'bg-green-100 text-green-800': appointment.status === 'completed'
                                         }"

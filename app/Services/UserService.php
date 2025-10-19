@@ -19,4 +19,16 @@ class UserService
     {
         return $this->userModel->role('patient')->count();
     }
+
+    public function getUsers($role = 'all') {
+        return $this->userModel
+            ->whereDoesntHave('roles', function ($query) {
+                $query->where('name', 'superadmin');
+            })
+            ->when($role !== 'all', function($query) use ($role) {
+                $query->role($role);
+            })
+            ->latest()
+            ->get();
+    }
 }

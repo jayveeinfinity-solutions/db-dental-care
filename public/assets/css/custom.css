@@ -8,6 +8,10 @@
   right: 15px !important;
 }
 
+.\!top-\[10px\] {
+  top: 10px !important;
+}
+
 /* Tailwind mb-* utilities (default spacing scale) */
 .mb-1 {
   margin-bottom: 0.25rem; /* 4px */

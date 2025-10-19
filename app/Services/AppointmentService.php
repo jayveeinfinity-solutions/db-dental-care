@@ -20,7 +20,7 @@ class AppointmentService
             return collect();
         }
 
-        $statusOrder = ['scheduled', 'pending', 'completed', 'cancelled'];
+        $statusOrder = ['approved', 'pending', 'completed', 'cancelled'];
 
         return AppointmentResource::collection(
             $this->appointmentModel
@@ -50,7 +50,7 @@ class AppointmentService
             return collect();
         }
 
-        $statusOrder = ['scheduled', 'pending', 'completed', 'cancelled'];
+        $statusOrder = ['approved', 'pending', 'completed', 'cancelled'];
 
         return AppointmentResource::collection(
             $this->appointmentModel

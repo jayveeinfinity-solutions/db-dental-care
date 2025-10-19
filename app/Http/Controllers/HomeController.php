@@ -4,13 +4,21 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Service;
+use App\Models\Category;
 use Carbon\CarbonInterval;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     public function index() {
         $featuredServices = Service::featured()
-            ->get();
+            ->get()
+            ->transform(function($item) {
+                $item->price_min = number_format($item->price_min, 2);
+                $item->price_max = number_format($item->price_max, 2);
+                
+                return $item;
+            });
 
         $services = Service::with('category')
             ->active()
@@ -38,11 +46,24 @@ class HomeController extends Controller
         return view('pages.home', compact('featuredServices', 'services', 'userPendingAppointments', 'times'));
     }
 
-    public function services() {
-        $services = Service::active()
-            ->get();
+    public function services(Request $request) {
+        $category = request()->query('category', '');
 
-        return view('pages.services', compact('services'));
+        $services = Service::active()
+            ->when($category !== '', function($query) use ($category) {
+                $query->where('category_id', $category);
+            })
+            ->get()
+            ->transform(function($item) {
+                $item->price_min = number_format($item->price_min, 2);
+                $item->price_max = number_format($item->price_max, 2);
+                
+                return $item;
+            });
+
+        $categories = Category::all();
+
+        return view('pages.services', compact('services', 'categories'));
     }
 
     public function about() {

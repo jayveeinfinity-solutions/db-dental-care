@@ -33,6 +33,8 @@
         <!-- Main Styling -->
         <link href="/assets/css/argon-dashboard-tailwind.css?v=1.0.1" rel="stylesheet" />
         <link href="/assets/css/custom.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        @vite(['resources/js/app.js'])
     </head>
 
     <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
@@ -43,6 +45,7 @@
             @include('shared.argon.partials.navbar')
             @yield('content')
         </main>
+        @stack('scripts')
     </body>
     <!-- plugin for charts  -->
     <script src="/assets/js/plugins/chartjs.min.js" async></script>
