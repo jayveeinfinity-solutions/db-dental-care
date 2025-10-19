@@ -81,7 +81,16 @@
                             <div class="flex flex-row gap-2 items-center">
                                 <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white" x-text="appointment.service.name"></h5>
                                 <div>
-                                    <span class="bg-indigo-100 text-indigo-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-indigo-900 dark:text-indigo-300" x-text="appointment.status"></span>
+                                    <span
+                                        class="text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm"
+                                        :class="{
+                                            'bg-blue-100 text-blue-800': appointment.status === 'pending',
+                                            'bg-slate-100 text-slate-800': appointment.status === 'scheduled',
+                                            'bg-red-100 text-red-800': appointment.status === 'cancelled',
+                                            'bg-green-100 text-green-800': appointment.status === 'completed'
+                                        }"
+                                        x-text="appointment.status">
+                                    </span>
                                 </div>
                             </div>
                             <p class="font-normal text-sm text-gray-700 dark:text-gray-400" x-text="appointment.formatted_date"></p>
@@ -89,7 +98,7 @@
                         <div>
                             <button type="button"
                                 class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                                x-if="appointment.status === 'Pending'" x-on:click="cancelAppointment(appointment.id)"
+                                x-show="appointment.status === 'pending'" x-on:click="cancelAppointment(appointment.id)"
                             >Cancel</button>
                         </div>
                     </div>
@@ -144,15 +153,21 @@
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, cancel it!"
-                    }).then((result) => {
+                    confirmButtonText: "Yes, cancel it!",
+                    allowOutsideClick: false
+                }).then((result) => {
                     if (result.isConfirmed) {
                         axios.post(`/api/v1/appointments/${id}/cancel`)
                             .then((response) => {
                                 Swal.fire({
                                     title: "Cancelled!",
                                     text: "Your appointment has been cancelled.",
-                                    icon: "success"
+                                    icon: "success",
+                                    allowOutsideClick: false,
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                }).then(() => {
+                                    window.location.reload();
                                 });
                             });
                     }

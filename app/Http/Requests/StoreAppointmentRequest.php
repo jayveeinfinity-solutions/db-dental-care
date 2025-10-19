@@ -24,6 +24,7 @@ class StoreAppointmentRequest extends FormRequest
         return [
             'service_id' => ['required', 'exists:services,id'],
             'date' => ['required', 'date', 'after_or_equal:today'],
+            'time' => ['required', 'date_format:H:i']
         ];
     }
 
@@ -32,9 +33,13 @@ class StoreAppointmentRequest extends FormRequest
         return [
             'service_id.required' => 'Please select a service.',
             'service_id.exists' => 'Selected service is invalid.',
+            
             'date.required' => 'Please choose a date.',
             'date.date' => 'Invalid date format.',
             'date.after_or_equal' => 'Appointment date must be today or later.',
+
+            'time.required' => 'Please select a time for your appointment.',
+            'time.date_format' => 'The time must be in a valid format (HH:mm).',
         ];
     }
 }

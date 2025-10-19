@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Service;
+use Carbon\CarbonInterval;
 
 class HomeController extends Controller
 {
@@ -21,7 +23,19 @@ class HomeController extends Controller
             ->where('status', 'pending')
             ->get() ?? collect();
 
-        return view('pages.home', compact('featuredServices', 'services', 'userPendingAppointments'));
+        $start = Carbon::createFromTimeString('08:00');
+        $end = Carbon::createFromTimeString('17:00');
+        $interval = CarbonInterval::hour();
+        $times = [];
+
+        for ($time = $start->copy(); $time->lte($end); $time->add($interval)) {
+            $times[] = [
+                'value' => $time->format('H:i'),
+                'text' => $time->format('g:i A'),
+            ];
+        }
+
+        return view('pages.home', compact('featuredServices', 'services', 'userPendingAppointments', 'times'));
     }
 
     public function services() {

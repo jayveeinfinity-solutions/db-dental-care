@@ -14,4 +14,9 @@ class UserService
     {
         return $this->userModel->count();
     }
+
+    public function countPatient(): int
+    {
+        return $this->userModel->role('patient')->count();
+    }
 }

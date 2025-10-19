@@ -46,20 +46,16 @@
                                         switch ($appointment->status) {
                                             case 'pending':
                                                 $statusClass = 'from-blue-700 to-cyan-500';
-                                                $status = 'Cancelled';
                                                 break;
                                             case 'scheduled':
                                                 $statusClass = 'from-slate-600 to-slate-300';
-                                                $status = 'Cancelled';
                                                 break;
-                                            case 'cancel':
+                                            case 'cancelled':
                                                 $statusClass = 'from-red-600 to-orange-600';
-                                                $status = 'Cancelled';
                                                 break;
                                             case 'completed':
                                             default:
                                                 $statusClass = 'from-emerald-500 to-teal-400';
-                                                $status = ucfirst($appointment->status);
                                                 break;
                                         }
                                     @endphp
@@ -83,7 +79,7 @@
                                         <!-- <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">Organization</p> -->
                                     </td>
                                     <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                                        <span class="bg-gradient-to-tl px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white {{ $statusClass }}">{{ $status }}</span>
+                                        <span class="bg-gradient-to-tl px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white {{ $statusClass }}">{{ $appointment->status }}</span>
                                     </td>
                                     <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
                                         <a href="javascript:;" class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400"> Edit </a>

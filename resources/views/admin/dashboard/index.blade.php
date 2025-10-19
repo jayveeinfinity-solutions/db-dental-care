@@ -87,7 +87,7 @@
                 <div class="flex flex-row -mx-3">
                 <div class="flex-none w-2/3 max-w-full px-3">
                     <div>
-                    <p class="mb-0 font-sans text-sm font-semibold leading-normal uppercase dark:text-white dark:opacity-60">Patients</p>
+                    <p class="mb-0 font-sans text-sm font-semibold leading-normal uppercase dark:text-white dark:opacity-60">{{ Str::plural('patient', $patientCount) }}</p>
                     <h5 class="mb-2 font-bold dark:text-white">{{ $patientCount }}</h5>
                     <p class="mb-0 dark:text-white dark:opacity-60">
                         <!-- <span class="text-sm font-bold leading-normal text-red-600">-2%</span>
@@ -97,7 +97,7 @@
                 </div>
                 <div class="px-3 text-right basis-1/3">
                     <div class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-emerald-500 to-teal-400">
-                    <i class="fa-solid fa-users leading-none         text-lg relative top-3.5 text-white"></i>
+                    <i class="fa-solid fa-users leading-none text-lg relative top-3.5 text-white"></i>
                     </div>
                 </div>
                 </div>

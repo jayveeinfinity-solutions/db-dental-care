@@ -37,6 +37,7 @@ class AppointmentController extends Controller
             'service_id' => $request->service_id,
             'user_id' => Auth::id(),
             'date' => $request->date,
+            'time' => $request->time,
             'status' => 'pending',
         ]);
 
@@ -72,7 +73,7 @@ class AppointmentController extends Controller
 
     public function cancel(Appointment $appointment) {
         $appointment->update([
-            'status' => 'cancel'
+            'status' => 'cancelled'
         ]);
 
         return response()->json([

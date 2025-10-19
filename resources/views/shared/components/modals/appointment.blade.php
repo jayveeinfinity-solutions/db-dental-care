@@ -4,6 +4,7 @@
             form: {
                 service_id: '',
                 date: '',
+                time: '',
             },
             message: '',
             success: false,
@@ -18,15 +19,33 @@
                     this.message = response.data.message || 'Appointment booked successfully!';
                     this.success = true;
 
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: this.message,
+                        allowOutsideClick: false,
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        window.location.href = '/appointments';
+                    });
+
                     setTimeout(() => {
                         this.$dispatch('close-modal', 'appointment-modal');
-                    }, 1500);
+                    }, 500);
 
                     this.form.service_id = '';
                     this.form.date = '';
+                    this.form.time = '';
                 } catch (error) {
                     this.success = false;
                     this.message = error.response?.data?.message || 'Something went wrong. Please try again.';
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops!',
+                        text: this.message,
+                    });
                 }
             }
         }"
@@ -85,6 +104,15 @@
                         <div class="mb-5">
                             <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
                             <input type="date" id="date" x-model="form.date" class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light" required/>
+                        </div>
+                        <div class="mb-5">
+                            <label class="block text-sm font-semibold">Select Time</label>
+                            <select x-model="form.time" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="" selected disabled>-- Select Time --</option>
+                                @foreach($times as $time)
+                                    <option value="{{ $time['value'] }}">{{ $time['text'] }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                     </form>

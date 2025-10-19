@@ -16,7 +16,7 @@ class DashboardController extends Controller
         $todaysAppointments = $this->dashboardService->getTodaysAppointmentCount();
         $pendingAppointments = 0;
         $upcomingAppointments = 0;
-        $patientCount = 0;
+        $patientCount = $this->dashboardService->getPatientCount();
 
         return view('admin.dashboard.index', compact('todaysAppointments', 'pendingAppointments', 'upcomingAppointments', 'patientCount'));
     }
