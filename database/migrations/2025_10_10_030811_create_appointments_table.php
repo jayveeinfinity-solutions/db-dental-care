@@ -18,6 +18,9 @@ return new class extends Migration
             $table->date('date');
             $table->time('time');
             $table->string('status')->default('pending');
+            $table->foreignId('cancelled_by_id')->nullable()->constrained('users')->onDelete('set null');
+            $table->text('cancellation_reason')->nullable();
+            $table->timestamp('cancelled_at')->nullable();
             $table->timestamps();
         });
     }

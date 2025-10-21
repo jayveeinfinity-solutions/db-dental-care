@@ -17,6 +17,9 @@ class Appointment extends Model
         'date',
         'time',
         'status',
+        'cancelled_by_id', 
+        'cancellation_reason', 
+        'cancelled_at'
     ];
 
     protected $appends = ['formatted_date'];
@@ -34,6 +37,11 @@ class Appointment extends Model
     public function transaction()
     {
         return $this->hasOne(Transaction::class);
+    }
+
+    public function cancelledBy()
+    {
+        return $this->belongsTo(User::class, 'cancelled_by_id');
     }
 
     protected function formattedDate(): Attribute

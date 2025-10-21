@@ -120,6 +120,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const appointmentId = e.target.dataset.id;
             const newStatus = e.target.value;
 
+            if(newStatus === 'Completed') {
+                // Show modal
+                return;
+            }
+
             try {
                 const response = await axios.put(`/api/v1/appointments/${appointmentId}/status`, {
                     status: newStatus

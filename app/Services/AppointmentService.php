@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Appointment;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\AppointmentResource;
 
@@ -62,5 +63,27 @@ class AppointmentService
                 ->latest()
                 ->get()
         );
+    }
+
+    /**
+     * Cancel an appointment.
+     *
+     * @param  \App\Models\Appointment  $appointment
+     * @param  string  $reason
+     * @param  int  $cancelledBy
+     * @return \App\Models\Appointment
+     */
+    public function cancel(Appointment $appointment, string $reason, int $cancelled_by_id): Appointment
+    {
+        DB::transaction(function () use ($appointment, $reason, $cancelled_by_id) {
+            $appointment->update([
+                'status' => 'cancelled',
+                'cancellation_reason' => $reason,
+                'cancelled_by_id' => $cancelled_by_id,
+                'cancelled_at' => now(),
+            ]);
+        });
+
+        return $appointment;
     }
 }

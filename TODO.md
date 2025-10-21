@@ -15,7 +15,7 @@ COMPLETE PROCESS
 Patient records (user)
     => Add page of patient history (transaction)
 
-Scheduled -> Approved
+Scheduled -> Approved ✅
 
 
 TOTP (Admin side)

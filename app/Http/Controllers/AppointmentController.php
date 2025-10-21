@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Services\AppointmentService;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreAppointmentRequest;
+use App\Http\Requests\CancelAppointmentRequest;
 
 class AppointmentController extends Controller
 {
@@ -72,10 +73,13 @@ class AppointmentController extends Controller
         //
     }
 
-    public function cancel(Appointment $appointment) {
-        $appointment->update([
-            'status' => 'cancelled'
-        ]);
+    public function cancel(CancelAppointmentRequest $request, Appointment $appointment)
+    {
+        $this->appointmentService->cancel(
+            $appointment,
+            $request->reason,
+            $request->user()->id
+        );
 
         return response()->json([
             'success' => true,

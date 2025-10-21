@@ -115,6 +115,8 @@
         </article>
     </div>
 </section>
+<!-- Appointment Cancellation Modal -->
+@include('shared.components.modals.appointment-cancellation')
 @endsection
 
 @push('scripts')
@@ -135,6 +137,7 @@
             },
             fetchAppointments() {
                 let url = '/api/v1/appointments';
+                console.log(url)
 
                 if(this.active !== 'all') {
                     url += `?status=${this.active}`;
@@ -157,19 +160,23 @@
                     allowOutsideClick: false
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        axios.post(`/api/v1/appointments/${id}/cancel`)
-                            .then((response) => {
-                                Swal.fire({
-                                    title: "Cancelled!",
-                                    text: "Your appointment has been cancelled.",
-                                    icon: "success",
-                                    allowOutsideClick: false,
-                                    timer: 2000,
-                                    showConfirmButton: false
-                                }).then(() => {
-                                    window.location.reload();
-                                });
-                            });
+                        this.$dispatch('open-modal', {
+                            name: 'appointment-cancellation-modal',
+                            appointmentId: id
+                        });
+                        // axios.patch(`/api/v1/appointments/${id}/cancel`)
+                        //     .then((response) => {
+                        //         Swal.fire({
+                        //             title: "Cancelled!",
+                        //             text: "Your appointment has been cancelled.",
+                        //             icon: "success",
+                        //             allowOutsideClick: false,
+                        //             timer: 2000,
+                        //             showConfirmButton: false
+                        //         }).then(() => {
+                        //             window.location.reload();
+                        //         });
+                        //     });
                     }
                 });
             },
