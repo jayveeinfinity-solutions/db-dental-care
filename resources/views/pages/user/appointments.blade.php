@@ -137,7 +137,6 @@
             },
             fetchAppointments() {
                 let url = '/api/v1/appointments';
-                console.log(url)
 
                 if(this.active !== 'all') {
                     url += `?status=${this.active}`;

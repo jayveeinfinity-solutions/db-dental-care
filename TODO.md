@@ -3,7 +3,7 @@ CANCEL PROCESS (on admin)
     schedules on the same date that users desired date.
 
 CANCEL PROCESS (on patient)
-    => When cancel, the admin see cancel remarks.
+    => When cancel, the admin see cancel remarks. ✅
 
 Transaction details upon completing the appointment
 
@@ -29,4 +29,3 @@ Admin (Walk in appointment)
 Online booking => Appointment => Transaction
 Walk in => Appointment => Transaction
 Walk in => Transaction
-

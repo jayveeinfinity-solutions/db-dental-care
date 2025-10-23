@@ -16,6 +16,16 @@ class DashboardService
         return $this->appointmentService->countTodaysAppointments();
     }
 
+    public function getPendingAppointmentCount(): int
+    {
+        return $this->appointmentService->countAppointmentByStatus('pending');
+    }
+
+    public function getUpcomingAppointmentCount(): int
+    {
+        return $this->appointmentService->countUpcomingAppointment();
+    }
+
     public function getPatientCount() {
         return $this->userService->countPatient();
     }

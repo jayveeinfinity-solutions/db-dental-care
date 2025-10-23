@@ -21,7 +21,7 @@ class AppointmentService
             return collect();
         }
 
-        $statusOrder = ['approved', 'pending', 'completed', 'cancelled'];
+        $statusOrder = ['approved', 'pending'];
 
         return AppointmentResource::collection(
             $this->appointmentModel
@@ -40,6 +40,21 @@ class AppointmentService
     {
         return $this->appointmentModel
             ->whereDate('date', now()->toDateString())
+            ->count();
+    }
+
+    public function countAppointmentByStatus($status = NULL): int
+    {
+        return $this->appointmentModel
+            ->when($status !== NULL, function($query) use ($status) {
+                $query->where('status', $status);
+            })
+            ->count();
+    }
+
+    public function countUpcomingAppointment() {
+        return $this->appointmentModel
+            ->whereDate('date', '>', now()->toDateString())
             ->count();
     }
 

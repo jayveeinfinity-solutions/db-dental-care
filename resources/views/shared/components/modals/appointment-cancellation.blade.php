@@ -8,12 +8,12 @@
             message: '',
             success: false,
             reasons: [
-                'Patient postponed treatment',
-                'Doctor unavailable',
-                'Ongoing dental pain or health issue',
-                'Reschedule due to incomplete payment',
-                'Procedure already done elsewhere',
-                'No confirmation from patient',
+                'I need to postpone my treatment',
+                'My doctor is unavailable',
+                'I’m experiencing dental pain or a health issue',
+                'I need to reschedule because my payment is incomplete',
+                'I already had the procedure done somewhere else',
+                'I wasn’t able to confirm my appointment'
             ],
             selectedReason: '',
             otherReason: '',
@@ -32,11 +32,11 @@
                     return;
                 }
 
-                console.log('appointment-cancellation-modal submitting...')
+                this.form.reason = finalReason;
 
                 try {
                     await axios.get('/sanctum/csrf-cookie');
-                    const response = await axios.post(`/api/v1/appointments/${id}/cancel`, this.form);
+                    const response = await axios.patch(`/api/v1/appointments/${this.id}/cancel`, this.form);
                     this.message = response.data.message || 'Appointment booked successfully!';
                     this.success = true;
 
@@ -56,7 +56,12 @@
                     }, 500);
 
                     this.form.reason = '';
+                    this.selectedReason = '';
+                    this.otherReason = ''
+                    this.success = false;
+                    this.message: '',
                 } catch (error) {
+                 console.log(error);
                     this.success = false;
                     this.message = error.response?.data?.message || 'Something went wrong. Please try again.';
 
@@ -129,3 +134,9 @@
         </div>
     </div>
 </x-modal>
+<!-- 'Patient postponed treatment',
+'Doctor unavailable',
+'Ongoing dental pain or health issue',
+'Reschedule due to incomplete payment',
+'Procedure already done elsewhere',
+'No confirmation from patient', -->

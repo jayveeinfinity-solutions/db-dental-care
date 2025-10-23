@@ -14,8 +14,8 @@ class DashboardController extends Controller
 
     public function index() {
         $todaysAppointments = $this->dashboardService->getTodaysAppointmentCount();
-        $pendingAppointments = 0;
-        $upcomingAppointments = 0;
+        $pendingAppointments = $this->dashboardService->getPendingAppointmentCount();
+        $upcomingAppointments = $this->dashboardService->getUpcomingAppointmentCount();
         $patientCount = $this->dashboardService->getPatientCount();
 
         return view('admin.dashboard.index', compact('todaysAppointments', 'pendingAppointments', 'upcomingAppointments', 'patientCount'));
