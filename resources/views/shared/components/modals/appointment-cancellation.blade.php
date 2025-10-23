@@ -39,7 +39,7 @@
                     const response = await axios.patch(`/api/v1/appointments/${this.id}/cancel`, this.form);
                     this.message = response.data.message || 'Appointment booked successfully!';
                     this.success = true;
-
+                    
                     Swal.fire({
                         icon: 'success',
                         title: 'Success!',
@@ -48,7 +48,7 @@
                         timer: 2000,
                         showConfirmButton: false
                     }).then(() => {
-                        window.location.href = '/appointments';
+                        window.location.reload;
                     });
 
                     setTimeout(() => {
@@ -57,11 +57,10 @@
 
                     this.form.reason = '';
                     this.selectedReason = '';
-                    this.otherReason = ''
+                    this.otherReason = '';
                     this.success = false;
-                    this.message: '',
+                    this.message = '';
                 } catch (error) {
-                 console.log(error);
                     this.success = false;
                     this.message = error.response?.data?.message || 'Something went wrong. Please try again.';
 
@@ -99,7 +98,7 @@
             </div>
             <!-- Modal body -->
             <div class="p-4 md:p-5 space-y-4">
-                <form class="max-w-sm mx-auto opacity-8"  @submit.prevent="submit">
+                <form class="max-w-sm mx-auto opacity-8" @submit.prevent="submit">
                     <div class="mb-5">
                         <label for="services" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Reason for cancellation of appointment:</label>
                         <template x-for="(reason, index) in reasons" :key="index">
@@ -126,9 +125,7 @@
                             placeholder="Please specify your reason..."
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
                     </div>
-                    <button type="submit"
-                        x-on:click="submit"
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                 </form>
             </div>
         </div>

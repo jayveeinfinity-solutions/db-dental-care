@@ -30,7 +30,13 @@ class AppointmentService
                 ->when($status !== 'all', function($query) use ($status) {
                     $query->where('status', $status);
                 })
-                ->orderByRaw("FIELD(status, '" . implode("','", $statusOrder) . "')")
+                ->orderByRaw("
+                    CASE
+                        WHEN status = 'approved' AND date = CURDATE() THEN 1
+                        WHEN status = 'pending' THEN 2
+                        ELSE 3
+                    END
+                ")
                 ->latest()
                 ->get()
         );
