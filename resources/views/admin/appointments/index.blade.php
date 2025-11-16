@@ -3,7 +3,7 @@
 @section('title', 'Services &sdots; ')
 
 @section('content')
-<div class="w-full px-6 py-6 mx-auto">
+<div class="w-full px-6 py-6 mx-auto" x-data="appointments">
     <!-- table 1 -->
     <div class="flex flex-wrap -mx-3">
         <div class="flex-none w-full max-w-full px-3">
@@ -114,50 +114,59 @@
             </div>
         </div>
     </div>
+    @include('shared.components.modals.create-transaction')
     @include('shared.argon.partials.footer')
 </div>
 @endsection
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const selects = document.querySelectorAll('.status-select');
+document.addEventListener('alpine:init', () => {
+    Alpine.data('appointments', () => ({
+        
+        init() {
+            const selects = document.querySelectorAll('.status-select');
 
-    selects.forEach(select => {
-        select.addEventListener('change', async (e) => {
-            const appointmentId = e.target.dataset.id;
-            const newStatus = e.target.value;
+            selects.forEach(select => {
+                select.addEventListener('change', async (e) => {
+                    const appointmentId = e.target.dataset.id;
+                    const newStatus = e.target.value;
 
-            if(newStatus === 'Completed') {
-                // Show modal
-                return;
-            }
+                    if (newStatus === 'completed') {
+                        window.dispatchEvent(new CustomEvent('open-create-transaction', {
+                            detail: { id: appointmentId }
+                        }));
+                        return;
+                    }
 
-            try {
-                const response = await axios.put(`/api/v1/appointments/${appointmentId}/status`, {
-                    status: newStatus
+                    try {
+                        const response = await axios.put(`/api/v1/appointments/${appointmentId}/status`, {
+                            status: newStatus
+                        });
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Status Updated',
+                            text: response.data.message || 'Appointment status has been updated.',
+                            timer: 1500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            window.location.reload();
+                        });
+
+                    } catch (error) {
+                        console.error(error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Update Failed',
+                            text: error.response?.data?.message || 'Something went wrong.',
+                        });
+                    }
                 });
+            });
+        },
 
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Status Updated',
-                    text: response.data.message || 'Appointment status has been updated.',
-                    timer: 1500,
-                    showConfirmButton: false
-                }).then(() => {
-                    window.location.reload();
-                });
-
-            } catch (error) {
-                console.error(error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Update Failed',
-                    text: error.response?.data?.message || 'Something went wrong.',
-                });
-            }
-        });
-    });
+    }))
 });
 </script>
 @endpush

@@ -52,9 +52,10 @@ class AppointmentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Appointment $appointment)
     {
-        //
+        $appointment = $appointment->load(['service', 'user', 'transaction.services.service']);
+        return response()->json($appointment, Response::HTTP_OK);
     }
 
     /**

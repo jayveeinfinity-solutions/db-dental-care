@@ -114,6 +114,14 @@
     </div>
 
     <div class="mx-4">
-        <a class="inline-block w-full px-8 py-2 text-xs font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-red-500 border-0 rounded-lg shadow-md select-none bg-150 bg-x-25 hover:shadow-xs hover:-translate-y-px" href="https://www.creative-tim.com/product/argon-dashboard-pro-tailwind?ref=sidebarfree">Sign out</a>
-    </div>
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button 
+            type="submit"
+            class="inline-block w-full px-8 py-2 text-xs font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-red-500 border-0 rounded-lg shadow-md select-none bg-150 bg-x-25 hover:shadow-xs hover:-translate-y-px"
+        >
+            Sign out
+        </button>
+    </form>
+</div>
 </aside>

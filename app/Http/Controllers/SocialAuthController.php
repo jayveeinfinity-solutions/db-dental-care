@@ -66,10 +66,6 @@ class SocialAuthController extends Controller
 
         Auth::login($user);
 
-        if ($user->hasRole(['superadmin', 'clinic_admin'])) {
-            return redirect()->intended('/admin/dashboard');
-        }
-
         return redirectAfterLogin();
     }
  

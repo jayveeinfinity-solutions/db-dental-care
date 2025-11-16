@@ -1,12 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
-
-
 if (! function_exists('redirectAfterLogin')) {
     function redirectAfterLogin()
     {
-        $user = Auth::user();
+        $user = auth()->user();
 
         if (!$user) {
             return redirect('/');
