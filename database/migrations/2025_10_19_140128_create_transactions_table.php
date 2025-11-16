@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('appointment_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('patient_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('patient_id')->constrained()->cascadeOnDelete();
+            // $table->foreignId('appointment_id')->nullable()->constrained()->nullOnDelete();
+            // $table->string('payment_status')->default('unpaid'); // unpaid, paid, partial
             $table->decimal('total_amount', 12, 2)->default(0);
             $table->timestamps();
         });
