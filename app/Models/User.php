@@ -53,6 +53,16 @@ class User extends Authenticatable
         return $this->hasOne(GoogleUserInfo::class);
     }
 
+    public function patient()
+    {
+        return $this->hasOne(Patient::class, 'user_id', 'id');
+    }
+
+    public function patients()
+    {
+        return $this->belongsToMany(Patient::class);
+    }
+
     public function appointments()
     {
         return $this->hasMany(Appointment::class);

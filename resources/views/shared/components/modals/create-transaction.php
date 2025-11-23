@@ -238,7 +238,7 @@ document.addEventListener('alpine:init', () => {
     inset: 0;
     background: rgba(0,0,0,0.6);
     backdrop-filter: blur(3px);
-    z-index: 9998;
+    z-index: 98;
 }
 
 /* Modal wrapper */
@@ -254,7 +254,7 @@ document.addEventListener('alpine:init', () => {
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    z-index: 9999;
+    z-index: 99;
 }
 
 /* Modal box */

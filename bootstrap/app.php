@@ -1,13 +1,17 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Application;
 use Illuminate\Auth\Middleware\Authenticate;
+use App\Http\Middleware\RedirectIfNotPatient;
 use App\Http\Middleware\RestrictPatientAccess;
+use Spatie\Permission\Middleware\RoleMiddleware;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 use Illuminate\Routing\Middleware\SubstituteBindings;
+use Spatie\Permission\Middleware\PermissionMiddleware;
+use App\Http\Middleware\EnsurePatientProfileIsComplete;
+use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -22,10 +26,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'auth' => Authenticate::class,
             'auth:sanctum' => EnsureFrontendRequestsAreStateful::class,
             'verified' => EnsureEmailIsVerified::class,
-            'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
-            'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
-            'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
-            'redirect.notpatient' => \App\Http\Middleware\RedirectIfNotPatient::class,
+            'role' => RoleMiddleware::class,
+            'permission' => PermissionMiddleware::class,
+            'role_or_permission' => RoleOrPermissionMiddleware::class,
+            'redirect.notpatient' => RedirectIfNotPatient::class,
+            'patient.complete' => EnsurePatientProfileIsComplete::class,
         ]);
 
         $middleware->group('api', [

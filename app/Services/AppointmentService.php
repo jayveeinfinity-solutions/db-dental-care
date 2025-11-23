@@ -32,7 +32,7 @@ class AppointmentService
                 })
                 ->orderByRaw("
                     CASE
-                        WHEN status = 'approved' AND date = CURDATE() THEN 1
+                        WHEN status = 'approved' AND DATE(scheduled_at) = CURDATE() THEN 1
                         WHEN status = 'pending' THEN 2
                         ELSE 3
                     END
@@ -45,7 +45,7 @@ class AppointmentService
     public function countTodaysAppointments(): int
     {
         return $this->appointmentModel
-            ->whereDate('date', now()->toDateString())
+            ->whereDate('scheduled_at', now()->toDateString())
             ->count();
     }
 
@@ -60,7 +60,7 @@ class AppointmentService
 
     public function countUpcomingAppointment() {
         return $this->appointmentModel
-            ->whereDate('date', '>', now()->toDateString())
+            ->whereDate('scheduled_at', '>', now()->toDateString())
             ->count();
     }
 

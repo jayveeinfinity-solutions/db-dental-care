@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Services\AppointmentService;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreAppointmentRequest;
 use App\Http\Requests\CancelAppointmentRequest;
 
@@ -33,18 +34,36 @@ class AppointmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAppointmentRequest $request)
-    {
+    public function store(StoreAppointmentRequest $request): JsonResponse
+    {   
+        $user_id = auth()->id();
+
+        // Resolve patient_id: either from request or linked to current user
+        $patient_id = $request->patient_id;
+        if (!$patient_id) {
+            $patient = auth()->user()->patient;
+            if (!$patient) {
+                return response()->json([
+                    'message' => 'No patient record linked to your account.'
+                ], 422);
+            }
+            $patient_id = $patient->id;
+        }
+
+        $data = $request->validated();
+        $scheduled_at = Carbon::parse("{$data['date']} {$data['time']}");
+
         $appointment = Appointment::create([
-            'service_id' => $request->service_id,
-            'user_id' => Auth::id(),
-            'date' => $request->date,
-            'time' => $request->time,
-            'status' => 'pending',
+            'service_id'   => $data['service_id'],
+            'user_id'      => $user_id,
+            'patient_id'   => $patient_id,
+            'scheduled_at' => $scheduled_at,
+            'notes'        => $request->notes ?? null,
+            'status'       => 'pending',
         ]);
 
         return response()->json([
-            'message' => 'Appointment booked successfully!',
+            'message'     => 'Appointment booked successfully!',
             'appointment' => $appointment,
         ]);
     }
@@ -52,7 +71,7 @@ class AppointmentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Appointment $appointment)
+    public function show(Appointment $appointment): JsonResponse
     {
         $appointment = $appointment->load(['service', 'user', 'transaction.services.service']);
         return response()->json($appointment, Response::HTTP_OK);
@@ -74,7 +93,7 @@ class AppointmentController extends Controller
         //
     }
 
-    public function cancel(CancelAppointmentRequest $request, Appointment $appointment)
+    public function cancel(CancelAppointmentRequest $request, Appointment $appointment): JsonResponse
     {
         $this->appointmentService->cancel(
             $appointment,
@@ -88,7 +107,8 @@ class AppointmentController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function updateStatus(Appointment $appointment, Request $request) {
+    public function updateStatus(Appointment $appointment, Request $request): JsonResponse
+    {
         $validated = $request->validate([
             'status' => 'required|string|in:pending,approved,cancelled,completed'
         ]);

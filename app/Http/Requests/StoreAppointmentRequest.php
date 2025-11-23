@@ -23,8 +23,10 @@ class StoreAppointmentRequest extends FormRequest
     {
         return [
             'service_id' => ['required', 'exists:services,id'],
-            'date' => ['required', 'date', 'after_or_equal:today'],
-            'time' => ['required', 'date_format:H:i']
+            'patient_id' => ['nullable', 'exists:patients,id'],
+            'date'       => ['required', 'date', 'after_or_equal:today'],
+            'time'       => ['required', 'date_format:H:i'],
+            'notes'      => ['nullable', 'string'],
         ];
     }
 

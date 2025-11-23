@@ -12,11 +12,12 @@ class Appointment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'service_id',
         'user_id',
-        'date',
-        'time',
+        'patient_id',
+        'service_id',
+        'scheduled_at',
         'status',
+        'notes',
         'cancelled_by_id', 
         'cancellation_reason', 
         'cancelled_at'
@@ -29,9 +30,14 @@ class Appointment extends Model
         return $this->belongsTo(Service::class);
     }
 
-    public function user()
+    public function patient()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Patient::class);
+    }
+    
+    public function bookedBy()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
     
     public function transaction()
@@ -48,7 +54,7 @@ class Appointment extends Model
     {
         return Attribute::make(
             get: fn ($value, $attributes) =>
-                Carbon::parse($attributes['date'])
+                Carbon::parse($attributes['scheduled_at'])
                     ->timezone('Asia/Manila')
                     ->format('F j, Y \a\t g:i A'),
         );

@@ -3,7 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Services\PatientService;
+use Illuminate\Http\JsonResponse;
+use App\Http\Resources\PatientResource;
+use App\Http\Requests\LinkPatientRequest;
+use App\Http\Requests\StorePatientRequest;
+use App\Http\Requests\UpdatePatientRequest;
 
 class PatientController extends Controller
 {
@@ -14,6 +20,46 @@ class PatientController extends Controller
     public function index(Request $request) {
         $patients = $this->patientService->getPatients();
 
+        $patients = PatientResource::collection($patients);
+
+        $patients = collect($patients)
+            ->map(function ($patientResource) {
+                return json_decode(json_encode($patientResource->resolve()));
+            });
+
         return view('admin.patients.index', compact('patients'));
+    }
+
+    // API ROUTES
+
+    public function store(StorePatientRequest $request)
+    {
+        $patient = $this->patientService->create($request->validated());
+
+        return response()->json([
+            'message' => 'Patient record created successfully.',
+            'data' => $patient
+        ], Response::HTTP_CREATED);
+    }
+
+    public function update(UpdatePatientRequest $request, $id): JsonResponse
+    {
+        $patient = $this->patientService->updatePatient($id, $request->validated());
+
+        return response()->json([
+            'message' => 'Patient record updated successfully.',
+            'patient' => $patient
+        ], Response::HTTP_OK);
+    }
+
+    public function link(LinkPatientRequest $request): JsonResponse
+    {
+        $user = auth()->user();
+        $patient = $this->patientService->linkPatientToUser($request->code, $user->id);
+
+        return response()->json([
+            'message' => 'Patient record linked successfully.',
+            'patient' => $patient
+        ], Response::HTTP_OK);
     }
 }

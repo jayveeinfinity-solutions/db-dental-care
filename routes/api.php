@@ -3,8 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\Admin\ServiceController;
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::prefix('v1')->name('api.')->group(function() {
@@ -17,6 +18,13 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::apiResource('appointments', AppointmentController::class);
         Route::patch('appointments/{appointment}/cancel', [AppointmentController::class, 'cancel']);
         Route::put('appointments/{appointment}/status', [AppointmentController::class, 'updateStatus']);
+
+        Route::get('/patient', function (Request $request) {
+            return $request->user()?->patient ?? [];
+        });
+        Route::post('patients', [PatientController::class, 'store'])->name('patient.store');
+        Route::put('patients/{id}', [PatientController::class, 'update'])->name('patient.update');
+        Route::post('patients/link', [PatientController::class, 'link'])->name('patient.link');
 
         Route::get('services/search', [ServiceController::class, 'search']);
 
