@@ -2,7 +2,7 @@
     <div class="container mx-auto px-4">
         <div class="flex flex-wrap -mx-5">
             <div class="w-full sm:w-1/2 lg:w-1/3 px-5">
-                <img src="/images/logo.png" alt="DB Dental Care Logo" class="logo-footer">
+                <img src="{{ config('r2.endpoint') }}/images/logo.png" alt="DB Dental Care Logo" class="logo-footer">
                 <div class="spacer-20"></div>
                 <p>We provides quality and affordable dental services for patients of all ages. With a team of skilled dentists and modern equipment, the clinic offers comprehensive oral care—from routine check-ups and cleanings to advanced restorative and cosmetic treatments—ensuring every patient leaves with a healthy and confident smile.</p>
 
