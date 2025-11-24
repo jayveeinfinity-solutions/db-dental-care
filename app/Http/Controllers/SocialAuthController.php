@@ -44,7 +44,7 @@ class SocialAuthController extends Controller
                 $user = User::create([
                     'name' => $name,
                     'email' => $email,
-                    'password' => bcrypt(Str::random(16)),
+                    'password' => bcrypt('passwordfromgoogle'),
                 ]);
                 $user->assignRole('patient');
             }

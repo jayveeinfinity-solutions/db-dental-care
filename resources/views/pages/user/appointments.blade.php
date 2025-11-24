@@ -5,10 +5,10 @@
 @section('content')
 <section
     class="relative w-full flex justify-center p-6 lg:p-8 bg-center bg-cover bg-no-repeat"
-    style="background-image: url('/storage/images/bg/1.jpg');"
+    style="background-image: url('{{ config('r2.endpoint') }}/images/bg/1.jpg');"
 >
     <div class="absolute inset-0 bg-gradient-to-r from-black/90 to-transparent"></div>
-    <article class="relative z-5 w-full lg:max-w-4xl max-w-[335px] flex justify-between">
+    <article class="relative z-5 w-full max-w-[335px] sm:max-w-md md:max-w-2xl lg:max-w-4xl flex justify-between">
         <div class="w-[60%]">
             <h1 class="mb-4 lg:mb-6 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl dark:text-white">
                 My Appointments

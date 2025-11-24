@@ -6,7 +6,7 @@
     class="custom-modal-wrapper"
 >
     <!-- BACKDROP -->
-    <div x-show="show" x-transition.opacity.duration.300ms class="custom-modal-backdrop" @click="show=false"></div>
+    <div x-show="show" x-transition.opacity.duration.300ms class="custom-modal-backdrop" x-on:click="show=false"></div>
 
     <!-- MODAL -->
     <div x-show="show"
@@ -23,7 +23,7 @@
             <!-- HEADER -->
             <div class="custom-modal-header">
                 <h2 class="custom-modal-title">Add patient record</h2>
-                <button @click="close" class="custom-modal-close">&times;</button>
+                <button x-on:click="close" class="custom-modal-close">&times;</button>
             </div>
 
             <!-- BODY -->
@@ -75,11 +75,11 @@
 
                     <div class="mb-2">
                         <label class="mb-1">Address</label>
-                        <input type="test" x-model="form.address" class="custom-modal-input" placeholder="Address..." required>
+                        <input type="text" x-model="form.address" class="custom-modal-input" placeholder="Address..." required>
                     </div>
 
                     <div class="custom-modal-footer">
-                        <button type="button" @click="close" class="custom-modal-btn custom-modal-btn-secondary">Close</button>
+                        <button type="button" x-on:click="close" class="custom-modal-btn custom-modal-btn-secondary">Close</button>
                         <button type="submit" class="custom-modal-btn custom-modal-btn-primary">Save Record</button>
                     </div>
                 </form>
@@ -144,7 +144,8 @@ document.addEventListener('alpine:init', () => {
                     icon: 'success',
                     title: 'Patient Record Saved',
                     text: response.data.message || 'Patient record has been saved.',
-                    timer: 1500,
+                    allowOutsideClick: false,
+                    timer: 2000,
                     timerProgressBar: true,
                     showConfirmButton: false
                 }).then(() => {
@@ -180,7 +181,7 @@ document.addEventListener('alpine:init', () => {
     inset: 0;
     background: rgba(0,0,0,0.6);
     backdrop-filter: blur(3px);
-    z-index: 98;
+    z-index: 998;
 }
 
 /* Modal wrapper */
@@ -196,7 +197,7 @@ document.addEventListener('alpine:init', () => {
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    z-index: 99;
+    z-index: 999;
 }
 
 /* Modal box */

@@ -1,17 +1,18 @@
-<x-modal name="create-patient-alt-modal" :show="false" :maxWidth="'md'">
+<x-modal name="create-patient-alt-modal" :show="false" :maxWidth="'md'" :allowClickOutside="false" :allowEscapeKey="false">
     <div class="relative p-4 w-full max-h-full"
         x-data="{
             tab: 'no-id',
             form: {
                 code: '',
                 
+                user_id: '',
                 first_name: '',
                 middle_name: '',
                 last_name: '',
                 birthdate: '',
                 sex: '',
                 contact_number: '',
-                address: ''
+                address: '',
             },
             message: '',
             success: false,
@@ -27,11 +28,12 @@
             async createPatientRecord() {
                 this.message = '';
                 this.success = false;
+                this.form.user_id = @js(auth()->id());
 
                 try {
                     await axios.get('/sanctum/csrf-cookie');
-                    const response = await axios.post('/api/v1/appointments', this.form);
-                    this.message = response.data.message || 'Appointment booked successfully!';
+                    const response = await axios.post('/api/v1/patients', this.form);
+                    this.message = response.data.message || 'Patient record has been saved.';
                     this.success = true;
 
                     Swal.fire({
@@ -40,18 +42,15 @@
                         text: this.message,
                         allowOutsideClick: false,
                         timer: 2000,
+                        timerProgressBar: true,
                         showConfirmButton: false
                     }).then(() => {
-                        window.location.href = '/appointments';
+                        window.location.href = '/profile';
                     });
 
                     setTimeout(() => {
                         this.$dispatch('close-modal', 'create-patient-alt-modal');
                     }, 500);
-
-                    this.form.service_id = '';
-                    this.form.date = '';
-                    this.form.time = '';
                 } catch (error) {
                     this.success = false;
                     this.message = error.response?.data?.message || 'Something went wrong. Please try again.';
@@ -80,9 +79,10 @@
                         text: this.message,
                         allowOutsideClick: false,
                         timer: 2000,
+                        timerProgressBar: true,
                         showConfirmButton: false
                     }).then(() => {
-                        window.location.reload();
+                        window.location.href = '/profile';
                     });
 
                     setTimeout(() => {
@@ -144,33 +144,48 @@
                 </div>
                 <form class="max-w-sm mx-auto opacity-8" x-show="tab === 'no-id'" @submit.prevent="submit">
                     <div class="mb-5">
-                        <label for="services" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select service</label>
-                        <select id="services" x-model="form.service_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                            <option value="" selected disabled>Choose a service...</option>
-                            @php $category = ''; @endphp
-                            @foreach($services as $service)
-                                @php $currentCategory = $service->category->name; @endphp
-                                @if($category !== $currentCategory) {
-                                    <option class="font-bold" disabled>{{ str()->upper($currentCategory) }}</option>
-                                    @php $category = $currentCategory; @endphp
-                                }
-                                @endif
-                                <option class="ps-3" value="{{ $service->id }}">{{ $service->name }}</option>
-                            @endforeach
-                        </select>
+                        <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First name</label>
+                        <input id="first_name" x-model="form.first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="First name..." required>
                     </div>
                     <div class="mb-5">
-                        <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
-                        <input type="date" id="date" x-model="form.date" class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light" required/>
+                        <label for="middle_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Middle name</label>
+                        <input id="middle_name" x-model="form.middle_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Middle name...">
                     </div>
                     <div class="mb-5">
-                        <label class="block text-sm font-semibold">Select Time</label>
-                        <select x-model="form.time" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="" selected disabled>-- Select Time --</option>
-                            @foreach($times as $time)
-                                <option value="{{ $time['value'] }}">{{ $time['text'] }}</option>
-                            @endforeach
-                        </select>
+                        <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last name</label>
+                        <input id="last_name" x-model="form.last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Last name..." required>
+                    </div>
+                    <div class="mb-5">
+                        <label for="birthdate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Birthdate</label>
+                        <input type="date" id="date" x-model="form.birthdate" class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light" required/>
+                    </div>
+                    <div class="mb-5">
+                        <label class="block text-sm font-semibold">Sex</label>
+                        <div class="flex items-center gap-4 mt-1">
+                            <label class="flex items-center gap-1">
+                                <input type="radio" name="sex" value="male" x-model="form.sex" required>
+                                Male
+                            </label>
+
+                            <label class="flex items-center gap-1">
+                                <input type="radio" name="sex" value="female" x-model="form.sex" required>
+                                Female
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-5">
+                        <label class="block text-sm font-semibold">Contact Number</label>
+                        <input 
+                            type="text" 
+                            x-model="form.contact_number" 
+                            class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light"
+                            placeholder="09XXXXXXXXX"
+                            required
+                        >
+                    </div>
+                    <div class="mb-5">
+                        <label class="block text-sm font-semibold">Address</label>
+                        <input type="text" x-model="form.address" class="shadow-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-xs-light" placeholder="Address..." required>
                     </div>
                     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                 </form>

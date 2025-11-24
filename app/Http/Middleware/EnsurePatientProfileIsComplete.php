@@ -23,23 +23,23 @@ class EnsurePatientProfileIsComplete
         }
 
         // Only apply to users with "patient" role
-        if ($user->role === 'patient') {
+        if ($user->hasRole('patient')) {
 
             // If patient profile does not exist → force to create one
             if (!$user->patient) {
-                if (!$request->is('patient/profile/create')) {
-                    return redirect()->route('patient.profile.create')
+                if (!$request->is('profile')) {
+                    return redirect()->route('profile.edit')
                         ->with('warning', 'Please complete your patient profile.');
                 }
             }
 
             // If patient profile exists but incomplete
-            if ($user->patient && !$user->patient->is_complete) {
-                if (!$request->is('patient/profile/edit')) {
-                    return redirect()->route('patient.profile.edit')
-                        ->with('warning', 'Please complete your patient profile.');
-                }
-            }
+            // if ($user->patient && !$user->patient->is_complete) {
+            //     if (!$request->is('patient/profile/edit')) {
+            //         return redirect()->route('patient.profile.edit')
+            //             ->with('warning', 'Please complete your patient profile.');
+            //     }
+            // }
         }
 
         return $next($request);

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\TransactionController;
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::prefix('v1')->name('api.')->group(function() {
@@ -26,7 +27,10 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::put('patients/{id}', [PatientController::class, 'update'])->name('patient.update');
         Route::post('patients/link', [PatientController::class, 'link'])->name('patient.link');
 
+        Route::get('patients/search', [PatientController::class, 'search']);
         Route::get('services/search', [ServiceController::class, 'search']);
+
+        Route::post('transactions', [TransactionController::class, 'store'])->name('transaction.store');
 
         Route::prefix('admin')->name('admin.')->group(function() {
             Route::apiResource('dashboard', AppointmentController::class);

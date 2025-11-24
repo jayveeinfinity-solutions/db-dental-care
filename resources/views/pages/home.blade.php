@@ -5,7 +5,7 @@
 @section('content')
 @if($userPendingAppointments->count() > 0)
 <section class="w-full flex justify-center">
-    <article class="w-full lg:max-w-4xl max-w-[335px]">
+    <article class="w-full max-w-[335px] sm:max-w-md md:max-w-2xl lg:max-w-4xl">
         <div id="alert-1" class="flex items-center p-4 m-6 lg:m-8 text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
             <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
@@ -27,7 +27,7 @@
 @auth
     @if(!auth()->user()->patient)
     <section class="w-full flex justify-center">
-        <article class="w-full lg:max-w-4xl max-w-[335px]">
+        <article class="w-full max-w-[335px] sm:max-w-md md:max-w-2xl lg:max-w-4xl">
             <div id="alert-1" class="flex items-center p-4 m-6 lg:m-8 text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
                 <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
@@ -57,7 +57,7 @@
     style="background-image: url('{{ config('r2.endpoint') }}/images/bg/1.jpg');"
 >
     <div class="absolute inset-0 bg-gradient-to-r from-black/90 to-transparent"></div>
-    <article class="relative z-5 w-full lg:max-w-4xl max-w-[335px] flex justify-between">
+    <article class="relative z-5 w-full max-w-[335px] sm:max-w-md md:max-w-2xl lg:max-w-4xl flex justify-between">
         <div class="w-[60%]">
             <h1 class="mb-4 lg:mb-6 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl dark:text-white">
                 Elevating Smiles with Expert Care and a Gentle Touch
@@ -67,7 +67,11 @@
                 x-data
                 x-on:click.prevent="
                     @auth
-                        $dispatch('open-modal', 'appointment-modal')
+                        @haspatient
+                            $dispatch('open-modal', 'appointment-modal')
+                        @else
+                            $dispatch('open-modal', 'create-patient-alt-modal')
+                        @endhaspatient
                     @else
                         $dispatch('open-modal', 'authentication-modal')
                     @endauth

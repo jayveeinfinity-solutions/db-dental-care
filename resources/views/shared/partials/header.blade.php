@@ -3,7 +3,7 @@
         @if (Route::has('login'))
             <nav class="flex items-center justify-between">
                 <div class="flex items-center justify-start gap-4">
-                    <img src="./storage/images/logo.png" alt="DB Dental Care Logo" class="h-[48px]">
+                    <img src="{{ config('r2.endpoint') }}/images/logo.png" alt="DB Dental Care Logo" class="h-[48px]">
                 </div>
                 <div class="flex items-center justify-end gap-4">
                     @auth

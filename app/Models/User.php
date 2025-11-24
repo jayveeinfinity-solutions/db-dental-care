@@ -4,8 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -48,6 +50,8 @@ class User extends Authenticatable
         ];
     }
 
+    protected $appends = ['is_password_default'];
+
     public function googleInfo()
     {
         return $this->hasOne(GoogleUserInfo::class);
@@ -66,5 +70,12 @@ class User extends Authenticatable
     public function appointments()
     {
         return $this->hasMany(Appointment::class);
+    }
+    
+    protected function isPasswordDefault(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => Hash::check('passwordfromgoogle', $this->password)
+        );
     }
 }

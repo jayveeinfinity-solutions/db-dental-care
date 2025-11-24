@@ -8,7 +8,8 @@ class DashboardService
 {
     public function __construct(
         protected AppointmentService $appointmentService,
-        protected UserService $userService
+        protected UserService $userService,
+        protected PatientService $patientService
     ) {}
 
     public function getTodaysAppointmentCount(): int
@@ -27,7 +28,7 @@ class DashboardService
     }
 
     public function getPatientCount() {
-        return $this->userService->countPatient();
+        return $this->patientService->countPatient();
     }
 
     public function getUsersCount():int

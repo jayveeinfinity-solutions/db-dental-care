@@ -5,20 +5,20 @@
 @section('content')
 <section
     class="relative w-full flex justify-center p-6 lg:p-8 bg-center bg-cover bg-no-repeat"
-    style="background-image: url('/storage/images/bg/1.jpg');"
+    style="background-image: url('{{ config('r2.endpoint') }}/images/bg/1.jpg');"
 >
     <div class="absolute inset-0 bg-gradient-to-r from-black/90 to-transparent"></div>
-    <article class="relative z-5 w-full lg:max-w-4xl max-w-[335px] flex justify-between">
-        <div class="w-[60%]">
+    <article class="relative z-5 w-full max-w-[335px] sm:max-w-md md:max-w-2xl lg:max-w-4xl flex justify-between">
+        <div class="w-full text-start">
             <h1 class="mb-4 lg:mb-6 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl dark:text-white">
-                My Profile
+                Patient Information
             </h1>
         </div>
     </article>
 </section>
-<section class="w-full p-6 lg:p-8" x-data="user()">
+<section class="w-full p-6 lg:p-8" x-data="patient()">
     <article class="w-full max-w-[335px] sm:max-w-md md:max-w-2xl lg:max-w-4xl mx-auto">
-        <div class="sm:hidden">
+        <div class="sm:hidden" x-show="patient.code">
             <label for="tabs" class="sr-only">Status</label>
             <select id="tabs" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 <option selected>Patient Information</option>
@@ -29,7 +29,7 @@
                 <option>Account Settings</option>
             </select>
         </div>
-        <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow-sm sm:flex dark:divide-gray-700 dark:text-gray-400">
+        <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow-sm sm:flex dark:divide-gray-700 dark:text-gray-400" x-show="patient.code">
             <li class="w-full focus-within:z-10">
                 <a href="javascript:void(0)"
                     class="inline-block w-full p-4 border-r border-gray-200 dark:border-gray-700 rounded-s-lg focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-gray-800 text-gray-900 bg-gray-100 active dark:bg-gray-700 dark:text-white"
@@ -48,17 +48,39 @@
                 >Patient History</a>
             </li>
             <li class="w-full focus-within:z-10">
-                <a href="javascript:void(0)" class="inline-block w-full p-4 border-s-0 border-gray-200 dark:border-gray-700 rounded-e-lg hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700 bg-white hover:bg-gray-50"
+                <a href="{{ route('account.edit') }}" class="inline-block w-full p-4 border-s-0 border-gray-200 dark:border-gray-700 rounded-e-lg hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700 bg-white hover:bg-gray-50"
                 >Account Settings</a>
             </li>
         </ul>
     </article>
     <div class="flex justify-center mt-5">
         <article class="w-full max-w-[335px] sm:max-w-md md:max-w-2xl lg:max-w-4xl flex flex-col gap-2 sm:gap-3 md:gap-4">
+            <div class="flex items-start gap-5"x-show="!patient.code">
+                <!-- Icon -->
+                <div class="flex-shrink-0 place-self-center">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-300 to-blue-700 flex items-center justify-center shadow-sm">
+                        <!-- simple tooth icon -->
+                        <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M6 3c0 3.5-1 6 1 9 2 4 3 7 5 7s3-3 5-7c2-3 1-5.5 1-9-2 0-3-.5-6 1-3-1.5-4-1-6-1z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div class="flex-1">
+                    <h2 class="text-2xl sm:text-3xl font-semibold text-slate-900 leading-tight">
+                        Fill up personal details
+                    </h2>
+                    <p class="text-sm sm:text-base text-slate-600">
+                        Below are the required fields to continue using <span class="font-medium text-slate-800">DB Dental Care</span> online services.
+                    </p>
+                </div>
+            </div>
+
             <form class="space-y-4" @submit.prevent="updatePatientInfo">
 
                 <!-- Code -->
-                <div>
+                <div x-show="patient.code">
                     <label class="block text-sm font-medium mb-1" for="code">Patient Code</label>
                     <input type="input" name="code" id="code" class="w-full px-3 py-2 border rounded" disabled :value="patient.code">
                 </div>
@@ -67,22 +89,22 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <label class="block text-sm font-medium mb-1" for="first_name">First Name</label>
-                        <input type="text" name="first_name" id="first_name" class="w-full px-3 py-2 border rounded" x-model="patientForm.first_name" required>
+                        <input type="text" name="first_name" id="first_name" class="w-full px-3 py-2 border rounded" x-model="form.first_name" placeholder="First name..." required>
                     </div>
                     <div>
                         <label class="block text-sm font-medium mb-1" for="middle_name">Middle Name</label>
-                        <input type="text" name="middle_name" id="middle_name" class="w-full px-3 py-2 border rounded" x-model="patientForm.middle_name">
+                        <input type="text" name="middle_name" id="middle_name" class="w-full px-3 py-2 border rounded" x-model="form.middle_name" placeholder="Middle name...">
                     </div>
                     <div>
                         <label class="block text-sm font-medium mb-1" for="last_name">Last Name</label>
-                        <input type="text" name="last_name" id="last_name" class="w-full px-3 py-2 border rounded" x-model="patientForm.last_name" required>
+                        <input type="text" name="last_name" id="last_name" class="w-full px-3 py-2 border rounded" x-model="form.last_name" placeholder="Last name..." required>
                     </div>
                 </div>
 
                 <!-- Birthdate -->
                 <div>
                     <label class="block text-sm font-medium mb-1" for="birthdate">Birthdate</label>
-                    <input type="date" name="birthdate" id="birthdate" class="w-full px-3 py-2 border rounded" x-model="patientForm.birthdate" required>
+                    <input type="date" name="birthdate" id="birthdate" class="w-full px-3 py-2 border rounded" x-model="form.birthdate" required>
                 </div>
 
                 <!-- Sex -->
@@ -90,11 +112,11 @@
                     <label class="block text-sm font-medium mb-1">Sex</label>
                     <div class="flex gap-4">
                         <label class="inline-flex items-center">
-                            <input type="radio" name="sex" value="male" class="form-radio" x-model="patientForm.sex" required>
+                            <input type="radio" name="sex" value="male" class="form-radio" x-model="form.sex" required>
                             <span class="ml-2">Male</span>
                         </label>
                         <label class="inline-flex items-center">
-                            <input type="radio" name="sex" value="female" class="form-radio" x-model="patientForm.sex" required>
+                            <input type="radio" name="sex" value="female" class="form-radio" x-model="form.sex" required>
                             <span class="ml-2">Female</span>
                         </label>
                     </div>
@@ -103,13 +125,13 @@
                 <!-- Contact Number -->
                 <div>
                     <label class="block text-sm font-medium mb-1" for="contact_number"></tex>Contact Number</label>
-                    <input type="text" name="contact_number" id="contact_number" class="w-full px-3 py-2 border rounded" x-model="patientForm.contact_number" required>
+                    <input type="text" name="contact_number" id="contact_number" class="w-full px-3 py-2 border rounded" x-model="form.contact_number" placeholder="e.g. 09xxxxxxxxx" required>
                 </div>
 
                 <!-- Address -->
                 <div>
                     <label class="block text-sm font-medium mb-1" for="address">Address</label>
-                    <textarea name="address" id="address" rows="3" class="w-full px-3 py-2 border rounded" x-model="patientForm.address" required></textarea>
+                    <textarea name="address" id="address" rows="3" class="w-full px-3 py-2 border rounded" x-model="form.address" placeholder="Address..." required></textarea>
                 </div>
 
                 <!-- Submit Button -->
@@ -128,10 +150,9 @@
 @push('scripts')
 <script>
     document.addEventListener('alpine:init', () => {
-        Alpine.data('user', () => ({
+        Alpine.data('patient', () => ({
             patient: [],
-            user: [],
-            patientForm: {
+            form: {
                 first_name: '',
                 middle_name: '',
                 last_name: '',
@@ -142,7 +163,6 @@
             },
             init() {
                 this.fetchPatient();
-                this.fetchUser();
             },
             fetchPatient() {
                 let url = '/api/v1/patient';
@@ -151,27 +171,19 @@
                     .then(response => {
                         this.patient = response.data;
                         
-                        this.patientForm.first_name = this.patient.first_name;
-                        this.patientForm.middle_name = this.patient.middle_name;
-                        this.patientForm.last_name = this.patient.last_name;
-                        this.patientForm.birthdate = this.patient.birthdate;
-                        this.patientForm.sex = this.patient.sex;
-                        this.patientForm.contact_number = this.patient.contact_number;
-                        this.patientForm.address = this.patient.address;
-                    });
-            },
-            fetchUser() {
-                let url = '/api/v1/user';
-
-                axios.get(url)
-                    .then(response => {
-                        this.user = response.data;
+                        this.form.first_name = this.patient.first_name;
+                        this.form.middle_name = this.patient.middle_name;
+                        this.form.last_name = this.patient.last_name;
+                        this.form.birthdate = this.patient.birthdate;
+                        this.form.sex = this.patient.sex;
+                        this.form.contact_number = this.patient.contact_number;
+                        this.form.address = this.patient.address;
                     });
             },
             updatePatientInfo() {
                 let url = `/api/v1/patients/${this.patient.id}`;
 
-                axios.put(url, this.patientForm)
+                axios.put(url, this.form)
                     .then(response => {
                         Swal.fire({
                             title: "Success!",

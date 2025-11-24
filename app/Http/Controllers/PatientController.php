@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Services\PatientService;
@@ -61,5 +62,30 @@ class PatientController extends Controller
             'message' => 'Patient record linked successfully.',
             'patient' => $patient
         ], Response::HTTP_OK);
+    }
+
+    /**
+     * Search patients by query for autocomplete
+     */
+    public function search(Request $request)
+    {
+        $q = $request->query('q');
+
+        if (!$q) {
+            return response()->json([]);
+        }
+
+        $patients = Patient::query()
+            ->when($q, function ($query) use ($q) {
+                $query->where('last_name', 'like', "%{$q}%")
+                    ->orWhere('first_name', 'like', "%{$q}%")
+                    ->orWhere('middle_name', 'like', "%{$q}%")
+                    ->orWhere('code', 'like', "%{$q}%");
+            })
+            ->limit(10)
+            ->selectRaw("id, CONCAT(last_name, ', ', first_name) as name, code")
+            ->get();
+
+        return response()->json($patients);
     }
 }

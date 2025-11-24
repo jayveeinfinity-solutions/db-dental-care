@@ -34,6 +34,7 @@ class StorePatientRequest extends FormRequest
             ],
             'contact_number'  => ['required', 'regex:/^(09|\+639)\d{9}$/'],
             'address'         => ['required', 'string'],
+            'user_id'         => ['nullable', 'unique:patients,user_id']
         ];
     }
 

@@ -1,6 +1,6 @@
 <footer class="bg-gray-900 text-white py-12">
     <div class="container mx-auto px-4">
-        <div class="flex flex-wrap -mx-5">
+        <div class="flex flex-wrap">
             <div class="w-full sm:w-1/2 lg:w-1/3 px-5">
                 <img src="{{ config('r2.endpoint') }}/images/logo.png" alt="DB Dental Care Logo" class="logo-footer">
                 <div class="spacer-20"></div>

@@ -5,7 +5,7 @@
 @section('content')
 <section
     class="relative w-full flex justify-center p-6 lg:p-8 bg-center bg-cover bg-no-repeat"
-    style="background-image: url('/storage/images/bg/1.jpg');"
+    style="background-image: url('{{ config('r2.endpoint') }}/images/bg/1.jpg');"
 >
     <div class="absolute inset-0 bg-gradient-to-r from-black/90 to-transparent"></div>
     <article class="relative z-5 w-full lg:max-w-4xl max-w-[335px] flex justify-between">

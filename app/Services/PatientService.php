@@ -12,6 +12,10 @@ class PatientService
         protected Patient $patientModel
     ) {}
 
+    public function countPatient() {
+        return $this->patientModel->count();
+    }
+
     public function getPatients() {
         return $this->patientModel
             ->orderBy('last_name')

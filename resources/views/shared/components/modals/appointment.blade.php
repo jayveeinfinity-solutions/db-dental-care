@@ -25,6 +25,7 @@
                         text: this.message,
                         allowOutsideClick: false,
                         timer: 2000,
+                        timerProgressBar: true,
                         showConfirmButton: false
                     }).then(() => {
                         window.location.href = '/appointments';

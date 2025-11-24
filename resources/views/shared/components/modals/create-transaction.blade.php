@@ -1,12 +1,12 @@
 <div 
     x-data="createTransactionModal()"
     x-cloak
-    @open-create-transaction.window="open($event.detail.id)"
+    @open-create-transaction.window="open($event.detail?.id)"
     @close-create-transaction.window="show = false"
     class="custom-modal-wrapper"
 >
     <!-- BACKDROP -->
-    <div x-show="show" x-transition.opacity.duration.300ms class="custom-modal-backdrop" @click="show=false"></div>
+    <div x-show="show" x-transition.opacity.duration.300ms class="custom-modal-backdrop" x-on:click="show=false"></div>
 
     <!-- MODAL -->
     <div x-show="show"
@@ -22,21 +22,69 @@
 
             <!-- HEADER -->
             <div class="custom-modal-header">
-                <h2 class="custom-modal-title">Add patient transasction</h2>
-                <button @click="close" class="custom-modal-close">&times;</button>
+                <h2 class="custom-modal-title">Add patient transaction</h2>
+                <button x-on:click="close" class="custom-modal-close">&times;</button>
             </div>
 
             <!-- BODY -->
             <div class="custom-modal-body">
                 <form @submit.prevent="submit">
-                    <div class="mb-2">
-                        <label class="mb-1">Name</label>
-                        <input type="text" x-model="form.name" class="custom-modal-input" required>
-                    </div>
+                    <div class="w-full max-w-lg mb-3">
+                        <!-- Display / Input container -->
+                        <div x-on:click="openInput()" class="flex items-center justify-between p-3 border rounded-md cursor-pointer hover:ring-2 hover:ring-blue-500">
+                            <div>
+                                <template x-if="selectedPatient">
+                                    <div>
+                                        <div class="font-medium text-gray-800" x-text="selectedPatient.name"></div>
+                                        <div class="text-sm text-gray-500" x-text="selectedPatient.code"></div>
+                                    </div>
+                                </template>
+                                <template x-if="!selectedPatient">
+                                    <div class="text-gray-400">Select a patient...</div>
+                                </template>
+                            </div>
+                            <div>
+                                <template x-if="!selectedPatient">
+                                    <button x-on:click.stop="openInput()" class="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700">Search</button>
+                                </template>
+                                <template x-if="selectedPatient">
+                                    <button x-on:click.stop="removePatient()" class="px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700">Remove</button>
+                                </template>
+                            </div>
+                        </div>
 
-                    <div class="mb-2">
-                        <label class="mb-1">Age</label>
-                        <input type="number" x-model="form.age" class="custom-modal-input" required>
+                        <!-- Input field for searching -->
+                        <div x-show="inputOpen"
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 transform -translate-y-2"
+                            x-transition:enter-end="opacity-100 transform translate-y-0"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="opacity-100 transform translate-y-0"
+                            x-transition:leave-end="opacity-0 transform -translate-y-2"
+                            class="relative mt-2">
+                            <input 
+                                type="text"
+                                x-ref="searchInput"
+                                x-model="query" 
+                                @input="searchPatients()" 
+                                @keydown.escape="inputOpen = false"
+                                class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Type patient name or code..."
+                            >
+
+                            <!-- Suggestions dropdown -->
+                            <ul x-show="filteredPatients.length > 0" class="absolute z-10 w-full bg-white border rounded mt-1 max-h-48 overflow-y-auto shadow-lg">
+                                <template x-for="patient in filteredPatients" :key="patient.id">
+                                    <li 
+                                        x-on:click="selectPatient(patient)" 
+                                        class="px-3 py-2 hover:bg-blue-100 cursor-pointer"
+                                    >
+                                        <div class="font-medium" x-text="patient.name"></div>
+                                        <div class="text-sm text-gray-500" x-text="patient.code"></div>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
                     </div>
 
                     <div class="mb-2">
@@ -54,7 +102,7 @@
                                 <!-- Suggestions dropdown -->
                                 <ul x-show="service.suggestions.length > 0" class="absolute bg-white border rounded shadow mt-1 w-full max-h-40 overflow-y-auto z-50" style="top: 100%; left: 0;">
                                     <template x-for="item in service.suggestions" :key="item.id">
-                                        <li @click="selectService(index, item)" 
+                                        <li x-on:click="selectService(index, item)" 
                                             class="px-2 py-1 cursor-pointer hover:bg-gray-200"
                                             x-text="item.name"></li>
                                     </template>
@@ -62,10 +110,10 @@
 
                                 <input type="number" x-model="service.amount" placeholder="Amount" class="custom-modal-input" required>
 
-                                <button type="button" @click="removeService(index)" class="custom-modal-btn custom-modal-btn-secondary w-10 mt-1">-</button>
+                                <button type="button" x-on:click="removeService(index)" class="custom-modal-btn custom-modal-btn-secondary w-10 mt-1">-</button>
                             </div>
                         </template>
-                        <button type="button" @click="addService()" class="custom-modal-btn custom-modal-btn-primary mb-4">+ Add Service</button>
+                        <button type="button" x-on:click="addService()" class="custom-modal-btn custom-modal-btn-primary mb-4">+ Add Service</button>
                     </div>
 
                     <div class="mb-2">
@@ -82,7 +130,7 @@
                     </div>
 
                     <div class="custom-modal-footer">
-                        <button type="button" @click="close" class="custom-modal-btn custom-modal-btn-secondary">Close</button>
+                        <button type="button" x-on:click="close" class="custom-modal-btn custom-modal-btn-secondary">Close</button>
                         <button type="submit" class="custom-modal-btn custom-modal-btn-primary">Save Record</button>
                     </div>
                 </form>
@@ -98,24 +146,60 @@ document.addEventListener('alpine:init', () => {
         show: false,
         appointmentId: null,
         form: {
-            name: '',
-            age: '',
             notes: '',
             services: []
         },
+        query: '',
+        inputOpen: false,
+        selectedPatient: null,
+        filteredPatients: [],
+
+        openInput() {
+            this.$nextTick(() => this.$refs.searchInput.focus());
+            this.inputOpen = true;
+            this.query = '';
+            this.filteredPatients = [];
+        },
+
+        searchPatients() {
+            if (this.query.length < 2) {
+                this.filteredPatients = [];
+                return;
+            }
+
+            axios.get('/api/v1/patients/search', { params: { q: this.query } })
+                .then(res => {
+                    this.filteredPatients = res.data;
+                })
+                .catch(err => {
+                    console.error(err);
+                    this.filteredPatients = [];
+                });
+        },
+
+        selectPatient(patient) {
+            this.selectedPatient = patient;
+            this.inputOpen = false;
+            this.query = '';
+            this.form.patient_id = this.selectedPatient?.id || -1
+        },
+
+        removePatient() {
+            this.selectedPatient = null;
+        },
 
         open(id) {
-            this.appointmentId = id;
+            this.appointmentId = id || -1;
             this.show = true;
 
             this.form = {
-                name: '',
-                age: '',
+                patient_id: -1,
                 notes: '',
                 services: []
             };
 
-            this.fetchAppointmentDetails();
+            if(this.appointmentId != -1) 
+                this.fetchAppointmentDetails();
         },
 
         close() {
@@ -180,12 +264,29 @@ document.addEventListener('alpine:init', () => {
             this.form.services[index].suggestions = [];
         },
 
+        // async searchPatients(index) {
+        //     const query = this.form.patients[index].name;
+        //     if (!query) { this.form.patients[index].suggestions = []; return; }
+
+        //     try {
+        //         const res = await axios.get(`/api/v1/services/search?q=${encodeURIComponent(query)}`);
+        //         this.form.patients[index].suggestions = res.data || [];
+        //     } catch (err) {
+        //         console.error(err);
+        //     }
+        // },
+
+        // selectPatients(index, service) {
+        //     this.form.patients[index].id = service.id;
+        //     this.form.patients[index].name = service.name;
+        //     this.form.patients[index].suggestions = [];
+        // },
+
         async submit() {
             try {
                 const formData = new FormData();
 
-                formData.append('patient_name', this.form.patient_name);
-                formData.append('patient_age', this.form.patient_age);
+                formData.append('patient_id', this.form.patient_id);
                 formData.append('notes', this.form.notes);
 
                 // Append services array as JSON string
@@ -198,7 +299,7 @@ document.addEventListener('alpine:init', () => {
                 }
 
                 const response = await axios.post(
-                    `/api/v1/appointments/${this.appointmentId}/patient-record`,
+                    `/api/v1/transactions`,
                     formData,
                     { headers: { 'Content-Type': 'multipart/form-data' } }
                 );
@@ -207,12 +308,14 @@ document.addEventListener('alpine:init', () => {
                     icon: 'success',
                     title: 'Patient Record Saved',
                     text: response.data.message || 'Patient record has been saved.',
-                    timer: 1500,
+                    allowOutsideClick: false,
+                    timer: 2000,
+                    timerProgressBar: true,
                     showConfirmButton: false
+                }).then(() => {
+                    this.show = false;
+                    window.location.reload();
                 });
-
-                this.show = false;
-                window.location.reload();
 
             } catch (error) {
                 console.error(error);
@@ -238,7 +341,7 @@ document.addEventListener('alpine:init', () => {
     inset: 0;
     background: rgba(0,0,0,0.6);
     backdrop-filter: blur(3px);
-    z-index: 98;
+    z-index: 998;
 }
 
 /* Modal wrapper */
@@ -254,7 +357,7 @@ document.addEventListener('alpine:init', () => {
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    z-index: 99;
+    z-index: 999;
 }
 
 /* Modal box */
