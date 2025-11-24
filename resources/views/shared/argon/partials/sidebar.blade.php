@@ -2,8 +2,8 @@
     <div class="h-19">
         <i class="absolute top-0 !right-[15px] p-4 opacity-50 cursor-pointer fas fa-times dark:text-white text-slate-400 xl:hidden" sidenav-close></i>
         <a class="block px-8 py-6 m-0 text-sm whitespace-nowrap dark:text-white text-slate-700" href="{{ route('admin.dashboard.index') }}">
-        <img src="/images/logo.png" class="inline h-full max-w-full transition-all duration-200 dark:hidden ease-nav-brand max-h-8" alt="main_logo" />
-        <img src="/images/logo.png" class="hidden h-full max-w-full transition-all duration-200 dark:inline ease-nav-brand max-h-8" alt="main_logo" />
+        <img src="{{ config('r2.endpoint') }}/images/logo.png" class="inline h-full max-w-full transition-all duration-200 dark:hidden ease-nav-brand max-h-8" alt="main_logo" />
+        <img src="{{ config('r2.endpoint') }}/images/logo.png" class="hidden h-full max-w-full transition-all duration-200 dark:inline ease-nav-brand max-h-8" alt="main_logo" />
         <!-- <span class="ml-1 font-semibold transition-all duration-200 ease-nav-brand">Dental DB Care</span> -->
         </a>
     </div>
