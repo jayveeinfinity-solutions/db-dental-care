@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Collection;
 
 class UserService
 {
@@ -21,7 +22,7 @@ class UserService
         return $this->userModel->role('patient')->count();
     }
 
-    public function getUsers($role = 'all'): User
+    public function getUsers($role = 'all'): Collection
     {
         return $this->userModel
             ->whereDoesntHave('roles', function ($query) {
