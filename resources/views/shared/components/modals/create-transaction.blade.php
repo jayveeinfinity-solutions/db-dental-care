@@ -214,9 +214,9 @@ document.addEventListener('alpine:init', () => {
                 const data = response.data;
 
                 // Auto-fill form with retrieved data
-                #this.form.name = data.user.name || '';
-                #this.form.page = '';
-                #this.form.notes = data.notes || '';
+                // this.form.name = data.user.name || '';
+                // this.form.page = '';
+                // this.form.notes = data.notes || '';
 
                 this.form.patient_id = data.patient.id;
                 
