@@ -1,6 +1,6 @@
 @extends('layouts.base')
 
-@section('title', 'Patient Information &sdots; ')
+@section('title', 'Settings &sdots; ')
 
 @section('content')
 <section
@@ -11,7 +11,7 @@
     <article class="relative z-5 w-full max-w-[335px] sm:max-w-md md:max-w-2xl lg:max-w-4xl flex justify-between">
         <div class="w-full text-start">
             <h1 class="mb-4 lg:mb-6 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl dark:text-white">
-                Account Settings
+                Settings
             </h1>
         </div>
     </article>
@@ -26,21 +26,21 @@
                 <option>Appointments</option>
                 <option>Transactions</option>
                 <option>Patient History</option>
-                <option>Account Settings</option>
+                <option>Settings</option>
             </select>
         </div>
         <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow-sm sm:flex dark:divide-gray-700 dark:text-gray-400">
             <li class="w-full focus-within:z-10">
-                <a href="{{ route('profile.edit') }}"
+                <a href="{{ route('user.profile') }}"
                     class="inline-block w-full p-4 border-r border-gray-200 dark:border-gray-700 rounded-s-lg hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-gray-800 dark:hover:bg-gray-700 bg-white hover:bg-gray-50"
                 >Patient Information</a>
             </li>
             <li class="w-full focus-within:z-10">
-                <a href="{{ route('appointments') }}" class="inline-block w-full p-4 border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700 bg-white hover:bg-gray-50"
+                <a href="{{ route('user.appointments') }}" class="inline-block w-full p-4 border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700 bg-white hover:bg-gray-50"
                 >Appointments</a>
             </li>
             <li class="w-full focus-within:z-10">
-                <a href="javascript:void(0)" class="inline-block w-full p-4 border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700 bg-white hover:bg-gray-50"
+                <a href="{{ route('user.transactions') }}" class="inline-block w-full p-4 border-r border-gray-200 dark:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700 bg-white hover:bg-gray-50"
                 >Transactions</a>
             </li>
             <li class="w-full focus-within:z-10">
@@ -49,7 +49,7 @@
             </li>
             <li class="w-full focus-within:z-10">
                 <a href="javascript:void(0)" class="inline-block w-full p-4 border-s-0 border-gray-200 dark:border-gray-700 rounded-e-lg hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:hover:text-white dark:bg-gray-800 text-gray-900 bg-gray-100 active dark:bg-gray-700 dark:text-white"
-                >Account Settings</a>
+                >Settings</a>
             </li>
         </ul>
     </article>

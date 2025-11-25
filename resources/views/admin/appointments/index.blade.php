@@ -117,6 +117,7 @@
         </div>
     </div>
     @include('shared.components.modals.create-transaction')
+    @include('shared.components.modals.appointment-cancellation-admin')
     @include('shared.argon.partials.footer')
 </div>
 @endsection
@@ -134,11 +135,21 @@ document.addEventListener('alpine:init', () => {
                     const appointmentId = e.target.dataset.id;
                     const newStatus = e.target.value;
 
-                    if (newStatus === 'completed') {
-                        window.dispatchEvent(new CustomEvent('open-create-transaction', {
-                            detail: { id: appointmentId }
-                        }));
-                        return;
+                    console.log("appointmentId: " + appointmentId);
+
+                    switch(newStatus) {
+                        case 'completed':
+                            window.dispatchEvent(new CustomEvent('open-create-transaction', {
+                                detail: { id: appointmentId }
+                            }));
+                            return;
+                            break;
+                        case 'cancelled':
+                            window.dispatchEvent(new CustomEvent('open-appointment-cancellation-admin', {
+                                detail: { id: appointmentId }
+                            }));
+                            return;
+                            break;
                     }
 
                     try {

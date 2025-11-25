@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Services\UserService;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
@@ -13,9 +14,33 @@ class UserProfileController extends Controller
     public function __construct(
         protected UserService $userService
     ) {}
-    
+
+    public function profile(Request $request) {
+        return view('pages.user.profile', [
+            'user' => $request->user(),
+        ]);
+    }
+
     public function appointments() {
         return view('pages.user.appointments');
+    }
+
+    public function transactions(Request $request) {
+        return view('pages.user.transactions', [
+            'user' => $request->user(),
+        ]);
+    }
+
+    public function histories(Request $request) {
+        return view('pages.user.histories', [
+            'user' => $request->user(),
+        ]);
+    }
+
+    public function settings(Request $request) {
+        return view('pages.user.settings', [
+            'user' => $request->user(),
+        ]);
     }
 
     public function updateName(UpdateNameRequest $request) {

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use App\Models\Appointment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -13,16 +14,8 @@ class AppointmentService
         protected Appointment $appointmentModel
     ) {}
 
-    public function getUserAppointments($status = 'all')
+    public function getUserAppointments(User $user, $status = 'all')
     {
-        $user = Auth::user();
-
-        if (!$user) {
-            return collect();
-        }
-
-        $statusOrder = ['approved', 'pending'];
-
         return AppointmentResource::collection(
             $this->appointmentModel
                 ->with('service')

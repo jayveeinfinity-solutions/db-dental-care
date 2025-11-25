@@ -55,7 +55,6 @@ class Appointment extends Model
         return Attribute::make(
             get: fn ($value, $attributes) =>
                 Carbon::parse($attributes['scheduled_at'])
-                    ->timezone('Asia/Manila')
                     ->format('F j, Y \a\t g:i A'),
         );
     }

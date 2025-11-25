@@ -204,7 +204,6 @@ document.addEventListener('alpine:init', () => {
 
         close() {
             this.show = false;
-            window.location.reload();
         },
 
         async fetchAppointmentDetails() {

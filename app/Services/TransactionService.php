@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Transaction;
 use App\Models\PatientHistory;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\TransactionResource;
 use App\Models\TransactionService as TransactionServiceModel;
 
 class TransactionService
@@ -16,6 +17,16 @@ class TransactionService
     
     public function getTransactions() {
         return $this->transactionModel->all();
+    }
+    
+    public function getUserTransactions(int $patient_id) {
+        return TransactionResource::collection(
+            $this->transactionModel
+                ->with(['appointment', 'patient', 'services'])
+                ->where('patient_id', $patient_id)
+                ->latest()
+                ->get()
+        );
     }
 
     public function createTransaction(array $data)

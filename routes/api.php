@@ -7,7 +7,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\Admin\ServiceController;
-use App\Http\Controllers\Admin\TransactionController;
+use App\Http\Controllers\TransactionController;
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::prefix('v1')->name('api.')->group(function() {
@@ -35,6 +35,7 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::get('patients/search', [PatientController::class, 'search']);
         Route::get('services/search', [ServiceController::class, 'search']);
 
+        Route::get('transactions', [TransactionController::class, 'index'])->name('transaction.index');
         Route::post('transactions', [TransactionController::class, 'store'])->name('transaction.store');
 
         Route::prefix('admin')->name('admin.')->group(function() {

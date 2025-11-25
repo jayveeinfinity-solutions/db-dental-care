@@ -23,8 +23,9 @@ class AppointmentController extends Controller
      */
     public function index(Request $request)
     {
+        $user = $request->user();
         $status = $request->query('status', 'all');
-        $results = $this->appointmentService->getUserAppointments($status);
+        $results = $this->appointmentService->getUserAppointments($user, $status);
 
         return response()->json([
             'appointments' => $results
@@ -45,7 +46,7 @@ class AppointmentController extends Controller
             if (!$patient) {
                 return response()->json([
                     'message' => 'No patient record linked to your account.'
-                ], 422);
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
             $patient_id = $patient->id;
         }
