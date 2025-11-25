@@ -74,7 +74,7 @@ class AppointmentController extends Controller
      */
     public function show(Appointment $appointment): JsonResponse
     {
-        $appointment = $appointment->load(['service', 'patient', 'user', 'transaction.services.service']);
+        $appointment = $appointment->load(['service', 'patient', 'bookedBy', 'transaction.services.service']);
         return response()->json($appointment, Response::HTTP_OK);
     }
 
