@@ -66,6 +66,12 @@ class TransactionService
                 ]);
             }
 
+            // Update appointment status if appointment_id exists
+            if (!empty($data['appointment_id'])) {
+                Appointment::where('id', $data['appointment_id'])
+                    ->update(['status' => 'completed']);
+            }
+
             return $transaction->load('services'); // optional: eager load
         });
     }
