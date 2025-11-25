@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Appointment;
 use App\Models\Transaction;
 use App\Models\PatientHistory;
 use Illuminate\Support\Facades\DB;
