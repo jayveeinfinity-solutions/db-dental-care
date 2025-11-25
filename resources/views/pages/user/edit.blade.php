@@ -55,24 +55,30 @@
     </article>
     <div class="flex justify-center mt-5">
         <article class="w-full max-w-[335px] sm:max-w-md md:max-w-2xl lg:max-w-4xl flex flex-col gap-2 sm:gap-3 md:gap-4">
-            <div class="flex items-start gap-5"x-show="!patient.code">
+            <div class="flex items-start gap-5">
                 <!-- Icon -->
                 <div class="flex-shrink-0 place-self-center">
                     <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-300 to-blue-700 flex items-center justify-center shadow-sm">
-                        <!-- simple tooth icon -->
-                        <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path d="M6 3c0 3.5-1 6 1 9 2 4 3 7 5 7s3-3 5-7c2-3 1-5.5 1-9-2 0-3-.5-6 1-3-1.5-4-1-6-1z" fill="currentColor"/>
+                        <!-- patient icon -->
+                        <svg class="w-7 h-7 text-white" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M12 12c2.8 0 5-2.3 5-5s-2.2-5-5-5-5 2.3-5 5 2.2 5 5 5zm0 2c-4.4 0-8 3.1-8 7v1h10.5a6.5 6.5 0 01-.5-2H7c0-3.3 2.7-6 6-6 .7 0 1.4.1 2 .3v2.1l1.5-1.5C15.7 13.3 13.9 14 12 14zm9 1h-2v-2h-2v2h-2v2h2v2h2v-2h2v-2z"
+                                fill="currentColor"/>
                         </svg>
                     </div>
                 </div>
 
                 <!-- Content -->
                 <div class="flex-1">
-                    <h2 class="text-2xl sm:text-3xl font-semibold text-slate-900 leading-tight">
-                        Fill up personal details
+                    <h2 class="text-2xl sm:text-3xl font-semibold text-slate-900 leading-tight"
+                        x-text="!patient.code ? 'Fill up personal details' : 'Patient Information' ">
                     </h2>
                     <p class="text-sm sm:text-base text-slate-600">
-                        Below are the required fields to continue using <span class="font-medium text-slate-800">DB Dental Care</span> online services.
+                        <template x-if="patient.code">
+                            <span>Below are the patient personal information.</span>
+                        </template>
+                        <template x-if="!patient.code">
+                            <span>Below are the required fields to continue using <span class="font-medium text-slate-800">DB Dental Care</span> online services.</span>
+                        </template>
                     </p>
                 </div>
             </div>

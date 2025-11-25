@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
@@ -20,7 +21,8 @@ class UserService
         return $this->userModel->role('patient')->count();
     }
 
-    public function getUsers($role = 'all') {
+    public function getUsers($role = 'all'): User
+    {
         return $this->userModel
             ->whereDoesntHave('roles', function ($query) {
                 $query->where('name', 'superadmin');
@@ -30,5 +32,19 @@ class UserService
             })
             ->latest()
             ->get();
+    }
+
+    public function updateName(User $user, string $name) {
+        $user->update([
+            'name' => $name,
+        ]);
+
+        return $user->fresh();
+    }
+
+    public function updatePassword(User $user, string $newPassword): void
+    {
+        $user->password = Hash::make($newPassword);
+        $user->save();
     }
 }
