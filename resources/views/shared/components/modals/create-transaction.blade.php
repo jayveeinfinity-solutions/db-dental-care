@@ -304,6 +304,8 @@ document.addEventListener('alpine:init', () => {
                 if (file) {
                     formData.append('pdf_file', file);
                 }
+                if(this.appointmentId != -1)
+                    formData.append('appointment_id', this.appointmentId);
 
                 const response = await axios.post(
                     `/api/v1/transactions`,
