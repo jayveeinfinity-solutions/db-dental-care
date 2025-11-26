@@ -83,7 +83,7 @@
                 </div>
             </div>
 
-            <form class="space-y-4" @submit.prevent="updatePatientInfo">
+            <form class="space-y-4" @submit.prevent="submit">
 
                 <!-- Code -->
                 <div x-show="patient.code">
@@ -143,8 +143,9 @@
                 <!-- Submit Button -->
                 <div class="pt-4">
                     <button type="submit"
-                            class="px-6 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 transition">
-                        Update patient information
+                        class="px-6 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 transition"
+                        :disbled="isLoading"
+                        x-text="isLoading ? 'Updating...' : 'Update patient information'">
                     </button>
                 </div>
             </form>
@@ -157,8 +158,10 @@
 <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('patient', () => ({
+            isLoading: false,
             patient: [],
             form: {
+                user_id: '',
                 first_name: '',
                 middle_name: '',
                 last_name: '',
@@ -186,7 +189,57 @@
                         this.form.address = this.patient.address;
                     });
             },
+            submit() {
+                if(!this.patient) {
+                    this.createPatientInfo();
+                } else {
+                    this.updatePatientInfo();
+                }
+            },
+            createPatientInfo() {
+                this.message = '';
+                this.success = false;
+                this.form.user_id = @js(auth()->id());
+
+                try {
+                    const response = await axios.post('/api/v1/patients', this.form);
+                    this.message = response.data.message || 'Patient record has been saved.';
+                    this.success = true;
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: this.message,
+                        allowOutsideClick: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    }).then(() => {
+                        window.location.href = '/profile';
+                    });
+                } catch (error) {
+                    this.success = false;
+                    this.message = error.response?.data?.message || 'Something went wrong. Please try again.';
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops!',
+                        text: this.message,
+                    });
+                }
+            },
             updatePatientInfo() {
+                if(!this.patient) {
+                     Swal.fire({
+                        title: "Error!",
+                        text: "There was an error updating patient information.",
+                        icon: "error",
+                        allowOutsideClick: false
+                    });
+                }
+                
+                this.isLoading = true;
+
                 let url = `/api/v1/patients/${this.patient.id}`;
 
                 axios.put(url, this.form)
@@ -208,10 +261,11 @@
                             title: "Error!",
                             text: "There was an error updating patient information.",
                             icon: "error",
-                            allowOutsideClick: false,
-                            timer: 2000,
-                            showConfirmButton: false
+                            allowOutsideClick: false
                         });
+                    })
+                    .finally(() => {
+                        this.isLoading = false;
                     });
             }
         }));
