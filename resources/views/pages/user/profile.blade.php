@@ -190,43 +190,40 @@
                     });
             },
             submit() {
-                if(!this.patient) {
+                if(this.patient) {
                     this.createPatientInfo();
                 } else {
                     this.updatePatientInfo();
                 }
             },
             createPatientInfo() {
-                this.message = '';
-                this.success = false;
+                this.isLoading = true;
                 this.form.user_id = @js(auth()->id());
 
-                try {
-                    const response = await axios.post('/api/v1/patients', this.form);
-                    this.message = response.data.message || 'Patient record has been saved.';
-                    this.success = true;
-
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: this.message,
-                        allowOutsideClick: false,
-                        timer: 2000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
-                    }).then(() => {
-                        window.location.href = '/profile';
+                axios.post('/api/v1/patients', this.form)
+                    .then((response) => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: response.data.message || 'Patient record has been saved.',
+                            allowOutsideClick: false,
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        }).then(() => {
+                            window.location.href = '/profile';
+                        });
+                    })
+                    .catch((error) => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops!',
+                            text: error.response?.data?.message || 'Something went wrong. Please try again.',
+                        });
+                    })
+                    .finally(() => {
+                        this.isLoading = false;
                     });
-                } catch (error) {
-                    this.success = false;
-                    this.message = error.response?.data?.message || 'Something went wrong. Please try again.';
-
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops!',
-                        text: this.message,
-                    });
-                }
             },
             updatePatientInfo() {
                 if(!this.patient) {
