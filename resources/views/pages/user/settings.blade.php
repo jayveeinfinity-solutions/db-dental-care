@@ -160,7 +160,7 @@
                                 x-model="form.current_password"
                                 class="w-full px-3 py-2 border rounded pr-10 focus:ring-2 focus:ring-blue-500"
                                 placeholder="Enter current password"
-                                required
+                                :required="!defaultPassword"
                             >
 
                             <!-- Toggle -->
@@ -248,7 +248,7 @@
 
                                 <svg x-show="showConfirm" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M3 3l18 18M9.88 9.88a3 3 0 104.243 4.243M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-0.397 1.27-1.026 2.467-1.855 3.532M15 12a3 3 0 01-3 3" />
+                                        d="M3 3l18 18M9.88 9.88a3 3 0 104.243 4.243M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-0.397 1.27-1.026 2.467-1.855 3.532M15 12a3 3 0 01-3 3" />
                                 </svg>
 
                             </button>
@@ -335,6 +335,7 @@
                     });
             },
             updatePassword() {
+                console.log("test");
                 this.passwordLoading = true;
                 let url = `/api/v1/user/update-password`;
 
