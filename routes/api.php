@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::put('appointments/{appointment}/status', [AppointmentController::class, 'updateStatus']);
 
         Route::get('/patient', function (Request $request) {
-            return $request->user()?->patient ?? [];
+            return $request->user()?->patient ?? false;
         });
         Route::post('patients', [PatientController::class, 'store'])->name('patient.store');
         Route::put('patients/{id}', [PatientController::class, 'update'])->name('patient.update');

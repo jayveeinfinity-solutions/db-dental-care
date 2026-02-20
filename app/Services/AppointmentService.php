@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Appointment;
 use Illuminate\Support\Facades\DB;
@@ -53,7 +54,8 @@ class AppointmentService
 
     public function countUpcomingAppointment() {
         return $this->appointmentModel
-            ->whereDate('scheduled_at', '>', now()->toDateString())
+            ->where('scheduled_at', '>', Carbon::today())
+            ->where('status', 'approved')
             ->count();
     }
 

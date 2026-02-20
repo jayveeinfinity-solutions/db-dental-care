@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\PatientHistoryController;
 
 Route::get('/auth/google/redirect', [SocialAuthController::class, 'redirectToGoogle'])->name('google.redirect');
 Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback'])->name('google.callback');
@@ -24,6 +25,8 @@ Route::middleware(['auth', 'patient.complete'])->group(function () {
     Route::get('/appointments', [UserProfileController::class, 'appointments'])->name('user.appointments');
     Route::get('/transactions', [UserProfileController::class, 'transactions'])->name('user.transactions');
     Route::get('/histories', [UserProfileController::class, 'histories'])->name('user.histories');
+
+    Route::get('/patient-history/{patientHistory}', [PatientHistoryController::class, 'view'])->name('patient.history.view');
 });
 
 // Route::get('/dashboard', function () {

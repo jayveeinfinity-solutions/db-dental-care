@@ -159,7 +159,7 @@
     document.addEventListener('alpine:init', () => {
         Alpine.data('patient', () => ({
             isLoading: false,
-            patient: [],
+            patient: false,
             form: {
                 user_id: '',
                 first_name: '',
@@ -180,17 +180,17 @@
                     .then(response => {
                         this.patient = response.data;
                         
-                        this.form.first_name = this.patient.first_name;
-                        this.form.middle_name = this.patient.middle_name;
-                        this.form.last_name = this.patient.last_name;
-                        this.form.birthdate = this.patient.birthdate;
-                        this.form.sex = this.patient.sex;
-                        this.form.contact_number = this.patient.contact_number;
-                        this.form.address = this.patient.address;
+                        this.form.first_name = this.patient?.first_name;
+                        this.form.middle_name = this.patient?.middle_name;
+                        this.form.last_name = this.patient?.last_name;
+                        this.form.birthdate = this.patient?.birthdate;
+                        this.form.sex = this.patient?.sex;
+                        this.form.contact_number = this.patient?.contact_number;
+                        this.form.address = this.patient?.address;
                     });
             },
             submit() {
-                if(this.patient) {
+                if(!this.patient) {
                     this.createPatientInfo();
                 } else {
                     this.updatePatientInfo();

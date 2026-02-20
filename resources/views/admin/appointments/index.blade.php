@@ -135,8 +135,6 @@ document.addEventListener('alpine:init', () => {
                     const appointmentId = e.target.dataset.id;
                     const newStatus = e.target.value;
 
-                    console.log("appointmentId: " + appointmentId);
-
                     switch(newStatus) {
                         case 'completed':
                             window.dispatchEvent(new CustomEvent('open-create-transaction', {
