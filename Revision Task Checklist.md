@@ -37,3 +37,11 @@ Account Creation / Authentication
 
 Patient History
  Fix issue where Patient History section is not functioning.
+
+Password Reset
+ Change UI
+
+Google Maps Address add on home page
+ https://www.google.com/maps/place/Doc+Brigs+Dental+Care/@14.2607463,120.8745045,17z/data=!3m1!4b1!4m6!3m5!1s0x33bd8103336a1e13:0x18da33d51d643781!8m2!3d14.2607411!4d120.8770794!16s%2Fg%2F11v1b32_85?entry=ttu&g_ep=EgoyMDI2MDMwNC4xIKXMDSoASAFQAw%3D%3D
+
+Admin profile page

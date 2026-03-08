@@ -16,7 +16,7 @@
         </div>
     </article>
 </section>
-<section class="w-full p-6 lg:p-8" x-data="transactions()">
+<section class="w-full p-6 lg:p-8" x-data="transactionsData()">
     <article class="w-full max-w-[335px] sm:max-w-md md:max-w-2xl lg:max-w-4xl mx-auto">
         <!-- <div class="sm:hidden">
             <label for="tabs" class="sr-only">Status</label>
@@ -79,7 +79,7 @@
                     <div class="flex flex-row justify-between items-center">
                         <div>
                             <div class="flex flex-row gap-2 items-center">
-                                <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white" x-text="transaction.patient.full_name"></h5>
+                                <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white" x-text="transaction?.patient?.full_name"></h5>
                                 <div>
                                     <span
                                         class="text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm bg-blue-100 text-blue-800"
@@ -113,7 +113,7 @@
 @push('scripts')
 <script>
     document.addEventListener('alpine:init', () => {
-        Alpine.data('transactions', () => ({
+        Alpine.data('transactionsData', () => ({
             transactions: [],
             active: 'all',
             init() {
@@ -128,7 +128,7 @@
 
                 axios.get(url)
                     .then(response => {
-                        this.transactions = response.data;
+                        this.transactions = response.data.transactions;
                     });
             },
             viewFile(id) {

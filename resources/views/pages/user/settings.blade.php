@@ -82,7 +82,9 @@
                 <div class="flex items-start gap-10">
                     <div class="flex-shrink-0 place-self-center">
                         <div class="w-32 h-32 border border-[5px] border-gray-300 rounded-full shadow-sm overflow-hidden">
-                            <img class="w-full" src="{{ auth()->user()->googleInfo->avatar }}" alt="avatar">
+                            @if(auth()->user()->googleInfo?->avatar)
+                                <img class="w-full" src="{{ auth()->user()->googleInfo->avatar }}" alt="avatar">
+                            @endif
                         </div>
                     </div>
 
