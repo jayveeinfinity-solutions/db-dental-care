@@ -5,9 +5,10 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\Admin\ServiceController;
-use App\Http\Controllers\Admin\TransactionController;
+use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::prefix('v1')->name('api.')->group(function() {
@@ -36,8 +37,10 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::get('patients/search', [PatientController::class, 'search']);
         Route::get('services/search', [ServiceController::class, 'search']);
 
-        Route::get('transactions', [TransactionController::class, 'index'])->name('transaction.index');
-        Route::post('transactions', [TransactionController::class, 'store'])->name('transaction.store');
+        Route::get('user/transactions', [TransactionController::class, 'index'])->name('transaction.index');
+
+        Route::get('transactions', [AdminTransactionController::class, 'index'])->name('transaction.index');
+        Route::post('transactions', [AdminTransactionController::class, 'store'])->name('transaction.store');
 
         Route::prefix('admin')->name('admin.')->group(function() {
             Route::apiResource('dashboard', AppointmentController::class);

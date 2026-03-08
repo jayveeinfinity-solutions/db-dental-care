@@ -120,7 +120,7 @@
                 this.fetchTransactions();
             },
             fetchTransactions() {
-                let url = '/api/v1/transactions';
+                let url = '/api/v1/user/transactions';
 
                 if(this.active !== 'all') {
                     url += `?status=${this.active}`;
