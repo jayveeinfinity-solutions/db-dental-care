@@ -128,7 +128,7 @@
 
                 axios.get(url)
                     .then(response => {
-                        this.transactions = response.data.transactions;
+                        this.transactions = response.data;
                     });
             },
             viewFile(id) {

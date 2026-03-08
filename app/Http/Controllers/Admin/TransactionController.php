@@ -14,6 +14,6 @@ class TransactionController extends Controller
     public function index() {
         $transactions = $this->transactionService->getTransactions();
 
-        return view('admin.transactions.index', compact('transactions'));
+        return response()->json($transactions);
     }
 }
