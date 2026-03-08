@@ -18,7 +18,7 @@ class RedirectIfNotPatient
     {
         $user = Auth::user();
 
-        if ($user && !$user?->hasRole('patient')) {
+        if ($user && $user->roles->count() && !$user?->hasRole('patient')) {
             return redirect('/admin');
         }
 

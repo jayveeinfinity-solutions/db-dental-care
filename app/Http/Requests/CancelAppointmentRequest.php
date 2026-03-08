@@ -22,7 +22,8 @@ class CancelAppointmentRequest extends FormRequest
         // Allow if user is the creator OR has permission to cancel
         return $appointment && (
             $appointment->user_id === $user->id ||
-            $user->can('cancel-appointments')
+            $user->can('cancel-appointments') ||
+            !$user->hasRole('patient')
         );
     }
 

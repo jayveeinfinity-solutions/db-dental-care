@@ -75,7 +75,7 @@ class User extends Authenticatable
     protected function isPasswordDefault(): Attribute
     {
         return Attribute::make(
-            get: fn () => Hash::check('passwordfromgoogle', $this->password)
+            get: fn () => Hash::check(config('auth.password-default'), $this->password)
         );
     }
 }

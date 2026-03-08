@@ -28,7 +28,7 @@ class EnsurePatientProfileIsComplete
             // If patient profile does not exist → force to create one
             if (!$user->patient) {
                 if (!$request->is('profile')) {
-                    return redirect()->route('profile.edit')
+                    return redirect()->route('user.profile')
                         ->with('warning', 'Please complete your patient profile.');
                 }
             }

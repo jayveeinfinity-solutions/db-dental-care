@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Models\Appointment;
 use App\Models\Transaction;
 use App\Models\PatientHistory;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\TransactionResource;
 use App\Models\TransactionService as TransactionServiceModel;
 
 class TransactionService
@@ -16,6 +18,16 @@ class TransactionService
     
     public function getTransactions() {
         return $this->transactionModel->all();
+    }
+    
+    public function getUserTransactions(int $patient_id) {
+        return TransactionResource::collection(
+            $this->transactionModel
+                ->with(['appointment', 'patient', 'services'])
+                ->where('patient_id', $patient_id)
+                ->latest()
+                ->get()
+        );
     }
 
     public function createTransaction(array $data)
@@ -53,6 +65,12 @@ class TransactionService
                     'patient_id'     => $data['patient_id'],
                     'description'    => $data['notes'] ?? null,
                 ]);
+            }
+
+            // Update appointment status if appointment_id exists
+            if (!empty($data['appointment_id'])) {
+                Appointment::where('id', $data['appointment_id'])
+                    ->update(['status' => 'completed']);
             }
 
             return $transaction->load('services'); // optional: eager load

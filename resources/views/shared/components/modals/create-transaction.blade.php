@@ -204,7 +204,6 @@ document.addEventListener('alpine:init', () => {
 
         close() {
             this.show = false;
-            window.location.reload();
         },
 
         async fetchAppointmentDetails() {
@@ -215,9 +214,17 @@ document.addEventListener('alpine:init', () => {
                 const data = response.data;
 
                 // Auto-fill form with retrieved data
-                this.form.name = data.user.name || '';
-                this.form.page = '';
-                this.form.notes = data.notes || '';
+                // this.form.name = data.user.name || '';
+                // this.form.page = '';
+                // this.form.notes = data.notes || '';
+
+                this.form.patient_id = data.patient.id;
+                
+                this.selectedPatient = {
+                    id: data.patient.id,
+                    name: data.patient.full_name,
+                    code: data.patient.code
+                }
 
                 if (data.service) {
                     this.form.services = [{
@@ -297,6 +304,8 @@ document.addEventListener('alpine:init', () => {
                 if (file) {
                     formData.append('pdf_file', file);
                 }
+                if(this.appointmentId != -1)
+                    formData.append('appointment_id', this.appointmentId);
 
                 const response = await axios.post(
                     `/api/v1/transactions`,
