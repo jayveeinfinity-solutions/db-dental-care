@@ -35,6 +35,13 @@ class UserService
             ->get();
     }
 
+    public function getPendingAppointmentCount() {
+        return auth()->user()
+            ?->appointments()
+            ->where('status', 'pending')
+            ->count() ?? 0;
+    }
+
     public function updateName(User $user, string $name) {
         $user->update([
             'name' => $name,

@@ -1,14 +1,21 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PatientHistoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SocialAuthController;
+use App\Http\Controllers\StaticPagesController;
 use App\Http\Controllers\UserProfileController;
-use App\Http\Controllers\PatientHistoryController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/auth/google/redirect', [SocialAuthController::class, 'redirectToGoogle'])->name('google.redirect');
 Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback'])->name('google.callback');
+
+Route::get('/general-dentistry', [StaticPagesController::class, 'generalDentistry'])->name('static.general-dentistry');
+Route::get('/cosmetic-dentistry', [StaticPagesController::class, 'cosmeticDentistry'])->name('static.cosmetic-dentistry');
+Route::get('/restorative-dentistry', [StaticPagesController::class, 'restorativeDentistry'])->name('static.restorative-dentistry');
+Route::get('/preventive-dentistry', [StaticPagesController::class, 'preventiveDentistry'])->name('static.preventive-dentistry');
+Route::get('/orthodontics', [StaticPagesController::class, 'orthodontics'])->name('static.orthodontics');
 
 Route::middleware('redirect.notpatient')->group(function() {
     Route::get('/', [HomeController::class, 'index'])->name('home');

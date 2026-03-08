@@ -3,7 +3,7 @@
 @section('title', 'Welcome &sdots; ')
 
 @section('content')
-@if($userPendingAppointments->count() > 0)
+@if($userPendingAppointments > 0)
 <section class="w-full flex justify-center">
     <article class="w-full max-w-[335px] sm:max-w-md md:max-w-2xl lg:max-w-4xl">
         <div id="alert-1" class="flex items-center p-4 m-6 lg:m-8 text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
@@ -100,6 +100,57 @@
                 <p>No featured service.</p>
             @endforelse
         </article>
+    </div>
+</section>
+
+<section class="py-20 dark:bg-background-dark">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+            <div class="order-2 lg:order-1 relative">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-4 pt-8">
+                        <img class="rounded-2xl shadow-lg" data-alt="Modern dental equipment close up" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDa9Pn98JB7zBot9GzqKv0CPcYx1iyQllTjeHd1Wn7lUFurUkD0dco6UdF6IGloqEU2aK-p3FUeyVR1uuMDUj-xGfvfoM-A3OU63msf-Ee2EVrSlYOv0lqtbyA_JSDZRkitY_Pfn2sIoDjnOoaRV1UU62PoYcJCzM09m2yTDHO4L8FoLvAuP4KB2k62zo21XmrqbvrssMkqQB76mwQ9HsXIK-hZZguSNJMVvJlOGKJX3H35F2ck_RgGpSrslC3qHtrNX7DsMgHyBJV"/>
+                        <img class="rounded-2xl shadow-lg" data-alt="Patient sitting in dental chair" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGSXb5vVQtK_Mnr6v5x_uDl53OG_skBxB1uyGHP0hEunHwXznRDhIB6c0sSxImygkHzqbu8ZJ1bgkwKIEjLEUu-XrDkFB9Z4_-JdtfyTPsR0RSC6FjhIzywyM1TOSsDOx8753OKnJEUPP1vmHahx-creOo3aTmSqSW28LyVk0ZEgWHgh7Rnu_hQ6vQVaQMPI9b8wLZm3WuYgb0enpOzawcE9cLx7USwSfVfonUCum1G4a0lrsCJPklOSuIfXr4Bd4HrFRE2viTOGdJ"/>
+                    </div>
+                    <div class="space-y-4">
+                        <img class="rounded-2xl shadow-lg" data-alt="Friendly dental receptionist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCP740Zua_Ehxtlnfi3I-BCiMP5wkVJZuStv_VCgBxQi-szLTxHBeaKdqz633FEqktTqya9a_Gnq9GiOMuaQCxlPIyd6kreqzJudSypWDBjdmtRw23mFGBGhaHJwpUAdICSeYoDEwFTo9_qisGOyRQijoSp6OWzza6XzAgpWOZ5N9EXSD_Xjtv5x36vcV4LqszLtzhSIHy8U3vyyFtBDTupPlru6wusUClk6_v4FiOOGNQ01yBu24hyoaXr-5k2Hnh74eePylr9Envu"/>
+                        <img class="rounded-2xl shadow-lg" data-alt="Modern clinic waiting room" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcd2z1V_Fuqs24bbWMRLKyyG6jkIW-74o6pmrFTAN7Y1P8jJniWB_lCeXBVSHirv7L469mwhp5XT1FjVv32zl4vl8_6ph04yyR8Aw9X9BufdtOQ1PcO1SdlkneyGVRqMmFTgTkHZ7lFDQZHNHP95A5UuimBsrqMQXgJKBNNtKr0f2f0vgWlT6OQHWUtKkUCNR18qvjJMczxbTJC1nORLKyOgT65rGVxs7aTxQwHJRx0IJ2NdT1sDF1oFzO5xuCxx4uAM-Zh5eZPAab"/>
+                    </div>
+                </div>
+            </div>
+            <div class="order-1 lg:order-2">
+                <h2 class="text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white mb-6">Why Patients Choose <br/>DB Dental Care</h2>
+                <div class="space-y-8">
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white">
+                            <span class="material-symbols-outlined">groups</span>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-1">Expert Team</h4>
+                            <p class="text-slate-500 dark:text-slate-400">Our highly trained specialists bring years of experience and compassionate care to every procedure.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white">
+                            <span class="material-symbols-outlined">precision_manufacturing</span>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-1">Advanced Technology</h4>
+                            <p class="text-slate-500 dark:text-slate-400">We utilize state-of-the-art diagnostic and treatment tools for painless and effective results.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white">
+                            <span class="material-symbols-outlined">content_paste_off</span>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-1">Patient Comfort</h4>
+                            <p class="text-slate-500 dark:text-slate-400">From luxury amenities to sedation options, we ensure your visit is stress-free and pleasant.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 

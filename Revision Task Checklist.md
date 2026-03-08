@@ -32,7 +32,7 @@ Clickable Elements
 
 Account Creation / Authentication
 ✅ Fix issue where accounts created via manual email registration are redirected to Admin page instead of User/Patient page.
- Verify login flow for users created manually or via Google Authentication.
+✅ Verify login flow for users created manually or via Google Authentication.
  Clarify the functionality of Forgot Password and implement it.
 
 Patient History

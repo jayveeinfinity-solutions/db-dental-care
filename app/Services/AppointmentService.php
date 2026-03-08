@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Carbon\Carbon;
 use App\Models\User;
+use Carbon\CarbonInterval;
 use App\Models\Appointment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -101,5 +102,21 @@ class AppointmentService
         });
 
         return $appointment;
+    }
+
+    public function getTimes() {
+        $start = Carbon::createFromTimeString('08:00');
+        $end = Carbon::createFromTimeString('17:00');
+        $interval = CarbonInterval::hour();
+        $times = [];
+
+        for ($time = $start->copy(); $time->lte($end); $time->add($interval)) {
+            $times[] = [
+                'value' => $time->format('H:i'),
+                'text' => $time->format('g:i A'),
+            ];
+        }
+
+        return $times;
     }
 }

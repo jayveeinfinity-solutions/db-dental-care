@@ -70,7 +70,7 @@
             </div>
             <!-- Modal body -->
             <div class="p-4 md:p-5 space-y-4">
-                @if($userPendingAppointments->count() > 0)
+                @if($userPendingAppointments > 0)
                     <section class="w-full flex justify-center">
                         <article class="w-full">
                             <div id="alert-1" class="flex items-center w-full p-4 text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
@@ -91,7 +91,7 @@
                             <select id="services" x-model="form.service_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                 <option value="" selected disabled>Choose a service...</option>
                                 @php $category = ''; @endphp
-                                @foreach($services as $service)
+                                @foreach($dentalServices as $service)
                                     @php $currentCategory = $service->category->name; @endphp
                                     @if($category !== $currentCategory) {
                                         <option class="font-bold" disabled>{{ str()->upper($currentCategory) }}</option>
