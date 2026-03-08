@@ -2,7 +2,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
     
-    <div class="layout-container flex h-full grow flex-col items-center justify-center py-10 px-4" x-data="signin()">
+    <div class="layout-container flex h-full grow flex-col items-center justify-center py-10 px-4">
         <a class="flex flex-row items-center gap-1 py-3.5" href="{{ route('home') }}">
             <span class="material-symbols-outlined text-xl">home</span>
             <span class="text-slate-700 dark:text-slate-200 text-base font-semibold">Back to home page</span>
@@ -53,6 +53,12 @@
                         </div>
 
                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                    </div>
+                    <div class="text-right">
+                        <a class="inline-flex items-center text-primary hover:text-primary/80 font-bold text-sm transition-colors group"
+                            href="{{ route('password.request') }}">
+                            Forgot Password?
+                        </a>
                     </div>
                     <button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-lg transition-colors shadow-lg shadow-primary/20 flex items-center justify-center gap-2"
                         type="submit">

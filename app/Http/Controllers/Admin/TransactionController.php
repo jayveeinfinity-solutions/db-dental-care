@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Services\TransactionService;
+use App\Http\Requests\StoreTransactionRequest;
 
 class TransactionController extends Controller
 {
@@ -14,6 +15,16 @@ class TransactionController extends Controller
     public function index() {
         $transactions = $this->transactionService->getTransactions();
 
-        return response()->json($transactions);
+        return view('admin.transactions.index', compact('transactions'));
+    }
+
+    public function store(StoreTransactionRequest $request)
+    {
+        $transaction = $this->transactionService->createTransaction($request->validated());
+
+        return response()->json([
+            'success' => true,
+            'transaction' => $transaction
+        ]);
     }
 }
