@@ -1,6 +1,7 @@
 <x-modal name="appointment-modal" :show="false" :maxWidth="'md'">
     <div class="relative p-4 w-full max-h-full"
         x-data="{
+            isServiceLocked: false,
             form: {
                 service_id: '',
                 date: '',
@@ -50,6 +51,13 @@
                 }
             }
         }"
+        x-on:open-modal.window="(e) => {
+            if (e.detail.name === 'appointment-modal') {
+                show = true;
+                isServiceLocked = true;
+                form.service_id = e.detail.serviceId || null;
+            }
+        }"
     >
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
@@ -88,7 +96,11 @@
                     <form class="max-w-sm mx-auto opacity-8"  @submit.prevent="submit">
                         <div class="mb-5">
                             <label for="services" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select service</label>
-                            <select id="services" x-model="form.service_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                            <select
+                                id="services" x-model="form.service_id"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                :disabled="isServiceLocked"
+                                required>
                                 <option value="" selected disabled>Choose a service...</option>
                                 @php $category = ''; @endphp
                                 @foreach($dentalServices as $service)

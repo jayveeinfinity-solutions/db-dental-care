@@ -1,14 +1,13 @@
 <?php
 
-use App\Http\Controllers\Admin\ServiceController;
-use App\Http\Controllers\Admin\TransactionController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\AppointmentController;
-use App\Http\Controllers\PatientController;
-use App\Http\Controllers\UserProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PatientController;
+use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\TransactionController;
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::prefix('v1')->name('api.')->group(function() {
