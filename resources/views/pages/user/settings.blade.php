@@ -334,7 +334,6 @@
                     });
             },
             updatePassword() {
-                console.log("test");
                 this.passwordLoading = true;
                 let url = `/api/v1/user/update-password`;
 
