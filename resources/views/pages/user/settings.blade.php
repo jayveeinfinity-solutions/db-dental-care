@@ -148,7 +148,7 @@
                     <div class="flex-1">
 
                         <!-- Current Password -->
-                        <div x-data="{ showCurrent: false }" class="relative" x-show="!defaultPassword">
+                        <div class="relative" x-show="!defaultPassword">
                             <label for="current_password" class="block text-sm font-medium mb-1">
                                 Current Password
                             </label>
@@ -185,7 +185,7 @@
                         </div>
 
                         <!-- New Password -->
-                        <div x-data="{ showNew: false }" class="relative mt-4">
+                        <div class="relative mt-4">
                             <label for="password" class="block text-sm font-medium mb-1">
                                 New Password
                             </label>
@@ -220,7 +220,7 @@
 
 
                         <!-- Confirm Password -->
-                        <div x-data="{ showConfirm: false }" class="relative mt-4">
+                        <div class="relative mt-4">
                             <label for="password_confirmation" class="block text-sm font-medium mb-1">
                                 Confirm New Password
                             </label>
@@ -283,6 +283,9 @@
             passwordLoading: false,
             user: [],
             defaultPassword: null,
+            showCurrent: false,
+            showNew: false,
+            showConfirm: false,
             form: {
                 name: null,
                 current_password: null,
@@ -307,7 +310,13 @@
                 this.userLoading = true;
                 let url = `/api/v1/user/update-name`;
 
-                axios.patch(url, this.form)
+                const payload = { ...this.form };
+
+                delete payload.current_password;
+                delete payload.password;
+                delete payload.password_confirmation;
+
+                axios.patch(url, payload)
                     .then(response => {
                         Swal.fire({
                             title: "Success!",
@@ -337,7 +346,15 @@
                 this.passwordLoading = true;
                 let url = `/api/v1/user/update-password`;
 
-                axios.patch(url, this.form)
+                const payload = { ...this.form };
+
+                delete payload.name;
+
+                if (this.defaultPassword) {
+                    delete payload.current_password;
+                }
+
+                axios.patch(url, payload)
                     .then(response => {
                         Swal.fire({
                             title: "Success!",
@@ -356,15 +373,27 @@
                         });
                     })
                     .catch(error => {
+                        let html = "There was an error updating user password.";
+
+                        if (error.response?.data?.errors) {
+                            html = Object.values(error.response.data.errors)
+                                .flat()
+                                .map(err => `<div>• ${err}</div>`)
+                                .join('');
+                        }
+
                         Swal.fire({
                             title: "Error!",
-                            text: error.response.data?.message || "There was an error updating user password.",
+                            html: html,
                             icon: "error",
                             allowOutsideClick: false,
                         });
                     })
                     .finally(() => {
                         this.passwordLoading = false;
+                        this.showCurrent = false;
+                        this.showNew = false;
+                        this.showConfirm = false;
                     });
             }
         }));

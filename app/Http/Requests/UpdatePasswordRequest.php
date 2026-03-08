@@ -22,15 +22,15 @@ class UpdatePasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'current_password' => ['nullable', 'string'],
+            'current_password' => ['sometimes', 'current_password'],
             'password' => ['required', 'min:8', 'confirmed'],
         ];
     }
+
     public function messages()
     {
         return [
-            'current_password.string' => 'The current password must be a valid string.',
-            
+            'current_password.current_password' => 'The current password is incorrect!',
             'password.required' => 'Please enter your new password.',
             'password.min' => 'Your new password must be at least :min characters long.',
             'password.confirmed' => 'The password confirmation does not match.',
