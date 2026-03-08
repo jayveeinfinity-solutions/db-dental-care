@@ -7,6 +7,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\TransactionController;
+use App\Http\Controllers\Admin\UserController;
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::prefix('v1')->name('api.')->group(function() {
@@ -16,6 +17,9 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::get('/user', function (Request $request) {
             return $request->user();
         });
+
+        Route::post('user/update-password', [UserController::class, 'updatePassword'])->name('user.update-password');
+
         Route::apiResource('appointments', AppointmentController::class);
         Route::patch('appointments/{appointment}/cancel', [AppointmentController::class, 'cancel']);
         Route::put('appointments/{appointment}/status', [AppointmentController::class, 'updateStatus']);

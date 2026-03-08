@@ -31,4 +31,8 @@ class UserService
             ->latest()
             ->get();
     }
+
+    public function updatePassword() {
+        
+    }
 }

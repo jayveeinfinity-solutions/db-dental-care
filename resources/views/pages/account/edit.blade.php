@@ -158,6 +158,7 @@
                                     :type="showCurrent ? 'text' : 'password'"
                                     name="current_password"
                                     id="current_password"
+                                    x-model="form.current_password"
                                     class="w-full px-3 py-2 border rounded pr-10 focus:ring-2 focus:ring-blue-500"
                                     placeholder="Enter current password"
                                     required
@@ -195,6 +196,7 @@
                                 :type="showNew ? 'text' : 'password'"
                                 name="password"
                                 id="password"
+                                x-model="form.password"
                                 class="w-full px-3 py-2 border rounded pr-10 focus:ring-2 focus:ring-blue-500"
                                 placeholder="Enter new password"
                                 required
@@ -229,6 +231,7 @@
                                 :type="showConfirm ? 'text' : 'password'"
                                 name="password_confirmation"
                                 id="password_confirmation"
+                                x-model="form.password_confirmation"
                                 class="w-full px-3 py-2 border rounded pr-10 focus:ring-2 focus:ring-blue-500"
                                 placeholder="Confirm new password"
                                 required
@@ -259,12 +262,8 @@
                 <!-- Submit -->
                 <div class="pt-4">
                     <button type="submit"
-                        class="px-6 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 transition">
-                        @if($user->isPasswordDefault)
-                            Create password
-                        @else
-                            Update password
-                        @endif
+                        class="px-6 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 transition" :disabled="loading"
+                        x-text="loading ? 'Updating...' : '{{ $user->isPasswordDefault ? 'Create Password' : 'Update Password' }}'">
                     </button>
                 </div>
 
@@ -280,12 +279,13 @@
     document.addEventListener('alpine:init', () => {
         Alpine.data('user', () => ({
             user: [],
+            loading: false,
             form: {
                 name: '',
 
                 current_password: '',
-                new_password: '',
-                confirm_password: ''
+                password: '',
+                password_confirmation: ''
             },
             init() {
                 this.fetchUser();
@@ -324,6 +324,40 @@
                             timer: 2000,
                             showConfirmButton: false
                         });
+                    });
+            },
+            updatePassword() {
+                this.loading = true;
+
+                let url = `/api/v1/user/update-password`;
+
+                axios.put(url, this.form)
+                    .then(response => {
+                        Swal.fire({
+                            title: "Success!",
+                            text: "Password successfully updated.",
+                            icon: "success",
+                            allowOutsideClick: false,
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        }).then(() => {
+                            this.form.current_password = '';
+                            this.form.new_password = '';
+                            this.form.confirm_password = '';
+                        });
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "There was an error updating user password.",
+                            icon: "error",
+                            allowOutsideClick: false,
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }).finally(() => {
+                        this.loading = false;
                     });
             }
         }));
