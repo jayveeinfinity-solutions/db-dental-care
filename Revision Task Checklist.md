@@ -22,9 +22,9 @@ Reports & Dashboard
  Add page indicator in Reports section to show which page the user is on.
 
 Miscellaneous UI Elements
- Clarify purpose of the three lines (hamburger menu?) on the top-right – currently clickable but empty.
- Clarify purpose of the circle icon with a person – clickable but no action.
- Clarify purpose and functionality of the search bar.
+✅ Clarify purpose of the three lines (hamburger menu?) on the top-right – currently clickable but empty.
+✅ Clarify purpose of the circle icon with a person – clickable but no action.
+✅ Clarify purpose and functionality of the search bar.
 
 Clickable Elements
 ✅ Verify if the 2025 DB Dental Care link is intended to be clickable; fix if necessary.
@@ -36,4 +36,4 @@ Account Creation / Authentication
 ✅ Clarify the functionality of Forgot Password and implement it.
 
 Patient History
- Fix issue where Patient History section is not functioning. 5
+ Fix issue where Patient History section is not functioning.
