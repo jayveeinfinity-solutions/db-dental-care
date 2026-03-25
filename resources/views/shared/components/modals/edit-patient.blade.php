@@ -1,8 +1,8 @@
 <div 
-    x-data="createPatientModal()"
+    x-data="editPatientModal()"
     x-cloak
-    @open-create-patient.window="open()"
-    @close-create-patient.window="show = false"
+    @open-edit-patient.window="open($event.detail)"
+    @close-edit-patient.window="show = false"
     class="custom-modal-wrapper"
 >
     <!-- BACKDROP -->
@@ -22,7 +22,7 @@
 
             <!-- HEADER -->
             <div class="custom-modal-header">
-                <h2 class="custom-modal-title">Add patient record</h2>
+                <h2 class="custom-modal-title">Edit patient record</h2>
                 <button x-on:click="close" class="custom-modal-close">&times;</button>
             </div>
 
@@ -80,7 +80,7 @@
 
                     <div class="custom-modal-footer">
                         <button type="button" x-on:click="close" class="custom-modal-btn custom-modal-btn-secondary">Close</button>
-                        <button type="submit" class="custom-modal-btn custom-modal-btn-primary">Save Record</button>
+                        <button type="submit" class="custom-modal-btn custom-modal-btn-primary">Update Record</button>
                     </div>
                 </form>
             </div>
@@ -91,9 +91,9 @@
 
 <script>
 document.addEventListener('alpine:init', () => {
-    Alpine.data('createPatientModal', () => ({
+    Alpine.data('editPatientModal', () => ({
         show: false,
-        appointmentId: null,
+        patientId: null,
         form: {
             first_name: '',
             middle_name: '',
@@ -104,55 +104,42 @@ document.addEventListener('alpine:init', () => {
             address: ''
         },
 
-        open() {
+        open(patient) {
             this.show = true;
-
+            this.patientId = patient.id;
             this.form = {
-                first_name: '',
-                middle_name: '',
-                last_name: '',
-                birthdate: '',
-                sex: '',
-                contact_number: '',
-                address: ''
+                first_name: patient.first_name,
+                middle_name: patient.middle_name,
+                last_name: patient.last_name,
+                birthdate: patient.birthdate,
+                sex: patient.sex,
+                contact_number: patient.contact_number,
+                address: patient.address
             };
         },
 
         close() {
             this.show = false;
-            window.location.reload();
         },
 
         async submit() {
             try {
-                const formData = new FormData();
-
-                formData.append('first_name', this.form.first_name);
-                formData.append('middle_name', this.form.middle_name);
-                formData.append('last_name', this.form.last_name);
-                formData.append('birthdate', this.form.birthdate);
-                formData.append('sex', this.form.sex);
-                formData.append('contact_number', this.form.contact_number);
-                formData.append('address', this.form.address);
-
-                const response = await axios.post(
-                    `/api/v1/patients`,
-                    formData,
+                const response = await axios.put(
+                    `/api/v1/patients/${this.patientId}`,
+                    this.form,
                 );
 
                 Swal.fire({
                     icon: 'success',
-                    title: 'Patient Record Saved',
-                    text: response.data.message || 'Patient record has been saved.',
+                    title: 'Patient Record Updated',
+                    text: response.data.message || 'Patient record has been updated.',
                     allowOutsideClick: false,
                     timer: 2000,
                     timerProgressBar: true,
                     showConfirmButton: false
                 }).then(() => {
-
                     // Close the modal
                     this.show = false;
-
                     // Reload page AFTER swal closes
                     window.location.reload();
                 });
@@ -161,12 +148,11 @@ document.addEventListener('alpine:init', () => {
                 console.error(error);
                 Swal.fire({
                     icon: 'error',
-                    title: 'Save Failed',
+                    title: 'Update Failed',
                     text: error.response?.data?.message || 'Something went wrong.'
                 });
             }
         }
     }));
 });
-
 </script>

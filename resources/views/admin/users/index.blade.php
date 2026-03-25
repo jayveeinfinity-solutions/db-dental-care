@@ -3,7 +3,7 @@
 @section('title', 'Services &sdots; ')
 
 @section('content')
-<div class="w-full px-6 py-6 mx-auto">
+<div class="w-full px-6 py-6 mx-auto" x-data="users">
     <!-- table 1 -->
     <div class="flex flex-wrap -mx-3">
         <div class="flex-none w-full max-w-full px-3">
@@ -56,7 +56,7 @@
                                         </div>
                                     </td>
                                     <td class="p-2 text-sm leading-normal align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                                        @foreach($user->getRoleNames() as $role)
+                                        @foreach($user->roles as $role)
                                             <span class="bg-gradient-to-tl px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white from-blue-700 to-cyan-500">{{ $role }}</span>
                                         @endforeach
                                     </td>
@@ -65,7 +65,7 @@
                                         <!-- <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">Organization</p> -->
                                     </td>
                                     <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                                        <a href="javascript:;" class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400"> Edit </a>
+                                        <a href="javascript:;" @click="openEditModal({{ json_encode($user) }})" class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400"> Edit </a>
                                     </td>
                                 </tr>
                                 @empty
@@ -78,6 +78,21 @@
             </div>
         </div>
     </div>
+    @include('shared.components.modals.edit-user')
     @include('shared.argon.partials.footer')
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('alpine:init', () => {
+    Alpine.data('users', () => ({
+        init() {},
+
+        openEditModal(user) {
+            window.dispatchEvent(new CustomEvent('open-edit-user', { detail: user }));
+        },
+    }));
+});
+</script>
+@endpush

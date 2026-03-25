@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Services\TransactionService;
+use App\Http\Resources\TransactionResource;
 use App\Http\Requests\StoreTransactionRequest;
 
 class TransactionController extends Controller
@@ -14,6 +15,13 @@ class TransactionController extends Controller
 
     public function index() {
         $transactions = $this->transactionService->getTransactions();
+
+        $transactions = TransactionResource::collection($transactions);
+
+        $transactions = collect($transactions)
+            ->map(function ($transactionResource) {
+                return json_decode(json_encode($transactionResource->resolve()));
+            });
 
         return view('admin.transactions.index', compact('transactions'));
     }

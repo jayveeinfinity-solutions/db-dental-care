@@ -102,8 +102,8 @@
                                         </select>
                                     </td>
                                     @endif
-                                    <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                                        <a href="javascript:;" class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400"> View </a>
+                                    <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent text-center">
+                                        <a href="javascript:;" @click="openViewModal({{ json_encode($appointment) }})" class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400"> View </a>
                                     </td>
                                 </tr>
                                 @empty
@@ -118,6 +118,7 @@
     </div>
     @include('shared.components.modals.create-transaction')
     @include('shared.components.modals.appointment-cancellation-admin')
+    @include('shared.components.modals.view-appointment')
     @include('shared.argon.partials.footer')
 </div>
 @endsection
@@ -179,6 +180,9 @@ document.addEventListener('alpine:init', () => {
             });
         },
 
+        openViewModal(appointment) {
+            window.dispatchEvent(new CustomEvent('open-view-appointment', { detail: appointment }));
+        },
     }))
 });
 </script>

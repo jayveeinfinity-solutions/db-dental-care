@@ -50,6 +50,19 @@ class UserService
         return $user->fresh();
     }
 
+    public function updateUser(User $user, array $data) {
+        $user->update([
+            'name' => $data['name'],
+            'email' => $data['email'],
+        ]);
+
+        if (isset($data['role'])) {
+            $user->syncRoles($data['role']);
+        }
+
+        return $user->fresh();
+    }
+
     public function updatePassword(User $user, string $newPassword): void
     {
         $user->password = Hash::make($newPassword);

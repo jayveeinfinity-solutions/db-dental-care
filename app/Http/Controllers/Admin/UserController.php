@@ -19,7 +19,20 @@ class UserController extends Controller
         $users = $this->userService->getUsers($role);
         $roles = Role::all();
 
+        $users = \App\Http\Resources\UserResource::collection($users);
+        $users = collect($users)
+            ->map(function ($userResource) {
+                return json_decode(json_encode($userResource->resolve()));
+            });
+
         return view('admin.users.index', compact('users', 'roles'));
+    }
+
+    public function update(\App\Http\Requests\UpdateUserRequest $request, $id) {
+        $user = \App\Models\User::findOrFail($id);
+        $this->userService->updateUser($user, $request->validated());
+
+        return response()->json(['message' => 'User updated successfully.'], 200);
     }
 
     public function updatePassword(UpdateUserPasswordRequest $request) {

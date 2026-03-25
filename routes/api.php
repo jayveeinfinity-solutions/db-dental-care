@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function() {
         });
         Route::post('patients', [PatientController::class, 'store'])->name('patient.store');
         Route::put('patients/{id}', [PatientController::class, 'update'])->name('patient.update');
+        Route::put('users/{id}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('user.update');
         Route::post('patients/link', [PatientController::class, 'link'])->name('patient.link');
 
         Route::get('patients/search', [PatientController::class, 'search']);

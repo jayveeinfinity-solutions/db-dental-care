@@ -35,6 +35,116 @@
         <link href="/assets/css/custom.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         @vite(['resources/js/app.js'])
+        <style>
+            [x-cloak] { display: none !important; }
+            .custom-modal-backdrop {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.6);
+                backdrop-filter: blur(3px);
+                z-index: 998;
+            }
+            .custom-modal-wrapper {
+                position: relative;
+            }
+            .custom-modal-container {
+                position: fixed;
+                inset: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 1rem;
+                z-index: 999;
+            }
+            .custom-modal-box {
+                background: #ffffff;
+                color: #333;
+                width: 100%;
+                max-width: 500px;
+                border-radius: 12px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+                overflow: hidden;
+            }
+            .custom-modal-header {
+                padding: 1rem;
+                display: flex;
+                justify-content: space-between;
+                border-bottom: 1px solid #eee;
+            }
+            .custom-modal-title {
+                font-size: 1.2rem;
+                font-weight: 600;
+            }
+            .custom-modal-close {
+                background: none;
+                border: none;
+                font-size: 1.4rem;
+                cursor: pointer;
+                opacity: 0.6;
+            }
+            .custom-modal-close:hover {
+                opacity: 1;
+            }
+            .custom-modal-body {
+                padding: 1rem;
+            }
+            .custom-modal-input {
+                width: 100%;
+                padding: .5rem .75rem;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+            }
+            .custom-modal-footer {
+                padding: 1rem 0;
+                display: flex;
+                justify-content: flex-end;
+                gap: .5rem;
+                border-top: 1px solid #eee;
+            }
+            .custom-modal-btn {
+                padding: .5rem 1rem;
+                border-radius: 6px;
+                border: none;
+                cursor: pointer;
+                font-size: .85rem;
+            }
+            .custom-modal-btn-primary {
+                background: #2563eb;
+                color: #fff;
+            }
+            .custom-modal-btn-primary:hover {
+                background: #1d4ed8;
+            }
+            .custom-modal-btn-secondary {
+                background: #9ca3af;
+                color: #fff;
+            }
+            .custom-modal-btn-secondary:hover {
+                background: #6b7280;
+            }
+            .custom-modal-enter {
+                transition: all 0.3s ease-out;
+            }
+            .custom-modal-enter-start {
+                opacity: 0;
+                transform: scale(0.9) translateY(10px);
+            }
+            .custom-modal-enter-end {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+            .custom-modal-leave {
+                transition: all 0.2s ease-in;
+            }
+            .custom-modal-leave-start {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+            .custom-modal-leave-end {
+                opacity: 0;
+                transform: scale(0.9) translateY(10px);
+            }
+        </style>
     </head>
 
     <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">

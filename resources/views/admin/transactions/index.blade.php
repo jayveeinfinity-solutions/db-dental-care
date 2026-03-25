@@ -61,14 +61,14 @@
                                         <span class="bg-gradient-to-tl px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white from-emerald-500 to-teal-400">PHP {{ $transaction->total_amount }}</span>
                                     </td>
                                     <td class="p-2 text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                                        <span class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400">{{ $transaction->services->count() . ' ' . str()->plural('service', $transaction->services->count()) }}</span>
+                                        <span class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400">{{ count($transaction->services) . ' ' . str()->plural('service', count($transaction->services)) }}</span>
                                     </td>
                                     <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                                        <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">{{ $transaction->created_at }}</p>
+                                        <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">{{ $transaction->formatted_date }}</p>
                                         <!-- <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">Organization</p> -->
                                     </td>
-                                    <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                                        <a href="javascript:;" class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400"> View </a>
+                                    <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent text-center">
+                                        <a href="javascript:;" @click="openViewModal({{ json_encode($transaction) }})" class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400"> View </a>
                                     </td>
                                 </tr>
                                 @empty
@@ -82,6 +82,7 @@
         </div>
     </div>
     @include('shared.components.modals.create-transaction')
+    @include('shared.components.modals.view-transaction')
     @include('shared.argon.partials.footer')
 </div>
 @endsection
@@ -94,6 +95,10 @@ document.addEventListener('alpine:init', () => {
 
         openCreateModal() {
             window.dispatchEvent(new CustomEvent('open-create-transaction'));
+        },
+
+        openViewModal(transaction) {
+            window.dispatchEvent(new CustomEvent('open-view-transaction', { detail: transaction }));
         },
     }));
 });

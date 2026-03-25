@@ -55,7 +55,7 @@
                                         <!-- <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">Organization</p> -->
                                     </td>
                                     <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                                        <a href="javascript:;" class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400"> Edit </a>
+                                        <a href="javascript:;" @click="openEditModal({{ json_encode($patient) }})" class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400"> Edit </a>
                                     </td>
                                 </tr>
                                 @empty
@@ -69,6 +69,7 @@
         </div>
     </div>
     @include('shared.components.modals.create-patient')
+    @include('shared.components.modals.edit-patient')
     @include('shared.argon.partials.footer')
 </div>
 @endsection
@@ -81,6 +82,10 @@ document.addEventListener('alpine:init', () => {
 
         openCreateModal() {
             window.dispatchEvent(new CustomEvent('open-create-patient'));
+        },
+
+        openEditModal(patient) {
+            window.dispatchEvent(new CustomEvent('open-edit-patient', { detail: patient }));
         },
     }));
 });
