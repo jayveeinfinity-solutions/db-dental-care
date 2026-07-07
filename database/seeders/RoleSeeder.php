@@ -51,7 +51,7 @@ class RoleSeeder extends Seeder
         ]);
 
         // Assign Super Admin role
-        $superAdminEmail = 'jayveeinfinity@gmail.com';
+        $superAdminEmail = config('auth.superadmin_email');
         $user = User::where('email', $superAdminEmail)->first() ?? User::first();
 
         if ($user) {
