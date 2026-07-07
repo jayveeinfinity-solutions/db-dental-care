@@ -107,7 +107,7 @@
     </div>
 
     <!-- cards row 2 -->
-    <div class="flex flex-wrap mt-6 -mx-3">
+    <!-- <div class="flex flex-wrap mt-6 -mx-3">
         <div class="w-full max-w-full px-3 mt-0 lg:w-7/12 lg:flex-none">
             <div class="border-black/12.5 dark:bg-slate-850 dark:shadow-dark-xl shadow-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
                 <div class="border-black/12.5 mb-0 rounded-t-2xl border-b-0 border-solid p-6 pt-4 pb-0">
@@ -123,7 +123,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- <div class="w-full max-w-full px-3 lg:w-5/12 lg:flex-none">
             <div slider class="relative w-full h-full overflow-hidden rounded-2xl">
@@ -164,7 +164,7 @@
             <button btn-prev class="absolute z-10 w-10 h-10 p-2 text-lg text-white border-none opacity-50 cursor-pointer hover:opacity-100 far fa-chevron-left active:scale-110 top-6 right-16"></button>
             </div>
         </div> -->
-    </div>
+    <!-- </div> -->
 
     <!-- cards row 3 -->
 
