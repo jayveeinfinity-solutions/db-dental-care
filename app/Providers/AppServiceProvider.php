@@ -6,9 +6,11 @@ use App\Services\UserService;
 use App\Services\DentalService;
 use App\Directives\PatientComplete;
 use App\Services\AppointmentService;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use App\Events\AppointmentStatusChanged;
+use App\Listeners\SendAppointmentStatusNotification;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +28,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         PatientComplete::register();
+
+        Event::listen(
+            AppointmentStatusChanged::class,
+            SendAppointmentStatusNotification::class
+        );
         View::composer('*', function ($view) {
             $userService = app(UserService::class);
             $dentalService = app(DentalService::class);

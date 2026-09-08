@@ -116,12 +116,30 @@
                         <button type="button" x-on:click="addService()" class="custom-modal-btn custom-modal-btn-primary mb-4">+ Add Service</button>
                     </div>
 
-                    <div class="mb-2">
-                        <label class="mb-1">Patient Record (PDF)</label>
-                        <input type="file" 
-                            x-ref="pdfFile" 
-                            accept="application/pdf"
-                            class="custom-modal-input">
+                    <div class="mb-3 p-3 rounded-md border" :class="hasDentalCertificate() ? 'bg-blue-50/70 border-blue-200' : 'bg-gray-50 border-gray-200'">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="text-xs font-bold uppercase text-gray-700">
+                                <i class="fa-solid fa-file-pdf text-red-600 mr-1"></i> Dental Certificate (PDF)
+                            </label>
+                            <span x-show="hasDentalCertificate()" class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">
+                                Unlocked
+                            </span>
+                            <span x-show="!hasDentalCertificate()" class="text-[10px] font-medium text-amber-700 bg-amber-100 px-2 py-0.5 rounded">
+                                Dental Certificate Only
+                            </span>
+                        </div>
+                        
+                        <div x-show="hasDentalCertificate()">
+                            <input type="file" 
+                                x-ref="pdfFile" 
+                                accept="application/pdf"
+                                class="custom-modal-input">
+                            <p class="text-[11px] text-gray-500 mt-1">Upload the signed Dental Certificate PDF for this patient.</p>
+                        </div>
+
+                        <div x-show="!hasDentalCertificate()">
+                            <p class="text-[11px] text-gray-400">PDF document attachments are strictly restricted to <strong>Dental Certificates</strong>.</p>
+                        </div>
                     </div>
 
                     <div class="mb-2">
@@ -226,11 +244,18 @@ document.addEventListener('alpine:init', () => {
                     code: data.patient.code
                 }
 
-                if (data.service) {
+                if (data.services && data.services.length > 0) {
+                    this.form.services = data.services.map(s => ({
+                        id: s.id,
+                        name: s.name,
+                        amount: s.price_max || s.price_min || '',
+                        suggestions: []
+                    }));
+                } else if (data.service) {
                     this.form.services = [{
                         id: data.service.id,
                         name: data.service.name,
-                        amount: data.service.amount || '',
+                        amount: data.service.price_max || data.service.price_min || '',
                         suggestions: []
                     }];
                 }
@@ -289,6 +314,10 @@ document.addEventListener('alpine:init', () => {
         //     this.form.patients[index].suggestions = [];
         // },
 
+        hasDentalCertificate() {
+            return this.form.services.some(s => s.name && s.name.toLowerCase().includes('certificate'));
+        },
+
         async submit() {
             try {
                 const formData = new FormData();
@@ -299,9 +328,17 @@ document.addEventListener('alpine:init', () => {
                 // Append services array as JSON string
                 formData.append('services', JSON.stringify(this.form.services));
 
-                // Append file if selected
-                const file = this.$refs.pdfFile.files[0];
+                // Append file if selected, strictly restricted to Dental Certificates
+                const file = this.$refs.pdfFile?.files?.[0];
                 if (file) {
+                    if (!this.hasDentalCertificate()) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'PDF Document Restricted',
+                            text: 'PDF documents can only be attached to transactions for Dental Certificates.'
+                        });
+                        return;
+                    }
                     formData.append('pdf_file', file);
                 }
                 if(this.appointmentId != -1)

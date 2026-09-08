@@ -36,6 +36,21 @@ class Patient extends Model
         return $this->hasMany(Appointment::class);
     }
 
+    public function procedures()
+    {
+        return $this->hasMany(PatientProcedure::class)->orderBy('procedure_date', 'desc');
+    }
+
+    public function histories()
+    {
+        return $this->hasMany(PatientHistory::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
     protected function fullName(): Attribute
     {
         return Attribute::make(

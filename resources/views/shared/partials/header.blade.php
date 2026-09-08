@@ -89,6 +89,9 @@
                                 <a href="{{ route('user.appointments') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Appointments</a>
                             </li>
                             <li>
+                                <a href="{{ route('user.histories') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Procedure History</a>
+                            </li>
+                            <li>
                                 <a href="{{ route('user.transactions') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Transactions</a>
                             </li>
                             <li>

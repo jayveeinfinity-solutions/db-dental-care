@@ -9,7 +9,12 @@ use Illuminate\Database\Eloquent\Attributes\Scope;
 class Service extends Model
 {
     protected $table = 'services';
-    protected $fillable = ['name', 'category_id', 'price_min', 'price_max', 'is_featured', 'is_active'];
+    protected $fillable = ['name', 'category_id', 'price_min', 'price_max', 'duration_minutes', 'is_featured', 'is_active'];
+
+    public function appointments()
+    {
+        return $this->belongsToMany(Appointment::class, 'appointment_services')->withTimestamps();
+    }
 
     /**
      * Scope a query to only include active services.

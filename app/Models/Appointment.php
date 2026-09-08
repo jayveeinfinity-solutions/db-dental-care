@@ -16,6 +16,7 @@ class Appointment extends Model
         'patient_id',
         'service_id',
         'scheduled_at',
+        'duration_minutes',
         'status',
         'notes',
         'cancelled_by_id', 
@@ -23,11 +24,21 @@ class Appointment extends Model
         'cancelled_at'
     ];
 
-    protected $appends = ['formatted_date'];
+    protected $appends = ['formatted_date', 'services_summary', 'end_time'];
 
     public function service()
     {
         return $this->belongsTo(Service::class);
+    }
+
+    public function services()
+    {
+        return $this->belongsToMany(Service::class, 'appointment_services')->withTimestamps();
+    }
+
+    public function procedures()
+    {
+        return $this->hasMany(PatientProcedure::class);
     }
 
     public function patient()
@@ -56,6 +67,33 @@ class Appointment extends Model
             get: fn ($value, $attributes) =>
                 Carbon::parse($attributes['scheduled_at'])
                     ->format('F j, Y \a\t g:i A'),
+        );
+    }
+
+    protected function endTime(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, $attributes) =>
+                isset($attributes['scheduled_at'])
+                    ? Carbon::parse($attributes['scheduled_at'])
+                        ->addMinutes($attributes['duration_minutes'] ?? 30)
+                        ->format('g:i A')
+                    : '',
+        );
+    }
+
+    protected function servicesSummary(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                if ($this->relationLoaded('services') && $this->services->isNotEmpty()) {
+                    return $this->services->pluck('name')->join(', ');
+                }
+                if ($this->relationLoaded('service') && $this->service) {
+                    return $this->service->name;
+                }
+                return 'Dental Service';
+            }
         );
     }
 }
