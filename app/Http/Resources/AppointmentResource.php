@@ -22,13 +22,15 @@ class AppointmentResource extends JsonResource
             'status'              => $this->status,
             'notes'               => $this->notes,
             'service'             => $this->service,
+            'services'            => $this->services && $this->services->isNotEmpty() ? $this->services : ($this->service ? [$this->service] : []),
+            'services_names'      => $this->services && $this->services->isNotEmpty() ? $this->services->pluck('name')->join(', ') : ($this->service?->name ?? ''),
             'patient'             => $this->patient,
             'bookedBy'            => $this->bookedBy,
             'cancelledBy'         => $this->cancelledBy,
             'cancellation_reason' => $this->cancellation_reason,
             'cancelled_at'        => $this->cancelled_at,
             'history'             => $this->transaction?->history ?? null,
-            'transaction'         => $this->transaction,
+            'transaction'         => $this->transaction ? (new TransactionResource($this->transaction))->resolve() : null,
         ];
     }
 }

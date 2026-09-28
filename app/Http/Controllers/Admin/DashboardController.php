@@ -17,7 +17,14 @@ class DashboardController extends Controller
         $pendingAppointments = $this->dashboardService->getPendingAppointmentCount();
         $upcomingAppointments = $this->dashboardService->getUpcomingAppointmentCount();
         $patientCount = $this->dashboardService->getPatientCount();
+        $timetableData = $this->dashboardService->getTodaysTimetable();
 
-        return view('admin.dashboard.index', compact('todaysAppointments', 'pendingAppointments', 'upcomingAppointments', 'patientCount'));
+        return view('admin.dashboard.index', compact(
+            'todaysAppointments', 
+            'pendingAppointments', 
+            'upcomingAppointments', 
+            'patientCount',
+            'timetableData'
+        ));
     }
 }

@@ -7,20 +7,24 @@
     <!-- table 1 -->
     <div class="flex flex-wrap -mx-3">
         <div class="flex-none w-full max-w-full px-3">
-            <div class="inline-flex rounded-md shadow-xs mb-5">
-                <a href="{{ route('admin.appointments.index') }}" aria-current="page" class="px-4 py-2 text-sm font-medium text-blue-700 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+            @php $currentStatus = request()->query('status', 'all'); @endphp
+            <div class="inline-flex rounded-lg shadow-xs mb-5 border border-gray-200 bg-white p-1">
+                <a href="{{ route('admin.appointments.index') }}" class="px-3.5 py-1.5 text-xs font-bold rounded-md transition-all {{ $currentStatus === 'all' ? 'bg-blue-500 text-white shadow-xs' : 'text-slate-600 hover:text-blue-600' }}">
                     All
                 </a>
-                <a href="{{ route('admin.appointments.index', ['status' => 'pending']) }}" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+                <a href="{{ route('admin.appointments.index', ['status' => 'pending']) }}" class="px-3.5 py-1.5 text-xs font-bold rounded-md transition-all {{ $currentStatus === 'pending' ? 'bg-blue-500 text-white shadow-xs' : 'text-slate-600 hover:text-blue-600' }}">
                     Pending
                 </a>
-                <a href="{{ route('admin.appointments.index', ['status' => 'approved']) }}" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+                <a href="{{ route('admin.appointments.index', ['status' => 'approved']) }}" class="px-3.5 py-1.5 text-xs font-bold rounded-md transition-all {{ $currentStatus === 'approved' ? 'bg-blue-500 text-white shadow-xs' : 'text-slate-600 hover:text-blue-600' }}">
                     Approved
                 </a>
-                <a href="{{ route('admin.appointments.index', ['status' => 'completed']) }}" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+                <a href="{{ route('admin.appointments.index', ['status' => 'checked_in']) }}" class="px-3.5 py-1.5 text-xs font-bold rounded-md transition-all {{ $currentStatus === 'checked_in' ? 'bg-gradient-to-tl from-emerald-500 to-teal-400 text-white shadow-xs' : 'text-slate-600 hover:text-emerald-600' }}">
+                    Checked In
+                </a>
+                <a href="{{ route('admin.appointments.index', ['status' => 'completed']) }}" class="px-3.5 py-1.5 text-xs font-bold rounded-md transition-all {{ $currentStatus === 'completed' ? 'bg-blue-500 text-white shadow-xs' : 'text-slate-600 hover:text-blue-600' }}">
                     Completed
                 </a>
-                <a href="{{ route('admin.appointments.index', ['status' => 'cancelled']) }}" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+                <a href="{{ route('admin.appointments.index', ['status' => 'cancelled']) }}" class="px-3.5 py-1.5 text-xs font-bold rounded-md transition-all {{ $currentStatus === 'cancelled' ? 'bg-red-500 text-white shadow-xs' : 'text-slate-600 hover:text-red-600' }}">
                     Cancelled
                 </a>
             </div>
@@ -38,7 +42,6 @@
                                     <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Service</th>
                                     <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Date</th>
                                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Status</th>
-                                    <!-- <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Status Update</th> -->
                                     <th class="px-6 py-3 font-semibold capitalize align-middle bg-transparent border-b border-collapse border-solid shadow-none dark:border-white/40 dark:text-white tracking-none whitespace-nowrap text-slate-400 opacity-70"></th>
                                     </tr>
                                 </thead>
@@ -46,13 +49,16 @@
                             <tbody>
                                 @forelse($appointments as $appointment)
                                     @php
-                                        $statuses = ['pending', 'approved', 'completed', 'cancelled'];
+                                        $statuses = ['pending', 'approved', 'checked_in', 'completed', 'cancelled'];
                                         switch ($appointment->status) {
                                             case 'pending':
                                                 $statusClass = 'from-blue-700 to-cyan-500';
                                                 break;
                                             case 'approved':
-                                                $statusClass = 'from-slate-600 to-slate-300';
+                                                $statusClass = 'from-slate-600 to-slate-400';
+                                                break;
+                                            case 'checked_in':
+                                                $statusClass = 'from-emerald-500 to-teal-400';
                                                 break;
                                             case 'cancelled':
                                                 $statusClass = 'from-red-600 to-orange-600';
@@ -76,11 +82,23 @@
                                         </div>
                                     </td>
                                     <td class="p-2 text-left align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                                        <span class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400">{{ $appointment->service->name }}</span>
+                                        @if(!empty($appointment->services) && count($appointment->services) > 0)
+                                            <div class="flex flex-col">
+                                                <span class="text-xs font-semibold leading-tight dark:text-white text-slate-700">
+                                                    {{ $appointment->services_names ?? collect($appointment->services)->pluck('name')->join(', ') }}
+                                                </span>
+                                                <span class="text-[11px] text-slate-400">
+                                                    {{ count($appointment->services) }} {{ str()->plural('service', count($appointment->services)) }}
+                                                </span>
+                                            </div>
+                                        @elseif(!empty($appointment->service))
+                                            <span class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400">{{ $appointment->service->name }}</span>
+                                        @else
+                                            <span class="text-xs text-slate-400">-</span>
+                                        @endif
                                     </td>
                                     <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
                                         <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">{{ $appointment->formatted_date }}</p>
-                                        <!-- <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">Organization</p> -->
                                     </td>
                                     @if($appointment->status === 'cancelled' || $appointment->status === 'completed')
                                     <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
@@ -88,26 +106,32 @@
                                     </td>
                                     @else
                                     <td class="p-2 text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                                        <!-- <a href="javascript:;" class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400"> Edit </a> -->
-                                        <select name="status" data-id="{{ $appointment->id }}"
-                                            class="status-select bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            style="width: 100px;"
-                                            {{ ($appointment->status === 'cancelled' || $appointment->status === 'completed') ? 'disabled' : '' }}>
-                                            @foreach($statuses as $status)
-                                                <option value="{{ $status }}" 
-                                                    {{ $status === $appointment->status ? 'selected disabled' : '' }}>
-                                                    {{ $status }}   
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <div class="inline-flex items-center">
+                                            @if($appointment->status === 'checked_in')
+                                                <span class="w-2 h-2 mr-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                            @endif
+                                            <select name="status" data-id="{{ $appointment->id }}"
+                                                class="status-select bg-gray-50 border border-gray-300 text-gray-900 text-xs font-semibold rounded-lg focus:ring-blue-500 focus:border-blue-500 p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                                style="min-width: 110px;"
+                                                {{ ($appointment->status === 'cancelled' || $appointment->status === 'completed') ? 'disabled' : '' }}>
+                                                @foreach($statuses as $status)
+                                                    <option value="{{ $status }}" 
+                                                        {{ $status === $appointment->status ? 'selected disabled' : '' }}>
+                                                        {{ $status === 'checked_in' ? 'check in' : $status }}   
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </td>
                                     @endif
                                     <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent text-center">
-                                        <a href="javascript:;" @click="openViewModal({{ json_encode($appointment) }})" class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400"> View </a>
+                                        <button type="button" @click="openViewModal({{ json_encode($appointment) }})" class="inline-block px-3 py-1 font-bold text-center uppercase align-middle transition-all border border-blue-500 text-blue-500 rounded-lg cursor-pointer text-xs leading-normal hover:bg-blue-500 hover:text-white">
+                                            View
+                                        </button>
                                     </td>
                                 </tr>
                                 @empty
-                                    <p class="px-6">No patients yet.</p>
+                                    <p class="px-6 py-4">No appointments found.</p>
                                 @endforelse
                             </tbody>
                         </table>
@@ -137,18 +161,55 @@ document.addEventListener('alpine:init', () => {
                     const newStatus = e.target.value;
 
                     switch(newStatus) {
+                        case 'checked_in':
+                            const checkInResult = await Swal.fire({
+                                title: 'Check In Patient?',
+                                text: 'This will begin the appointment procedure and start the duration timer immediately.',
+                                icon: 'question',
+                                showCancelButton: true,
+                                confirmButtonColor: '#10b981',
+                                cancelButtonColor: '#6b7280',
+                                confirmButtonText: 'Yes, Check In Now',
+                                cancelButtonText: 'Cancel'
+                            });
+
+                            if (!checkInResult.isConfirmed) {
+                                window.location.reload();
+                                return;
+                            }
+
+                            try {
+                                const response = await axios.post(`/api/v1/appointments/${appointmentId}/check-in`);
+                                await Swal.fire({
+                                    icon: 'success',
+                                    title: 'Patient Checked In!',
+                                    text: 'Procedure timer is now running. Click View Details to monitor duration.',
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                                window.location.reload();
+                            } catch (err) {
+                                console.error(err);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Check-in Failed',
+                                    text: err.response?.data?.message || 'Something went wrong.'
+                                });
+                                window.location.reload();
+                            }
+                            return;
+
                         case 'completed':
                             window.dispatchEvent(new CustomEvent('open-create-transaction', {
                                 detail: { id: appointmentId }
                             }));
                             return;
-                            break;
+
                         case 'cancelled':
                             window.dispatchEvent(new CustomEvent('open-appointment-cancellation-admin', {
                                 detail: { id: appointmentId }
                             }));
                             return;
-                            break;
                     }
 
                     try {

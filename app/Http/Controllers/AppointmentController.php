@@ -54,8 +54,14 @@ class AppointmentController extends Controller
         $data = $request->validated();
         $scheduled_at = Carbon::parse("{$data['date']} {$data['time']}");
 
+        $serviceIds = $request->input('service_ids', []);
+        if (empty($serviceIds) && !empty($data['service_id'])) {
+            $serviceIds = [(int) $data['service_id']];
+        }
+        $primaryServiceId = $serviceIds[0] ?? $data['service_id'] ?? null;
+
         $appointment = Appointment::create([
-            'service_id'   => $data['service_id'],
+            'service_id'   => $primaryServiceId,
             'user_id'      => $user_id,
             'patient_id'   => $patient_id,
             'scheduled_at' => $scheduled_at,
@@ -63,9 +69,13 @@ class AppointmentController extends Controller
             'status'       => 'pending',
         ]);
 
+        if (!empty($serviceIds)) {
+            $appointment->services()->sync($serviceIds);
+        }
+
         return response()->json([
             'message'     => 'Appointment booked successfully!',
-            'appointment' => $appointment,
+            'appointment' => $appointment->load('services', 'service'),
         ]);
     }
 
@@ -74,7 +84,7 @@ class AppointmentController extends Controller
      */
     public function show(Appointment $appointment): JsonResponse
     {
-        $appointment = $appointment->load(['service', 'patient', 'bookedBy', 'transaction.services.service']);
+        $appointment = $appointment->load(['service', 'services', 'patient', 'bookedBy', 'transaction.services.service']);
         return response()->json($appointment, Response::HTTP_OK);
     }
 
@@ -111,32 +121,61 @@ class AppointmentController extends Controller
     public function updateStatus(Appointment $appointment, Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'status' => 'required|string|in:pending,approved,cancelled,completed'
+            'status' => 'required|string|in:pending,approved,checked_in,cancelled,completed'
         ]);
 
         DB::transaction(function () use ($appointment, $validated) {
+            if ($validated['status'] === 'checked_in') {
+                app(\App\Services\TransactionService::class)->checkInAppointment($appointment);
+                return;
+            }
 
             $appointment->update(['status' => $validated['status']]);
 
-            // If status is completed, create a transaction
+            // If status is completed, create or finalize a transaction
             if ($validated['status'] === 'completed') {
+                if ($appointment->transaction && $appointment->transaction->status === 'in_progress') {
+                    app(\App\Services\TransactionService::class)->checkoutTransaction($appointment->transaction);
+                } else {
+                    $checkIn = $appointment->scheduled_at ? Carbon::parse($appointment->scheduled_at) : now();
+                    $checkOut = now();
+                    $duration = $checkIn->diffInSeconds($checkOut);
 
-                // Create transaction if it doesn't exist yet
-                $transaction = $appointment->transaction ?? $appointment->transaction()->create([
-                    'total_amount' => 0,
-                ]);
+                    // Create transaction if it doesn't exist yet
+                    $transaction = $appointment->transaction ?? $appointment->transaction()->create([
+                        'patient_id'       => $appointment->patient_id,
+                        'total_amount'     => 0,
+                        'status'           => 'completed',
+                        'checked_in_at'    => $checkIn,
+                        'checked_out_at'   => $checkOut,
+                        'duration_seconds' => $duration,
+                    ]);
 
-                // Attach all appointment services to the transaction
-                $transaction->services()->create([
-                    'service_id' => $appointment->service->id,
-                    'quantity' => 1,
-                    'price' => $appointment->service->price_max,
-                    'subtotal' => $appointment->service->price_max,
-                ]);
+                    $transaction->update([
+                        'status'           => 'completed',
+                        'checked_out_at'   => $transaction->checked_out_at ?? $checkOut,
+                        'duration_seconds' => $transaction->duration_seconds ?? $duration,
+                    ]);
 
-                // Recalculate total
-                $transaction->total_amount = $transaction->services->sum('subtotal');
-                $transaction->save();
+                    $services = $appointment->services()->exists() 
+                        ? $appointment->services 
+                        : ($appointment->service ? collect([$appointment->service]) : collect());
+
+                    if ($transaction->services()->count() === 0) {
+                        foreach ($services as $service) {
+                            $transaction->services()->create([
+                                'service_id' => $service->id,
+                                'quantity'   => 1,
+                                'price'      => $service->price_max ?? $service->price_min ?? 0,
+                                'subtotal'   => $service->price_max ?? $service->price_min ?? 0,
+                            ]);
+                        }
+                    }
+
+                    // Recalculate total
+                    $transaction->total_amount = $transaction->services->sum('subtotal');
+                    $transaction->save();
+                }
             }
         });
 

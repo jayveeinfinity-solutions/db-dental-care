@@ -33,9 +33,12 @@ class StoreTransactionRequest extends FormRequest
         return [
             'appointment_id' => ['nullable', 'exists:appointments,id'],
             'patient_id'     => ['required', 'exists:patients,id'],
+            'status'         => ['nullable', 'string', 'in:in_progress,completed'],
+            'checked_in_at'  => ['nullable', 'date'],
+            'checked_out_at' => ['nullable', 'date'],
             'notes'          => ['nullable', 'string'],
-            'services' => ['required', 'array'],
-            'services.*.id' => ['required', 'integer', 'exists:services,id'],
+            'services'       => ['required', 'array'],
+            'services.*.id'  => ['required', 'integer', 'exists:services,id'],
             'services.*.amount' => ['required', 'numeric'],
             'pdf_file'       => ['nullable', 'file', 'mimes:pdf', 'max:10240'],
         ];
