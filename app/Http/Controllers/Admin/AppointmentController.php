@@ -14,9 +14,18 @@ class AppointmentController extends Controller
 
     public function index(Request $request) {
         $status = $request->query('status', 'all');
+        $from = $request->query('from');
+        $to = $request->query('to');
         $statusOrder = ['approved', 'pending', 'completed', 'cancelled'];
 
-        $appointments = $this->appointmentService->getAppointments($status);
+        $appointments = $this->appointmentService->getAppointments($status, $from, $to);
+
+        if ($request->wantsJson() || $request->is('api/*')) {
+            return response()->json([
+                'success'      => true,
+                'appointments' => $appointments
+            ]);
+        }
 
         $appointments = collect($appointments)
             ->map(function ($appointmentResource) {

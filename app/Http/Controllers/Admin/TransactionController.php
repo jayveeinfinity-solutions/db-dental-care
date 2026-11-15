@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\TransactionService;
 use App\Http\Resources\TransactionResource;
@@ -13,12 +14,22 @@ class TransactionController extends Controller
         protected TransactionService $transactionService
     ) {}
 
-    public function index() {
-        $transactions = $this->transactionService->getTransactions();
+    public function index(Request $request) {
+        $from = $request->query('from');
+        $to = $request->query('to');
 
-        $transactions = TransactionResource::collection($transactions);
+        $transactions = $this->transactionService->getTransactions($from, $to);
 
-        $transactions = collect($transactions)
+        $transactionResources = TransactionResource::collection($transactions);
+
+        if ($request->wantsJson() || $request->is('api/*')) {
+            return response()->json([
+                'success'      => true,
+                'transactions' => $transactionResources
+            ]);
+        }
+
+        $transactions = collect($transactionResources)
             ->map(function ($transactionResource) {
                 return json_decode(json_encode($transactionResource->resolve()));
             });

@@ -7,30 +7,101 @@
     <!-- table 1 -->
     <div class="flex flex-wrap -mx-3">
         <div class="flex-none w-full max-w-full px-3">
-            @php $currentStatus = request()->query('status', 'all'); @endphp
+            @php 
+                $currentStatus = request()->query('status', 'all'); 
+                $from = request()->query('from');
+                $to = request()->query('to');
+            @endphp
             <div class="inline-flex rounded-lg shadow-xs mb-5 border border-gray-200 bg-white p-1">
-                <a href="{{ route('admin.appointments.index') }}" class="px-3.5 py-1.5 text-xs font-bold rounded-md transition-all {{ $currentStatus === 'all' ? 'bg-blue-500 text-white shadow-xs' : 'text-slate-600 hover:text-blue-600' }}">
+                <a href="{{ route('admin.appointments.index', array_filter(['from' => $from, 'to' => $to])) }}" class="px-3.5 py-1.5 text-xs font-bold rounded-md transition-all {{ $currentStatus === 'all' ? 'bg-blue-500 text-white shadow-xs' : 'text-slate-600 hover:text-blue-600' }}">
                     All
                 </a>
-                <a href="{{ route('admin.appointments.index', ['status' => 'pending']) }}" class="px-3.5 py-1.5 text-xs font-bold rounded-md transition-all {{ $currentStatus === 'pending' ? 'bg-blue-500 text-white shadow-xs' : 'text-slate-600 hover:text-blue-600' }}">
+                <a href="{{ route('admin.appointments.index', array_filter(['status' => 'pending', 'from' => $from, 'to' => $to])) }}" class="px-3.5 py-1.5 text-xs font-bold rounded-md transition-all {{ $currentStatus === 'pending' ? 'bg-blue-500 text-white shadow-xs' : 'text-slate-600 hover:text-blue-600' }}">
                     Pending
                 </a>
-                <a href="{{ route('admin.appointments.index', ['status' => 'approved']) }}" class="px-3.5 py-1.5 text-xs font-bold rounded-md transition-all {{ $currentStatus === 'approved' ? 'bg-blue-500 text-white shadow-xs' : 'text-slate-600 hover:text-blue-600' }}">
+                <a href="{{ route('admin.appointments.index', array_filter(['status' => 'approved', 'from' => $from, 'to' => $to])) }}" class="px-3.5 py-1.5 text-xs font-bold rounded-md transition-all {{ $currentStatus === 'approved' ? 'bg-blue-500 text-white shadow-xs' : 'text-slate-600 hover:text-blue-600' }}">
                     Approved
                 </a>
-                <a href="{{ route('admin.appointments.index', ['status' => 'checked_in']) }}" class="px-3.5 py-1.5 text-xs font-bold rounded-md transition-all {{ $currentStatus === 'checked_in' ? 'bg-gradient-to-tl from-emerald-500 to-teal-400 text-white shadow-xs' : 'text-slate-600 hover:text-emerald-600' }}">
+                <a href="{{ route('admin.appointments.index', array_filter(['status' => 'checked_in', 'from' => $from, 'to' => $to])) }}" class="px-3.5 py-1.5 text-xs font-bold rounded-md transition-all {{ $currentStatus === 'checked_in' ? 'bg-gradient-to-tl from-emerald-500 to-teal-400 text-white shadow-xs' : 'text-slate-600 hover:text-emerald-600' }}">
                     Checked In
                 </a>
-                <a href="{{ route('admin.appointments.index', ['status' => 'completed']) }}" class="px-3.5 py-1.5 text-xs font-bold rounded-md transition-all {{ $currentStatus === 'completed' ? 'bg-blue-500 text-white shadow-xs' : 'text-slate-600 hover:text-blue-600' }}">
+                <a href="{{ route('admin.appointments.index', array_filter(['status' => 'completed', 'from' => $from, 'to' => $to])) }}" class="px-3.5 py-1.5 text-xs font-bold rounded-md transition-all {{ $currentStatus === 'completed' ? 'bg-blue-500 text-white shadow-xs' : 'text-slate-600 hover:text-blue-600' }}">
                     Completed
                 </a>
-                <a href="{{ route('admin.appointments.index', ['status' => 'cancelled']) }}" class="px-3.5 py-1.5 text-xs font-bold rounded-md transition-all {{ $currentStatus === 'cancelled' ? 'bg-red-500 text-white shadow-xs' : 'text-slate-600 hover:text-red-600' }}">
+                <a href="{{ route('admin.appointments.index', array_filter(['status' => 'cancelled', 'from' => $from, 'to' => $to])) }}" class="px-3.5 py-1.5 text-xs font-bold rounded-md transition-all {{ $currentStatus === 'cancelled' ? 'bg-red-500 text-white shadow-xs' : 'text-slate-600 hover:text-red-600' }}">
                     Cancelled
                 </a>
             </div>
             <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
                 <div class="p-6 pb-0 mb-0 border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-                    <h6 class="dark:text-white">{{ str()->plural('Appointment', $appointments->count()) }} ({{ $appointments->count() }})</h6>
+                    <h6 class="dark:text-white font-bold">{{ str()->plural('Appointment', $appointments->count()) }} ({{ $appointments->count() }})</h6>
+                    <p class="text-xs text-slate-400 mb-0">Track and manage patient appointment schedules</p>
+                </div>
+
+                <!-- Date Range Filter -->
+                <div class="px-6 pt-4 pb-2">
+                    <form method="GET" action="{{ route('admin.appointments.index') }}" class="flex flex-wrap items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700">
+                        @if($currentStatus !== 'all')
+                            <input type="hidden" name="status" value="{{ $currentStatus }}">
+                        @endif
+                        <div class="flex items-center gap-2 text-slate-700 dark:text-slate-200 text-xs font-bold">
+                            <i class="fa-regular fa-calendar-days text-blue-500 text-sm"></i>
+                            <span>Date Range:</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label for="filter_from" class="text-xs font-semibold text-slate-500 dark:text-slate-400">From</label>
+                            <input 
+                                type="date" 
+                                id="filter_from" 
+                                name="from" 
+                                value="{{ request('from') }}"
+                                class="px-3 py-1.5 text-xs bg-white dark:bg-slate-700 text-slate-800 dark:text-white border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            >
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label for="filter_to" class="text-xs font-semibold text-slate-500 dark:text-slate-400">To</label>
+                            <input 
+                                type="date" 
+                                id="filter_to" 
+                                name="to" 
+                                value="{{ request('to') }}"
+                                class="px-3 py-1.5 text-xs bg-white dark:bg-slate-700 text-slate-800 dark:text-white border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            >
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button 
+                                type="submit" 
+                                class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg transition-all shadow-xs cursor-pointer"
+                            >
+                                <i class="fa-solid fa-filter text-xxs"></i>
+                                <span>Filter</span>
+                            </button>
+                            @if(request('from') || request('to'))
+                                <a 
+                                    href="{{ route('admin.appointments.index', array_filter(['status' => $currentStatus !== 'all' ? $currentStatus : null])) }}" 
+                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-bold text-xs rounded-lg transition-all cursor-pointer"
+                                >
+                                    <i class="fa-solid fa-xmark text-xxs"></i>
+                                    <span>Reset</span>
+                                </a>
+                            @endif
+                        </div>
+                        @if(request('from') || request('to'))
+                            <div class="ml-auto text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                                <span>
+                                    Filtered:
+                                    @if(request('from') && request('to'))
+                                        <strong>{{ \Carbon\Carbon::parse(request('from'))->format('M d, Y') }}</strong> to <strong>{{ \Carbon\Carbon::parse(request('to'))->format('M d, Y') }}</strong>
+                                    @elseif(request('from'))
+                                        from <strong>{{ \Carbon\Carbon::parse(request('from'))->format('M d, Y') }}</strong> onwards
+                                    @elseif(request('to'))
+                                        up to <strong>{{ \Carbon\Carbon::parse(request('to'))->format('M d, Y') }}</strong>
+                                    @endif
+                                </span>
+                            </div>
+                        @endif
+                    </form>
                 </div>
                 <div class="flex-auto px-0 pt-0 pb-2">
                     <div class="p-0 overflow-x-auto">
@@ -131,7 +202,19 @@
                                     </td>
                                 </tr>
                                 @empty
-                                    <p class="px-6 py-4">No appointments found.</p>
+                                    <tr>
+                                        <td colspan="5" class="p-6 text-center text-slate-400">
+                                            @if(request('from') || request('to'))
+                                                <div class="py-4">
+                                                    <i class="fa-solid fa-calendar-xmark text-slate-300 dark:text-slate-600 text-3xl mb-2"></i>
+                                                    <p class="text-sm font-semibold text-slate-600 dark:text-slate-300 mb-1">No appointments found for the selected date range.</p>
+                                                    <a href="{{ route('admin.appointments.index', array_filter(['status' => $currentStatus !== 'all' ? $currentStatus : null])) }}" class="text-xs text-blue-600 hover:underline font-bold">Clear date filter</a>
+                                                </div>
+                                            @else
+                                                <p class="py-4 mb-0 text-slate-400">No appointments found.</p>
+                                            @endif
+                                        </td>
+                                    </tr>
                                 @endforelse
                             </tbody>
                         </table>

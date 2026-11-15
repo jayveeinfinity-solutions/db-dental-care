@@ -478,6 +478,15 @@ document.addEventListener('alpine:init', () => {
 .custom-modal-btn-secondary:hover {
     background: #6b7280;
 }
+.custom-modal-btn-success,
+.custom-modal-btn-emerald {
+    background: #059669 !important;
+    color: #fff !important;
+}
+.custom-modal-btn-success:hover,
+.custom-modal-btn-emerald:hover {
+    background: #047857 !important;
+}
 
 /* Transitions */
 .custom-modal-enter {

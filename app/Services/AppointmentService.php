@@ -62,7 +62,7 @@ class AppointmentService
             ->count();
     }
 
-    public function getAppointments($status = 'all')
+    public function getAppointments($status = 'all', ?string $fromDate = null, ?string $toDate = null)
     {
         $user = Auth::user();
 
@@ -70,11 +70,21 @@ class AppointmentService
             return collect();
         }
 
+        if (!empty($fromDate) && !empty($toDate) && $fromDate > $toDate) {
+            [$fromDate, $toDate] = [$toDate, $fromDate];
+        }
+
         return AppointmentResource::collection(
             $this->appointmentModel
                 ->with(['service', 'services', 'patient', 'bookedBy', 'transaction'])
                 ->when($status !== 'all', function($query) use ($status) {
                     $query->where('status', $status);
+                })
+                ->when(!empty($fromDate), function($query) use ($fromDate) {
+                    $query->whereDate('scheduled_at', '>=', $fromDate);
+                })
+                ->when(!empty($toDate), function($query) use ($toDate) {
+                    $query->whereDate('scheduled_at', '<=', $toDate);
                 })
                 ->orderByRaw("
                     CASE status
@@ -86,6 +96,7 @@ class AppointmentService
                         ELSE 6
                     END
                 ")
+                ->orderByDesc('scheduled_at')
                 ->latest()
                 ->get()
         );

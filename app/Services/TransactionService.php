@@ -17,10 +17,37 @@ class TransactionService
         protected TransactionServiceModel $transactionServiceModel
     ) {}
     
-    public function getTransactions() {
-        return $this->transactionModel
-            ->with(['appointment', 'patient', 'services.service', 'history'])
-            ->latest()
+    public function getTransactions(?string $fromDate = null, ?string $toDate = null) {
+        $query = $this->transactionModel
+            ->with(['appointment', 'patient', 'services.service', 'history']);
+
+        if (!empty($fromDate) && !empty($toDate) && $fromDate > $toDate) {
+            [$fromDate, $toDate] = [$toDate, $fromDate];
+        }
+
+        if (!empty($fromDate)) {
+            $query->where(function ($q) use ($fromDate) {
+                $q->whereDate('checked_in_at', '>=', $fromDate)
+                  ->orWhere(function ($sub) use ($fromDate) {
+                      $sub->whereNull('checked_in_at')
+                          ->whereDate('created_at', '>=', $fromDate);
+                  });
+            });
+        }
+
+        if (!empty($toDate)) {
+            $query->where(function ($q) use ($toDate) {
+                $q->whereDate('checked_in_at', '<=', $toDate)
+                  ->orWhere(function ($sub) use ($toDate) {
+                      $sub->whereNull('checked_in_at')
+                          ->whereDate('created_at', '<=', $toDate);
+                  });
+            });
+        }
+
+        return $query
+            ->orderByRaw('COALESCE(checked_in_at, created_at) DESC')
+            ->orderByDesc('id')
             ->get();
     }
     

@@ -8,7 +8,7 @@
     <div class="flex flex-wrap -mx-3">
         <div class="flex-none w-full max-w-full px-3">
             <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
-                <div class="p-6 pb-0 mb-0 border-b-0 border-b-solid rounded-t-2xl border-b-transparent flex justify-between items-center">
+                <div class="p-6 pb-0 mb-0 border-b-0 border-b-solid rounded-t-2xl border-b-transparent flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
                         <h6 class="dark:text-white font-bold">{{ str()->plural('Transaction', $transactions->count()) }} ({{ $transactions->count() }})</h6>
                         <p class="text-xs text-slate-400 mb-0">Track patient procedures, check-in duration, and billing</p>
@@ -17,6 +17,69 @@
                         <i class="fa-solid fa-plus text-xs"></i>
                         <span>Start Walk-in / Transaction</span>
                     </button>
+                </div>
+
+                <!-- Date Range Filter -->
+                <div class="px-6 pt-4 pb-2">
+                    <form method="GET" action="{{ route('admin.transactions.index') }}" class="flex flex-wrap items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700">
+                        <div class="flex items-center gap-2 text-slate-700 dark:text-slate-200 text-xs font-bold">
+                            <i class="fa-regular fa-calendar-days text-blue-500 text-sm"></i>
+                            <span>Date Range:</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label for="filter_from" class="text-xs font-semibold text-slate-500 dark:text-slate-400">From</label>
+                            <input 
+                                type="date" 
+                                id="filter_from" 
+                                name="from" 
+                                value="{{ request('from') }}"
+                                class="px-3 py-1.5 text-xs bg-white dark:bg-slate-700 text-slate-800 dark:text-white border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            >
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label for="filter_to" class="text-xs font-semibold text-slate-500 dark:text-slate-400">To</label>
+                            <input 
+                                type="date" 
+                                id="filter_to" 
+                                name="to" 
+                                value="{{ request('to') }}"
+                                class="px-3 py-1.5 text-xs bg-white dark:bg-slate-700 text-slate-800 dark:text-white border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            >
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button 
+                                type="submit" 
+                                class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg transition-all shadow-xs cursor-pointer"
+                            >
+                                <i class="fa-solid fa-filter text-xxs"></i>
+                                <span>Filter</span>
+                            </button>
+                            @if(request('from') || request('to'))
+                                <a 
+                                    href="{{ route('admin.transactions.index') }}" 
+                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-bold text-xs rounded-lg transition-all cursor-pointer"
+                                >
+                                    <i class="fa-solid fa-xmark text-xxs"></i>
+                                    <span>Reset</span>
+                                </a>
+                            @endif
+                        </div>
+                        @if(request('from') || request('to'))
+                            <div class="ml-auto text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                                <span>
+                                    Filtered:
+                                    @if(request('from') && request('to'))
+                                        <strong>{{ \Carbon\Carbon::parse(request('from'))->format('M d, Y') }}</strong> to <strong>{{ \Carbon\Carbon::parse(request('to'))->format('M d, Y') }}</strong>
+                                    @elseif(request('from'))
+                                        from <strong>{{ \Carbon\Carbon::parse(request('from'))->format('M d, Y') }}</strong> onwards
+                                    @elseif(request('to'))
+                                        up to <strong>{{ \Carbon\Carbon::parse(request('to'))->format('M d, Y') }}</strong>
+                                    @endif
+                                </span>
+                            </div>
+                        @endif
+                    </form>
                 </div>
                 <div class="flex-auto px-0 pt-0 pb-2">
                     <div class="p-0 overflow-x-auto">
@@ -108,7 +171,15 @@
                                 @empty
                                     <tr>
                                         <td colspan="6" class="p-6 text-center text-slate-400">
-                                            No transactions yet. Click <strong>Start Walk-in / Transaction</strong> above to begin!
+                                            @if(request('from') || request('to'))
+                                                <div class="py-4">
+                                                    <i class="fa-solid fa-calendar-xmark text-slate-300 dark:text-slate-600 text-3xl mb-2"></i>
+                                                    <p class="text-sm font-semibold text-slate-600 dark:text-slate-300 mb-1">No transactions found for the selected date range.</p>
+                                                    <a href="{{ route('admin.transactions.index') }}" class="text-xs text-blue-600 hover:underline font-bold">Clear date filter</a>
+                                                </div>
+                                            @else
+                                                No transactions yet. Click <strong>Start Walk-in / Transaction</strong> above to begin!
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforelse

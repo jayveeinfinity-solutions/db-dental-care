@@ -99,7 +99,7 @@
                             <button 
                                 type="button" 
                                 x-on:click="checkoutCurrent()" 
-                                class="custom-modal-btn bg-emerald-600 text-white hover:bg-emerald-700 flex items-center gap-1.5 font-bold"
+                                class="custom-modal-btn custom-modal-btn-emerald bg-emerald-600 text-white hover:bg-emerald-700 flex items-center gap-1.5 font-bold"
                             >
                                 <i class="fa-solid fa-check"></i>
                                 Check Out Patient Now

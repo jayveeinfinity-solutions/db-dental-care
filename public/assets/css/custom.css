@@ -876,3 +876,76 @@
 .py-2\.5 { padding-top: 0.625rem; padding-bottom: 0.625rem; }
 .w-7 { width: 1.75rem; }
 .h-7 { height: 1.75rem; }
+
+/* ==========================================================================
+   SWEETALERT2 BUTTON DEFAULT & HOVER STATE FIX
+   Fixes Tailwind / Argon CSS reset [type='button'] overriding SweetAlert2's
+   low-specificity :where() default button styles (which made buttons invisible 
+   until hover).
+   ========================================================================== */
+.swal2-actions button.swal2-styled,
+.swal2-container .swal2-actions button.swal2-styled {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  border-radius: 0.5rem !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  padding: 0.625rem 1.25rem !important;
+  margin: 0.3125rem !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.15s ease-in-out !important;
+  cursor: pointer !important;
+  border: none !important;
+}
+
+.swal2-actions button.swal2-styled.swal2-confirm,
+.swal2-container .swal2-actions button.swal2-styled.swal2-confirm {
+  background-color: var(--swal2-confirm-button-background-color, #10b981) !important;
+  color: var(--swal2-confirm-button-color, #ffffff) !important;
+}
+
+.swal2-actions button.swal2-styled.swal2-cancel,
+.swal2-container .swal2-actions button.swal2-styled.swal2-cancel {
+  background-color: var(--swal2-cancel-button-background-color, #6b7280) !important;
+  color: var(--swal2-cancel-button-color, #ffffff) !important;
+}
+
+.swal2-actions button.swal2-styled.swal2-deny,
+.swal2-container .swal2-actions button.swal2-styled.swal2-deny {
+  background-color: var(--swal2-deny-button-background-color, #ef4444) !important;
+  color: var(--swal2-deny-button-color, #ffffff) !important;
+}
+
+.swal2-actions button.swal2-styled.swal2-confirm:hover,
+.swal2-container .swal2-actions button.swal2-styled.swal2-confirm:hover {
+  background-color: color-mix(in srgb, var(--swal2-confirm-button-background-color, #10b981), #000000 12%) !important;
+  filter: brightness(0.95);
+}
+
+.swal2-actions button.swal2-styled.swal2-cancel:hover,
+.swal2-container .swal2-actions button.swal2-styled.swal2-cancel:hover {
+  background-color: color-mix(in srgb, var(--swal2-cancel-button-background-color, #6b7280), #000000 12%) !important;
+  filter: brightness(0.95);
+}
+
+.swal2-actions button.swal2-styled.swal2-deny:hover,
+.swal2-container .swal2-actions button.swal2-styled.swal2-deny:hover {
+  background-color: color-mix(in srgb, var(--swal2-deny-button-background-color, #ef4444), #000000 12%) !important;
+  filter: brightness(0.95);
+}
+
+/* Custom modal emerald buttons */
+.custom-modal-btn-success,
+.custom-modal-btn-emerald {
+  background: #059669 !important;
+  color: #fff !important;
+}
+
+.custom-modal-btn-success:hover,
+.custom-modal-btn-emerald:hover {
+  background: #047857 !important;
+}
+
