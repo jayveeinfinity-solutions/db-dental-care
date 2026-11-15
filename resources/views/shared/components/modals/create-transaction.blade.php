@@ -129,9 +129,21 @@
                         <textarea x-model="form.notes" class="custom-modal-input" rows="3"></textarea>
                     </div>
 
+                    <div class="mb-3 p-2.5 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-800 flex items-center gap-2">
+                        <i class="fa-solid fa-stopwatch text-blue-600 text-sm"></i>
+                        <span><strong>Check-in Duration:</strong> Saving will automatically check in the patient and start the transaction timer. Hit <strong>Check Out</strong> when completed to record total duration.</span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="custom-modal-checkbox-label text-xs text-gray-600">
+                            <input type="checkbox" x-model="completeImmediately" class="rounded border-gray-300 text-blue-600">
+                            Mark as Completed Immediately (bypass timer)
+                        </label>
+                    </div>
+
                     <div class="custom-modal-footer">
                         <button type="button" x-on:click="close" class="custom-modal-btn custom-modal-btn-secondary">Close</button>
-                        <button type="submit" class="custom-modal-btn custom-modal-btn-primary">Save Record</button>
+                        <button type="submit" class="custom-modal-btn custom-modal-btn-primary" x-text="completeImmediately ? 'Complete Transaction' : 'Check In & Start Timer'"></button>
                     </div>
                 </form>
             </div>
@@ -145,6 +157,7 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('createTransactionModal', () => ({
         show: false,
         appointmentId: null,
+        completeImmediately: false,
         form: {
             notes: '',
             services: []
@@ -190,6 +203,7 @@ document.addEventListener('alpine:init', () => {
 
         open(id) {
             this.appointmentId = id || -1;
+            this.completeImmediately = false;
             this.show = true;
 
             this.form = {
@@ -226,11 +240,18 @@ document.addEventListener('alpine:init', () => {
                     code: data.patient.code
                 }
 
-                if (data.service) {
+                if (data.services && data.services.length > 0) {
+                    this.form.services = data.services.map(s => ({
+                        id: s.id,
+                        name: s.name,
+                        amount: s.price_max || s.price_min || s.amount || 0,
+                        suggestions: []
+                    }));
+                } else if (data.service) {
                     this.form.services = [{
                         id: data.service.id,
                         name: data.service.name,
-                        amount: data.service.amount || '',
+                        amount: data.service.amount || data.service.price_max || data.service.price_min || '',
                         suggestions: []
                     }];
                 }
@@ -299,6 +320,10 @@ document.addEventListener('alpine:init', () => {
                 // Append services array as JSON string
                 formData.append('services', JSON.stringify(this.form.services));
 
+                const status = this.completeImmediately ? 'completed' : 'in_progress';
+                formData.append('status', status);
+                formData.append('checked_in_at', new Date().toISOString());
+
                 // Append file if selected
                 const file = this.$refs.pdfFile.files[0];
                 if (file) {
@@ -313,12 +338,15 @@ document.addEventListener('alpine:init', () => {
                     { headers: { 'Content-Type': 'multipart/form-data' } }
                 );
 
+                const isTimerRunning = status === 'in_progress';
                 Swal.fire({
                     icon: 'success',
-                    title: 'Patient Record Saved',
-                    text: response.data.message || 'Patient record has been saved.',
+                    title: isTimerRunning ? 'Patient Checked In!' : 'Patient Record Saved',
+                    text: isTimerRunning 
+                        ? 'Check-in timer is running! Click "Check Out" when transaction completes to finalize duration.' 
+                        : (response.data.message || 'Patient record has been saved.'),
                     allowOutsideClick: false,
-                    timer: 2000,
+                    timer: 2500,
                     timerProgressBar: true,
                     showConfirmButton: false
                 }).then(() => {

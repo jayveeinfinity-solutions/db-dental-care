@@ -32,7 +32,37 @@ class TransactionController extends Controller
 
         return response()->json([
             'success' => true,
-            'transaction' => $transaction
+            'message' => 'Transaction saved successfully!',
+            'transaction' => new TransactionResource($transaction)
+        ]);
+    }
+
+    public function checkout(\Illuminate\Http\Request $request, \App\Models\Transaction $transaction)
+    {
+        $validated = $request->validate([
+            'notes'    => 'nullable|string',
+            'pdf_file' => 'nullable|file|mimes:pdf|max:10240',
+        ]);
+
+        $transaction = $this->transactionService->checkoutTransaction($transaction, $validated);
+
+        return response()->json([
+            'success'            => true,
+            'message'            => 'Patient checked out successfully!',
+            'transaction'        => new TransactionResource($transaction),
+            'duration_formatted' => $transaction->formatted_duration,
+            'duration_seconds'   => $transaction->duration_seconds,
+        ]);
+    }
+
+    public function checkIn(\App\Models\Appointment $appointment)
+    {
+        $transaction = $this->transactionService->checkInAppointment($appointment);
+
+        return response()->json([
+            'success'     => true,
+            'message'     => 'Patient checked in successfully! Timer is now running.',
+            'transaction' => new TransactionResource($transaction),
         ]);
     }
 }

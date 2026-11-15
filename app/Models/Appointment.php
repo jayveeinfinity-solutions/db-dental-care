@@ -30,6 +30,11 @@ class Appointment extends Model
         return $this->belongsTo(Service::class);
     }
 
+    public function services()
+    {
+        return $this->belongsToMany(Service::class, 'appointment_services')->withTimestamps();
+    }
+
     public function patient()
     {
         return $this->belongsTo(Patient::class);

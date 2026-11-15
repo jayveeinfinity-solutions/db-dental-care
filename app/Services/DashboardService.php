@@ -35,4 +35,9 @@ class DashboardService
     {
         return $this->userService->countUser();
     }
+
+    public function getTodaysTimetable(): array
+    {
+        return $this->appointmentService->getTodaysTimetable();
+    }
 }

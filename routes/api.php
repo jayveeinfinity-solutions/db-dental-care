@@ -42,6 +42,8 @@ Route::middleware('auth:sanctum')->group(function() {
 
         Route::get('transactions', [AdminTransactionController::class, 'index'])->name('transaction.index');
         Route::post('transactions', [AdminTransactionController::class, 'store'])->name('transaction.store');
+        Route::post('transactions/{transaction}/checkout', [AdminTransactionController::class, 'checkout'])->name('transaction.checkout');
+        Route::post('appointments/{appointment}/check-in', [AdminTransactionController::class, 'checkIn'])->name('appointment.checkin');
 
         Route::prefix('admin')->name('admin.')->group(function() {
             Route::apiResource('dashboard', AppointmentController::class);

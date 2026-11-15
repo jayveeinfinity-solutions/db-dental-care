@@ -79,7 +79,7 @@
                     <div class="flex flex-row justify-between items-center">
                         <div>
                             <div class="flex flex-row gap-2 items-center">
-                                <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white" x-text="appointment.service.name"></h5>
+                                <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white" x-text="appointment.services_names || appointment.service?.name"></h5>
                                 <div>
                                     <span
                                         class="text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm"
