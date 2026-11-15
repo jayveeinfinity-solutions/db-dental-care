@@ -4,378 +4,309 @@
 
 @section('content')
 <div class="w-full px-6 py-6 mx-auto">
-    <!-- row 1 -->
+    <!-- Stat Cards Row -->
     <div class="flex flex-wrap -mx-3">
-        <!-- card1 -->
-        <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
-            <div class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
-            <div class="flex-auto p-4">
-                <div class="flex flex-row -mx-3">
-                <div class="flex-none w-2/3 max-w-full px-3">
-                    <div>
-                    <p class="mb-0 font-sans text-sm font-semibold leading-normal uppercase dark:text-white dark:opacity-60">Today's Appointment</p>
-                    <h5 class="mb-2 font-bold dark:text-white">{{ $todaysAppointments }}</h5>
-                    <p class="mb-0 dark:text-white dark:opacity-60">
-                        <!-- <span class="text-sm font-bold leading-normal text-emerald-500">+55%</span>
-                        since yesterday -->
-                    </p>
-                    </div>
-                </div>
-                <div class="px-3 text-right basis-1/3">
-                    <div class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-blue-500 to-violet-500">
-                    <i class="ni leading-none ni-money-coins text-lg relative !top-[10px] text-white"></i>
-                    </div>
-                </div>
-                </div>
-            </div>
-            </div>
-        </div>
-
-        <!-- card2 -->
+        <!-- card1: Today's Appointments -->
         <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
             <div class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
                 <div class="flex-auto p-4">
                     <div class="flex flex-row -mx-3">
                         <div class="flex-none w-2/3 max-w-full px-3">
                             <div>
-                            <p class="mb-0 font-sans text-sm font-semibold leading-normal uppercase dark:text-white dark:opacity-60">Pending Appointments</p>
-                            <h5 class="mb-2 font-bold dark:text-white">{{ $pendingAppointments }}</h5>
-                            <p class="mb-0 dark:text-white dark:opacity-60">
-                                <!-- <span class="text-sm font-bold leading-normal text-emerald-500">+3%</span>
-                                since last week -->
-                            </p>
+                                <p class="mb-0 font-sans text-xs font-bold leading-normal uppercase dark:text-white dark:opacity-60 text-slate-500">Today's Appointments</p>
+                                <h5 class="mb-0 font-bold dark:text-white text-2xl mt-1">{{ $todaysAppointments }}</h5>
+                                <p class="mb-0 text-xs text-slate-400 mt-1">Scheduled for {{ now()->format('M j') }}</p>
                             </div>
                         </div>
                         <div class="px-3 text-right basis-1/3">
-                            <div class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-red-600 to-orange-600">
-                            <i class="fa-solid fa-calendar-days leading-none text-lg relative !top-[10px] text-white"></i>
+                            <div class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-blue-500 to-violet-500 shadow-md">
+                                <i class="fa-solid fa-calendar-day leading-none text-lg relative !top-[14px] text-white"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- card4 -->
+
+        <!-- card2: Pending Appointments -->
+        <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
+            <div class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
+                <div class="flex-auto p-4">
+                    <div class="flex flex-row -mx-3">
+                        <div class="flex-none w-2/3 max-w-full px-3">
+                            <div>
+                                <p class="mb-0 font-sans text-xs font-bold leading-normal uppercase dark:text-white dark:opacity-60 text-slate-500">Pending Review</p>
+                                <h5 class="mb-0 font-bold dark:text-white text-2xl mt-1">{{ $pendingAppointments }}</h5>
+                                <p class="mb-0 text-xs text-slate-400 mt-1">Awaiting approval</p>
+                            </div>
+                        </div>
+                        <div class="px-3 text-right basis-1/3">
+                            <div class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-red-600 to-orange-600 shadow-md">
+                                <i class="fa-solid fa-clock leading-none text-lg relative !top-[14px] text-white"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- card3: Upcoming Approved Appointments -->
+        <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
+            <div class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
+                <div class="flex-auto p-4">
+                    <div class="flex flex-row -mx-3">
+                        <div class="flex-none w-2/3 max-w-full px-3">
+                            <div>
+                                <p class="mb-0 font-sans text-xs font-bold leading-normal uppercase dark:text-white dark:opacity-60 text-slate-500">Upcoming Approved</p>
+                                <h5 class="mb-0 font-bold dark:text-white text-2xl mt-1">{{ $upcomingAppointments }}</h5>
+                                <p class="mb-0 text-xs text-slate-400 mt-1">Future confirmed</p>
+                            </div>
+                        </div>
+                        <div class="px-3 text-right basis-1/3">
+                            <div class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-orange-500 to-yellow-500 shadow-md">
+                                <i class="fa-solid fa-calendar-check leading-none text-lg relative !top-[14px] text-white"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- card4: Total Patients -->
         <div class="w-full max-w-full px-3 sm:w-1/2 sm:flex-none xl:w-1/4">
             <div class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
                 <div class="flex-auto p-4">
                     <div class="flex flex-row -mx-3">
                         <div class="flex-none w-2/3 max-w-full px-3">
                             <div>
-                            <p class="mb-0 font-sans text-sm font-semibold leading-normal uppercase dark:text-white dark:opacity-60">Upcoming appointments</p>
-                            <h5 class="mb-2 font-bold dark:text-white">{{ $upcomingAppointments }}</h5>
-                            <p class="mb-0 dark:text-white dark:opacity-60">
-                                <!-- <span class="text-sm font-bold leading-normal text-emerald-500">+5%</span>
-                                than last month -->
-                            </p>
+                                <p class="mb-0 font-sans text-xs font-bold leading-normal uppercase dark:text-white dark:opacity-60 text-slate-500">Total Patients (PX)</p>
+                                <h5 class="mb-0 font-bold dark:text-white text-2xl mt-1">{{ $patientCount }}</h5>
+                                <p class="mb-0 text-xs text-slate-400 mt-1">Registered in clinic</p>
                             </div>
                         </div>
                         <div class="px-3 text-right basis-1/3">
-                            <div class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-orange-500 to-yellow-500">
-                                <i class="fa-solid fa-calendar-check leading-none text-lg relative !top-[10px] text-white"></i>
+                            <div class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-emerald-500 to-teal-400 shadow-md">
+                                <i class="fa-solid fa-hospital-user leading-none text-lg relative !top-[14px] text-white"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- card3 -->
-        <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
-            <div class="relative flex flex-col min-w-0 break-words bg-white shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
-            <div class="flex-auto p-4">
-                <div class="flex flex-row -mx-3">
-                <div class="flex-none w-2/3 max-w-full px-3">
+    <!-- SECTION: Capacity Planning & Schedule Density Widget -->
+    <div class="flex flex-wrap mt-6 -mx-3">
+        <div class="w-full max-w-full px-3">
+            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border p-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-gray-100 dark:border-slate-700">
                     <div>
-                    <p class="mb-0 font-sans text-sm font-semibold leading-normal uppercase dark:text-white dark:opacity-60">{{ Str::plural('patient', $patientCount) }}</p>
-                    <h5 class="mb-2 font-bold dark:text-white">{{ $patientCount }}</h5>
-                    <p class="mb-0 dark:text-white dark:opacity-60">
-                        <!-- <span class="text-sm font-bold leading-normal text-red-600">-2%</span>
-                        since last quarter -->
-                    </p>
+                        <div class="flex items-center gap-2">
+                            <h5 class="font-bold dark:text-white text-lg">Clinic Capacity & Schedule Density</h5>
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider
+                                @if($capacityPlanning['density_color'] === 'red') bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300
+                                @elseif($capacityPlanning['density_color'] === 'orange') bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300
+                                @elseif($capacityPlanning['density_color'] === 'blue') bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300
+                                @else bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300
+                                @endif">
+                                {{ $capacityPlanning['density_level'] }} Density ({{ $capacityPlanning['density_percentage'] }}%)
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-0.5">
+                            Real-time capacity analysis for today, {{ now()->format('l, F j, Y') }} (Operating Hours: 8:00 AM - 5:00 PM)
+                        </p>
+                    </div>
+
+                    <!-- Walk-in Capacity Callout -->
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-700 border border-blue-200 dark:border-slate-600 rounded-xl px-4 py-3 flex items-center gap-3 shadow-xs">
+                        <div class="w-10 h-10 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold text-lg">
+                            {{ $capacityPlanning['estimated_walk_in_capacity'] }}
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold uppercase tracking-wider text-blue-900 dark:text-blue-300">
+                                Walk-in Patients Accommodated
+                            </div>
+                            <div class="text-[11px] text-slate-500 dark:text-slate-300">
+                                ~{{ $capacityPlanning['available_hours'] }} hrs free &bull; Can take approx. <strong class="text-blue-700 dark:text-blue-300">{{ $capacityPlanning['estimated_walk_in_capacity'] }} walk-ins</strong> today
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="px-3 text-right basis-1/3">
-                    <div class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-emerald-500 to-teal-400">
-                    <i class="fa-solid fa-users leading-none text-lg relative !top-[10px] text-white"></i>
+
+                <!-- Density Progress Bar -->
+                <div class="mt-4">
+                    <div class="flex justify-between text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">
+                        <span>Booked Time: <strong class="text-slate-800 dark:text-white">{{ $capacityPlanning['booked_hours'] }} hrs</strong> ({{ $capacityPlanning['booked_minutes'] }} mins)</span>
+                        <span>Available Open Time: <strong class="text-emerald-600 dark:text-emerald-400">{{ $capacityPlanning['available_hours'] }} hrs</strong> ({{ $capacityPlanning['available_minutes'] }} mins)</span>
+                    </div>
+                    <div class="w-full bg-gray-100 dark:bg-slate-700 rounded-full h-3 overflow-hidden">
+                        <div class="h-3 rounded-full transition-all duration-500
+                            @if($capacityPlanning['density_color'] === 'red') bg-red-500
+                            @elseif($capacityPlanning['density_color'] === 'orange') bg-orange-500
+                            @elseif($capacityPlanning['density_color'] === 'blue') bg-blue-500
+                            @else bg-emerald-500
+                            @endif" 
+                            style="width: {{ $capacityPlanning['density_percentage'] }}%">
+                        </div>
                     </div>
                 </div>
+
+                <!-- Timeline Ribbon: Visual Hours 8:00 AM - 5:00 PM -->
+                <div class="mt-6">
+                    <h6 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Hourly Schedule Ribbon (8 AM &ndash; 5 PM)</h6>
+                    <div class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-2">
+                        @foreach($capacityPlanning['hourly_slots'] as $slot)
+                            <div class="p-2 rounded-lg border text-center transition-all flex flex-col justify-between min-h-[64px]
+                                @if($slot['is_occupied'])
+                                    bg-blue-50 border-blue-200 text-blue-900 dark:bg-blue-950/40 dark:border-blue-800 dark:text-blue-300
+                                @elseif($slot['is_past'])
+                                    bg-gray-50 border-gray-200 text-gray-400 dark:bg-slate-800 dark:border-slate-700
+                                @else
+                                    bg-emerald-50/70 border-emerald-200 text-emerald-800 dark:bg-emerald-950/30 dark:border-emerald-800 dark:text-emerald-300
+                                @endif">
+                                <span class="text-[11px] font-bold block">{{ $slot['time'] }}</span>
+                                <div>
+                                    @if($slot['is_occupied'])
+                                        <span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold bg-blue-200/80 text-blue-900 dark:bg-blue-900 dark:text-blue-100">
+                                            Booked
+                                        </span>
+                                    @elseif($slot['is_past'])
+                                        <span class="inline-block px-1.5 py-0.5 rounded text-[10px] text-gray-400">
+                                            Passed
+                                        </span>
+                                    @else
+                                        <span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-200/80 text-emerald-900 dark:bg-emerald-900 dark:text-emerald-100">
+                                            Walk-in Open
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
     </div>
 
-    <!-- cards row 2 -->
-    <!-- <div class="flex flex-wrap mt-6 -mx-3">
-        <div class="w-full max-w-full px-3 mt-0 lg:w-7/12 lg:flex-none">
-            <div class="border-black/12.5 dark:bg-slate-850 dark:shadow-dark-xl shadow-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
-                <div class="border-black/12.5 mb-0 rounded-t-2xl border-b-0 border-solid p-6 pt-4 pb-0">
-                    <h6 class="capitalize dark:text-white">Appointments overview</h6>
-                    <p class="mb-0 text-sm leading-normal dark:text-white dark:opacity-60">
-                        <i class="fa fa-arrow-up text-emerald-500"></i>
-                        <span class="font-semibold">4% more</span> in 2021
-                    </p>
-                </div>
-                <div class="flex-auto p-4">
+    <!-- SECTION: Today's Appointments Chronological Sequence -->
+    <div class="flex flex-wrap mt-6 -mx-3">
+        <div class="w-full max-w-full px-3">
+            <div class="relative flex flex-col min-w-0 break-words bg-white border-0 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
+                <div class="p-6 pb-2 border-b-0 flex justify-between items-center">
                     <div>
-                    <canvas id="chart-line" height="300"></canvas>
+                        <h5 class="font-bold dark:text-white text-lg flex items-center gap-2">
+                            <i class="fa-solid fa-list-ol text-blue-600"></i>
+                            Today's Appointment Sequence
+                        </h5>
+                        <p class="text-xs text-slate-400 mt-0.5">
+                            Chronological timeline of scheduled consultations and treatments for today ({{ $todaysScheduleSequence->count() }} total)
+                        </p>
+                    </div>
+                    <a href="{{ route('admin.appointments.index', ['date' => 'today']) }}" class="text-xs font-bold text-blue-600 hover:underline">
+                        Manage All &rarr;
+                    </a>
+                </div>
+
+                <div class="flex-auto px-0 pt-0 pb-2">
+                    <div class="p-0 overflow-x-auto">
+                        <table class="items-center w-full mb-0 align-top border-collapse dark:border-white/40 text-slate-500">
+                            @if($todaysScheduleSequence->count() > 0)
+                                <thead class="align-bottom">
+                                    <tr class="border-b border-gray-100 dark:border-slate-700">
+                                        <th class="px-6 py-3 font-bold text-left uppercase text-xxs tracking-none text-slate-400 opacity-70">Seq &bull; Time</th>
+                                        <th class="px-6 py-3 font-bold text-left uppercase text-xxs tracking-none text-slate-400 opacity-70">Patient (PX)</th>
+                                        <th class="px-6 py-3 pl-2 font-bold text-left uppercase text-xxs tracking-none text-slate-400 opacity-70">Service(s)</th>
+                                        <th class="px-6 py-3 pl-2 font-bold text-left uppercase text-xxs tracking-none text-slate-400 opacity-70">Duration</th>
+                                        <th class="px-6 py-3 font-bold text-center uppercase text-xxs tracking-none text-slate-400 opacity-70">Status</th>
+                                        <th class="px-6 py-3 font-bold text-center uppercase text-xxs tracking-none text-slate-400 opacity-70">Contact</th>
+                                    </tr>
+                                </thead>
+                            @endif
+                            <tbody class="divide-y divide-gray-100 dark:divide-slate-700">
+                                @forelse($todaysScheduleSequence as $index => $app)
+                                    @php
+                                        switch ($app->status) {
+                                            case 'pending':
+                                                $badgeClass = 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300';
+                                                break;
+                                            case 'approved':
+                                                $badgeClass = 'bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-300';
+                                                break;
+                                            case 'cancelled':
+                                                $badgeClass = 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300';
+                                                break;
+                                            case 'completed':
+                                            default:
+                                                $badgeClass = 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300';
+                                                break;
+                                        }
+                                        $startTime = \Carbon\Carbon::parse($app->scheduled_at)->format('g:i A');
+                                        $endTime = \Carbon\Carbon::parse($app->scheduled_at)->addMinutes($app->duration_minutes ?: 30)->format('g:i A');
+                                        $serviceNames = $app->services_summary ?? ($app->service?->name ?? 'Dental Service');
+                                    @endphp
+                                    <tr class="hover:bg-gray-50/60 dark:hover:bg-slate-800/50 transition-colors">
+                                        <td class="p-3 px-6 align-middle whitespace-nowrap">
+                                            <div class="flex items-center gap-3">
+                                                <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 text-xs font-bold flex items-center justify-center">
+                                                    {{ $index + 1 }}
+                                                </span>
+                                                <div>
+                                                    <span class="font-bold text-sm text-slate-800 dark:text-white">{{ $startTime }}</span>
+                                                    <span class="text-xs text-slate-400"> &ndash; {{ $endTime }}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-3 px-6 align-middle whitespace-nowrap">
+                                            <div class="font-semibold text-sm text-slate-800 dark:text-white">
+                                                {{ $app->patient->full_name ?? $app->patient->name }}
+                                            </div>
+                                            <span class="text-xs font-mono font-bold text-blue-600 dark:text-blue-400">
+                                                {{ $app->patient->code }}
+                                            </span>
+                                        </td>
+                                        <td class="p-3 pl-2 align-middle">
+                                            <span class="text-xs font-medium text-slate-700 dark:text-slate-200">
+                                                {{ $serviceNames }}
+                                            </span>
+                                        </td>
+                                        <td class="p-3 pl-2 align-middle whitespace-nowrap">
+                                            <span class="inline-flex items-center gap-1 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                                                <i class="fa-regular fa-clock text-slate-400"></i>
+                                                {{ $app->duration_minutes ?: 30 }}m
+                                            </span>
+                                        </td>
+                                        <td class="p-3 text-center align-middle whitespace-nowrap">
+                                            <span class="px-2.5 py-1 text-xs font-bold rounded-md uppercase tracking-wider {{ $badgeClass }}">
+                                                {{ $app->status }}
+                                            </span>
+                                        </td>
+                                        <td class="p-3 text-center align-middle whitespace-nowrap">
+                                            <span class="text-xs text-slate-500 dark:text-slate-400 font-mono">
+                                                {{ $app->patient->contact_number ?? 'N/A' }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="py-12 text-center text-slate-400">
+                                            <div class="max-w-sm mx-auto">
+                                                <i class="fa-regular fa-calendar-check text-4xl text-emerald-400 mb-3 block"></i>
+                                                <h6 class="font-bold text-slate-700 dark:text-slate-200">No scheduled appointments for today</h6>
+                                                <p class="text-xs text-slate-400 mt-1">
+                                                    The clinic's schedule is completely open. You can comfortably accommodate walk-in patients throughout the day.
+                                                </p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        </div> -->
-
-        <!-- <div class="w-full max-w-full px-3 lg:w-5/12 lg:flex-none">
-            <div slider class="relative w-full h-full overflow-hidden rounded-2xl">
-            <div slide class="absolute w-full h-full transition-all duration-500">
-                <img class="object-cover h-full" src="/assets/img/carousel-1.jpg" alt="carousel image" />
-                <div class="block text-start ml-12 left-0 bottom-0 absolute right-[15%] pt-5 pb-5 text-white">
-                <div class="inline-block w-8 h-8 mb-4 text-center text-black bg-white bg-center rounded-lg fill-current stroke-none">
-                    <i class="top-0.75 text-xxs relative text-slate-700 ni ni-camera-compact"></i>
-                </div>
-                <h5 class="mb-1 text-white">Get started with Argon</h5>
-                <p class="dark:opacity-80">There’s nothing I really wanted to do in life that I wasn’t able to get good at.</p>
-                </div>
-            </div>
-
-            <div slide class="absolute w-full h-full transition-all duration-500">
-                <img class="object-cover h-full" src="/assets/img/carousel-2.jpg" alt="carousel image" />
-                <div class="block text-start ml-12 left-0 bottom-0 absolute right-[15%] pt-5 pb-5 text-white">
-                <div class="inline-block w-8 h-8 mb-4 text-center text-black bg-white bg-center rounded-lg fill-current stroke-none">
-                    <i class="top-0.75 text-xxs relative text-slate-700 ni ni-bulb-61"></i>
-                </div>
-                <h5 class="mb-1 text-white">Faster way to create web pages</h5>
-                <p class="dark:opacity-80">That’s my skill. I’m not really specifically talented at anything except for the ability to learn.</p>
-                </div>
-            </div>
-
-            <div slide class="absolute w-full h-full transition-all duration-500">
-                <img class="object-cover h-full" src="/assets/img/carousel-3.jpg" alt="carousel image" />
-                <div class="block text-start ml-12 left-0 bottom-0 absolute right-[15%] pt-5 pb-5 text-white">
-                <div class="inline-block w-8 h-8 mb-4 text-center text-black bg-white bg-center rounded-lg fill-current stroke-none">
-                    <i class="top-0.75 text-xxs relative text-slate-700 ni ni-trophy"></i>
-                </div>
-                <h5 class="mb-1 text-white">Share with us your design tips!</h5>
-                <p class="dark:opacity-80">Don’t be afraid to be wrong because you can’t learn anything from a compliment.</p>
-                </div>
-            </div>
-
-            <button btn-next class="absolute z-10 w-10 h-10 p-2 text-lg text-white border-none opacity-50 cursor-pointer hover:opacity-100 far fa-chevron-right active:scale-110 top-6 right-4"></button>
-            <button btn-prev class="absolute z-10 w-10 h-10 p-2 text-lg text-white border-none opacity-50 cursor-pointer hover:opacity-100 far fa-chevron-left active:scale-110 top-6 right-16"></button>
-            </div>
-        </div> -->
-    <!-- </div> -->
-
-    <!-- cards row 3 -->
-
-    <!-- <div class="flex flex-wrap mt-6 -mx-3">
-    <div class="w-full max-w-full px-3 mt-0 mb-6 lg:mb-0 lg:w-7/12 lg:flex-none">
-        <div class="relative flex flex-col min-w-0 break-words bg-white border-0 border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl dark:bg-gray-950 border-black-125 rounded-2xl bg-clip-border">
-        <div class="p-4 pb-0 mb-0 rounded-t-4">
-            <div class="flex justify-between">
-            <h6 class="mb-2 dark:text-white">Sales by Country</h6>
-            </div>
-        </div>
-        <div class="overflow-x-auto">
-            <table class="items-center w-full mb-4 align-top border-collapse border-gray-200 dark:border-white/40">
-            <tbody>
-                <tr>
-                <td class="p-2 align-middle bg-transparent border-b w-3/10 whitespace-nowrap dark:border-white/40">
-                    <div class="flex items-center px-2 py-1">
-                    <div>
-                        <img src="/assets/img/icons/flags/US.png" alt="Country flag" />
-                    </div>
-                    <div class="ml-6">
-                        <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Country:</p>
-                        <h6 class="mb-0 text-sm leading-normal dark:text-white">United States</h6>
-                    </div>
-                    </div>
-                </td>
-                <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                    <div class="text-center">
-                    <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Sales:</p>
-                    <h6 class="mb-0 text-sm leading-normal dark:text-white">2500</h6>
-                    </div>
-                </td>
-                <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                    <div class="text-center">
-                    <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Value:</p>
-                    <h6 class="mb-0 text-sm leading-normal dark:text-white">$230,900</h6>
-                    </div>
-                </td>
-                <td class="p-2 text-sm leading-normal align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                    <div class="flex-1 text-center">
-                    <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Bounce:</p>
-                    <h6 class="mb-0 text-sm leading-normal dark:text-white">29.9%</h6>
-                    </div>
-                </td>
-                </tr>
-                <tr>
-                <td class="p-2 align-middle bg-transparent border-b w-3/10 whitespace-nowrap dark:border-white/40">
-                    <div class="flex items-center px-2 py-1">
-                    <div>
-                        <img src="/assets/img/icons/flags/DE.png" alt="Country flag" />
-                    </div>
-                    <div class="ml-6">
-                        <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Country:</p>
-                        <h6 class="mb-0 text-sm leading-normal dark:text-white">Germany</h6>
-                    </div>
-                    </div>
-                </td>
-                <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                    <div class="text-center">
-                    <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Sales:</p>
-                    <h6 class="mb-0 text-sm leading-normal dark:text-white">3.900</h6>
-                    </div>
-                </td>
-                <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                    <div class="text-center">
-                    <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Value:</p>
-                    <h6 class="mb-0 text-sm leading-normal dark:text-white">$440,000</h6>
-                    </div>
-                </td>
-                <td class="p-2 text-sm leading-normal align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                    <div class="flex-1 text-center">
-                    <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Bounce:</p>
-                    <h6 class="mb-0 text-sm leading-normal dark:text-white">40.22%</h6>
-                    </div>
-                </td>
-                </tr>
-                <tr>
-                <td class="p-2 align-middle bg-transparent border-b w-3/10 whitespace-nowrap dark:border-white/40">
-                    <div class="flex items-center px-2 py-1">
-                    <div>
-                        <img src="/assets/img/icons/flags/GB.png" alt="Country flag" />
-                    </div>
-                    <div class="ml-6">
-                        <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Country:</p>
-                        <h6 class="mb-0 text-sm leading-normal dark:text-white">Great Britain</h6>
-                    </div>
-                    </div>
-                </td>
-                <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                    <div class="text-center">
-                    <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Sales:</p>
-                    <h6 class="mb-0 text-sm leading-normal dark:text-white">1.400</h6>
-                    </div>
-                </td>
-                <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                    <div class="text-center">
-                    <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Value:</p>
-                    <h6 class="mb-0 text-sm leading-normal dark:text-white">$190,700</h6>
-                    </div>
-                </td>
-                <td class="p-2 text-sm leading-normal align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                    <div class="flex-1 text-center">
-                    <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Bounce:</p>
-                    <h6 class="mb-0 text-sm leading-normal dark:text-white">23.44%</h6>
-                    </div>
-                </td>
-                </tr>
-                <tr>
-                <td class="p-2 align-middle bg-transparent border-0 w-3/10 whitespace-nowrap">
-                    <div class="flex items-center px-2 py-1">
-                    <div>
-                        <img src="/assets/img/icons/flags/BR.png" alt="Country flag" />
-                    </div>
-                    <div class="ml-6">
-                        <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Country:</p>
-                        <h6 class="mb-0 text-sm leading-normal dark:text-white">Brasil</h6>
-                    </div>
-                    </div>
-                </td>
-                <td class="p-2 align-middle bg-transparent border-0 whitespace-nowrap">
-                    <div class="text-center">
-                    <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Sales:</p>
-                    <h6 class="mb-0 text-sm leading-normal dark:text-white">562</h6>
-                    </div>
-                </td>
-                <td class="p-2 align-middle bg-transparent border-0 whitespace-nowrap">
-                    <div class="text-center">
-                    <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Value:</p>
-                    <h6 class="mb-0 text-sm leading-normal dark:text-white">$143,960</h6>
-                    </div>
-                </td>
-                <td class="p-2 text-sm leading-normal align-middle bg-transparent border-0 whitespace-nowrap">
-                    <div class="flex-1 text-center">
-                    <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Bounce:</p>
-                    <h6 class="mb-0 text-sm leading-normal dark:text-white">32.14%</h6>
-                    </div>
-                </td>
-                </tr>
-            </tbody>
-            </table>
-        </div>
         </div>
     </div>
-    <div class="w-full max-w-full px-3 mt-0 lg:w-5/12 lg:flex-none">
-        <div class="border-black/12.5 shadow-xl dark:bg-slate-850 dark:shadow-dark-xl relative flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
-        <div class="p-4 pb-0 rounded-t-4">
-            <h6 class="mb-0 dark:text-white">Categories</h6>
-        </div>
-        <div class="flex-auto p-4">
-            <ul class="flex flex-col pl-0 mb-0 rounded-lg">
-            <li class="relative flex justify-between py-2 pr-4 mb-2 border-0 rounded-t-lg rounded-xl text-inherit">
-                <div class="flex items-center">
-                <div class="inline-block w-8 h-8 mr-4 text-center text-black bg-center shadow-sm fill-current stroke-none bg-gradient-to-tl from-zinc-800 to-zinc-700 dark:bg-gradient-to-tl dark:from-slate-750 dark:to-gray-850 rounded-xl">
-                    <i class="text-white ni ni-mobile-button relative top-0.75 text-xxs"></i>
-                </div>
-                <div class="flex flex-col">
-                    <h6 class="mb-1 text-sm leading-normal text-slate-700 dark:text-white">Devices</h6>
-                    <span class="text-xs leading-tight dark:text-white/80">250 in stock, <span class="font-semibold">346+ sold</span></span>
-                </div>
-                </div>
-                <div class="flex">
-                <button class="group ease-in leading-pro text-xs rounded-3.5xl p-1.2 h-6.5 w-6.5 mx-0 my-auto inline-block cursor-pointer border-0 bg-transparent text-center align-middle font-bold text-slate-700 shadow-none transition-all dark:text-white"><i class="ni ease-bounce text-2xs group-hover:translate-x-1.25 ni-bold-right transition-all duration-200" aria-hidden="true"></i></button>
-                </div>
-            </li>
-            <li class="relative flex justify-between py-2 pr-4 mb-2 border-0 rounded-xl text-inherit">
-                <div class="flex items-center">
-                <div class="inline-block w-8 h-8 mr-4 text-center text-black bg-center shadow-sm fill-current stroke-none bg-gradient-to-tl from-zinc-800 to-zinc-700 dark:bg-gradient-to-tl dark:from-slate-750 dark:to-gray-850 rounded-xl">
-                    <i class="text-white ni ni-tag relative top-0.75 text-xxs"></i>
-                </div>
-                <div class="flex flex-col">
-                    <h6 class="mb-1 text-sm leading-normal text-slate-700 dark:text-white">Tickets</h6>
-                    <span class="text-xs leading-tight dark:text-white/80">123 closed, <span class="font-semibold">15 open</span></span>
-                </div>
-                </div>
-                <div class="flex">
-                <button class="group ease-in leading-pro text-xs rounded-3.5xl p-1.2 h-6.5 w-6.5 mx-0 my-auto inline-block cursor-pointer border-0 bg-transparent text-center align-middle font-bold text-slate-700 shadow-none transition-all dark:text-white"><i class="ni ease-bounce text-2xs group-hover:translate-x-1.25 ni-bold-right transition-all duration-200" aria-hidden="true"></i></button>
-                </div>
-            </li>
-            <li class="relative flex justify-between py-2 pr-4 mb-2 border-0 rounded-b-lg rounded-xl text-inherit">
-                <div class="flex items-center">
-                <div class="inline-block w-8 h-8 mr-4 text-center text-black bg-center shadow-sm fill-current stroke-none bg-gradient-to-tl from-zinc-800 to-zinc-700 dark:bg-gradient-to-tl dark:from-slate-750 dark:to-gray-850 rounded-xl">
-                    <i class="text-white ni ni-box-2 relative top-0.75 text-xxs"></i>
-                </div>
-                <div class="flex flex-col">
-                    <h6 class="mb-1 text-sm leading-normal text-slate-700 dark:text-white">Error logs</h6>
-                    <span class="text-xs leading-tight dark:text-white/80">1 is active, <span class="font-semibold">40 closed</span></span>
-                </div>
-                </div>
-                <div class="flex">
-                <button class="group ease-in leading-pro text-xs rounded-3.5xl p-1.2 h-6.5 w-6.5 mx-0 my-auto inline-block cursor-pointer border-0 bg-transparent text-center align-middle font-bold text-slate-700 shadow-none transition-all dark:text-white"><i class="ni ease-bounce text-2xs group-hover:translate-x-1.25 ni-bold-right transition-all duration-200" aria-hidden="true"></i></button>
-                </div>
-            </li>
-            <li class="relative flex justify-between py-2 pr-4 border-0 rounded-b-lg rounded-xl text-inherit">
-                <div class="flex items-center">
-                <div class="inline-block w-8 h-8 mr-4 text-center text-black bg-center shadow-sm fill-current stroke-none bg-gradient-to-tl from-zinc-800 to-zinc-700 dark:bg-gradient-to-tl dark:from-slate-750 dark:to-gray-850 rounded-xl">
-                    <i class="text-white ni ni-satisfied relative top-0.75 text-xxs"></i>
-                </div>
-                <div class="flex flex-col">
-                    <h6 class="mb-1 text-sm leading-normal text-slate-700 dark:text-white">Happy users</h6>
-                    <span class="text-xs leading-tight dark:text-white/80"><span class="font-semibold">+ 430 </span></span>
-                </div>
-                </div>
-                <div class="flex">
-                <button class="group ease-in leading-pro text-xs rounded-3.5xl p-1.2 h-6.5 w-6.5 mx-0 my-auto inline-block cursor-pointer border-0 bg-transparent text-center align-middle font-bold text-slate-700 shadow-none transition-all dark:text-white"><i class="ni ease-bounce text-2xs group-hover:translate-x-1.25 ni-bold-right transition-all duration-200" aria-hidden="true"></i></button>
-                </div>
-            </li>
-            </ul>
-        </div>
-        </div>
-    </div>
-    </div> -->
+
     @include('shared.argon.partials.footer')
 </div>
 @endsection

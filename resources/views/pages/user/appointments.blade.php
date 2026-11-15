@@ -79,7 +79,7 @@
                     <div class="flex flex-row justify-between items-center">
                         <div>
                             <div class="flex flex-row gap-2 items-center">
-                                <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white" x-text="appointment.service.name"></h5>
+                                <h5 class="text-xl md:text-2xl font-bold tracking-tight text-gray-900 dark:text-white" x-text="(appointment.services && appointment.services.length > 0) ? appointment.services.map(s => s.name).join(', ') : (appointment.service ? appointment.service.name : 'Dental Appointment')"></h5>
                                 <div>
                                     <span
                                         class="text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm"
@@ -93,7 +93,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <p class="font-normal text-sm text-gray-700 dark:text-gray-400" x-text="appointment.formatted_date"></p>
+                            <p class="font-normal text-sm text-gray-700 dark:text-gray-400 mt-1" x-text="appointment.formatted_date + ' (' + (appointment.duration_minutes || 30) + ' mins)'"></p>
                         </div>
                         <div>
                             <button type="button"

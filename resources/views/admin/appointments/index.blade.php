@@ -1,32 +1,75 @@
 @extends('layouts.argon')
 
-@section('title', 'Services &sdots; ')
+@section('title', 'Appointments &sdots; ')
 
 @section('content')
 <div class="w-full px-6 py-6 mx-auto" x-data="appointments">
-    <!-- table 1 -->
-    <div class="flex flex-wrap -mx-3">
-        <div class="flex-none w-full max-w-full px-3">
-            <div class="inline-flex rounded-md shadow-xs mb-5">
-                <a href="{{ route('admin.appointments.index') }}" aria-current="page" class="px-4 py-2 text-sm font-medium text-blue-700 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+    <!-- Filters row -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-5">
+        <!-- Date Filters -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+            <span class="text-xs font-bold uppercase text-slate-500 dark:text-slate-400">Date:</span>
+            <div class="inline-flex rounded-md shadow-xs">
+                @php
+                    $currentDateFilter = request('date', 'all');
+                    $currentStatus = request('status', 'all');
+                @endphp
+                <a href="{{ route('admin.appointments.index', ['status' => $currentStatus, 'date' => 'all']) }}" 
+                    class="px-3 py-1.5 text-xs font-medium border border-gray-200 rounded-s-lg transition-colors {{ $currentDateFilter === 'all' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 hover:bg-gray-100' }}">
+                    All Dates
+                </a>
+                <a href="{{ route('admin.appointments.index', ['status' => $currentStatus, 'date' => 'today']) }}" 
+                    class="px-3 py-1.5 text-xs font-medium border-t border-b border-r border-gray-200 transition-colors {{ $currentDateFilter === 'today' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 hover:bg-gray-100' }}">
+                    Today
+                </a>
+                <a href="{{ route('admin.appointments.index', ['status' => $currentStatus, 'date' => 'this_week']) }}" 
+                    class="px-3 py-1.5 text-xs font-medium border-t border-b border-r border-gray-200 transition-colors {{ $currentDateFilter === 'this_week' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 hover:bg-gray-100' }}">
+                    This Week
+                </a>
+                <a href="{{ route('admin.appointments.index', ['status' => $currentStatus, 'date' => 'this_month']) }}" 
+                    class="px-3 py-1.5 text-xs font-medium border-t border-b border-r border-gray-200 rounded-e-lg transition-colors {{ $currentDateFilter === 'this_month' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 hover:bg-gray-100' }}">
+                    This Month
+                </a>
+            </div>
+        </div>
+
+        <!-- Status Filters -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+            <span class="text-xs font-bold uppercase text-slate-500 dark:text-slate-400">Status:</span>
+            <div class="inline-flex rounded-md shadow-xs">
+                <a href="{{ route('admin.appointments.index', ['status' => 'all', 'date' => $currentDateFilter]) }}" 
+                    class="px-3 py-1.5 text-xs font-medium border border-gray-200 rounded-s-lg transition-colors {{ $currentStatus === 'all' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 hover:bg-gray-100' }}">
                     All
                 </a>
-                <a href="{{ route('admin.appointments.index', ['status' => 'pending']) }}" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+                <a href="{{ route('admin.appointments.index', ['status' => 'pending', 'date' => $currentDateFilter]) }}" 
+                    class="px-3 py-1.5 text-xs font-medium border-t border-b border-r border-gray-200 transition-colors {{ $currentStatus === 'pending' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 hover:bg-gray-100' }}">
                     Pending
                 </a>
-                <a href="{{ route('admin.appointments.index', ['status' => 'approved']) }}" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+                <a href="{{ route('admin.appointments.index', ['status' => 'approved', 'date' => $currentDateFilter]) }}" 
+                    class="px-3 py-1.5 text-xs font-medium border-t border-b border-r border-gray-200 transition-colors {{ $currentStatus === 'approved' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 hover:bg-gray-100' }}">
                     Approved
                 </a>
-                <a href="{{ route('admin.appointments.index', ['status' => 'completed']) }}" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+                <a href="{{ route('admin.appointments.index', ['status' => 'completed', 'date' => $currentDateFilter]) }}" 
+                    class="px-3 py-1.5 text-xs font-medium border-t border-b border-r border-gray-200 transition-colors {{ $currentStatus === 'completed' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 hover:bg-gray-100' }}">
                     Completed
                 </a>
-                <a href="{{ route('admin.appointments.index', ['status' => 'cancelled']) }}" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700">
+                <a href="{{ route('admin.appointments.index', ['status' => 'cancelled', 'date' => $currentDateFilter]) }}" 
+                    class="px-3 py-1.5 text-xs font-medium border-t border-b border-r border-gray-200 rounded-e-lg transition-colors {{ $currentStatus === 'cancelled' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 hover:bg-gray-100' }}">
                     Cancelled
                 </a>
             </div>
+        </div>
+    </div>
+
+    <!-- Table container -->
+    <div class="flex flex-wrap -mx-3">
+        <div class="flex-none w-full max-w-full px-3">
             <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-xl dark:bg-slate-850 dark:shadow-dark-xl rounded-2xl bg-clip-border">
-                <div class="p-6 pb-0 mb-0 border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-                    <h6 class="dark:text-white">{{ str()->plural('Appointment', $appointments->count()) }} ({{ $appointments->count() }})</h6>
+                <div class="p-6 pb-0 mb-0 border-b-0 border-b-solid rounded-t-2xl border-b-transparent flex justify-between items-center">
+                    <h6 class="dark:text-white font-bold">{{ str()->plural('Appointment', $appointments->count()) }} ({{ $appointments->count() }})</h6>
+                    <span class="text-xs font-medium text-slate-400">
+                        Showing results for: <strong class="text-slate-700 dark:text-slate-200">{{ ucfirst(str_replace('_', ' ', $currentDateFilter)) }}</strong> | <strong class="text-slate-700 dark:text-slate-200">{{ ucfirst($currentStatus) }}</strong>
+                    </span>
                 </div>
                 <div class="flex-auto px-0 pt-0 pb-2">
                     <div class="p-0 overflow-x-auto">
@@ -34,12 +77,11 @@
                             @if($appointments->count())
                                 <thead class="align-bottom">
                                     <tr>
-                                    <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Name</th>
-                                    <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Service</th>
-                                    <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Date</th>
-                                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Status</th>
-                                    <!-- <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Status Update</th> -->
-                                    <th class="px-6 py-3 font-semibold capitalize align-middle bg-transparent border-b border-collapse border-solid shadow-none dark:border-white/40 dark:text-white tracking-none whitespace-nowrap text-slate-400 opacity-70"></th>
+                                        <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Patient (PX)</th>
+                                        <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Services</th>
+                                        <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Date & Duration</th>
+                                        <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-collapse shadow-none dark:border-white/40 dark:text-white text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Status</th>
+                                        <th class="px-6 py-3 font-semibold capitalize align-middle bg-transparent border-b border-collapse border-solid shadow-none dark:border-white/40 dark:text-white tracking-none whitespace-nowrap text-slate-400 opacity-70"></th>
                                     </tr>
                                 </thead>
                             @endif
@@ -62,25 +104,34 @@
                                                 $statusClass = 'from-emerald-500 to-teal-400';
                                                 break;
                                         }
+
+                                        // Form service display
+                                        $servicesDisplay = $appointment->services_summary ?? ($appointment->service->name ?? 'Dental Service');
                                     @endphp
                                 <tr>
                                     <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                                        <div class="flex px-2 py-1">
-                                        <div>
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" class="inline-flex items-center justify-center mr-4 text-sm text-white transition-all duration-200 ease-in-out h-9 w-9 rounded-xl" alt="user1" />
-                                        </div>
-                                        <div class="flex flex-col justify-center">
-                                            <h6 class="mb-0 text-sm leading-normal dark:text-white">{{ $appointment->patient->first_name }}</h6>
-                                            <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">{{ $appointment->bookedBy->email }}</p>
-                                        </div>
+                                        <div class="flex px-4 py-1">
+                                            <div class="flex flex-col justify-center">
+                                                <h6 class="mb-0 text-sm font-semibold leading-normal dark:text-white">{{ $appointment->patient->first_name }} {{ $appointment->patient->last_name }}</h6>
+                                                <div class="flex items-center gap-2 mt-0.5">
+                                                    <span class="px-1.5 py-0.5 bg-blue-100 text-blue-800 text-[10px] font-bold rounded">
+                                                        {{ $appointment->patient->code }}
+                                                    </span>
+                                                    <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">{{ $appointment->bookedBy->email ?? '' }}</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
                                     <td class="p-2 text-left align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                                        <span class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400">{{ $appointment->service->name }}</span>
+                                        <span class="text-xs font-semibold leading-tight text-gray-800 dark:text-white">
+                                            {{ $servicesDisplay }}
+                                        </span>
                                     </td>
                                     <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
                                         <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-80">{{ $appointment->formatted_date }}</p>
-                                        <!-- <p class="mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400">Organization</p> -->
+                                        <p class="mb-0 text-[11px] text-slate-400">
+                                            Duration: <span class="font-bold text-blue-600">{{ $appointment->duration_minutes ?? 30 }} mins</span>
+                                        </p>
                                     </td>
                                     @if($appointment->status === 'cancelled' || $appointment->status === 'completed')
                                     <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
@@ -88,26 +139,29 @@
                                     </td>
                                     @else
                                     <td class="p-2 text-center align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent">
-                                        <!-- <a href="javascript:;" class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400"> Edit </a> -->
                                         <select name="status" data-id="{{ $appointment->id }}"
                                             class="status-select bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            style="width: 100px;"
-                                            {{ ($appointment->status === 'cancelled' || $appointment->status === 'completed') ? 'disabled' : '' }}>
-                                            @foreach($statuses as $status)
-                                                <option value="{{ $status }}" 
-                                                    {{ $status === $appointment->status ? 'selected disabled' : '' }}>
-                                                    {{ $status }}   
+                                            style="width: 100px;">
+                                            @foreach($statuses as $statusOption)
+                                                <option value="{{ $statusOption }}" 
+                                                    {{ $statusOption === $appointment->status ? 'selected disabled' : '' }}>
+                                                    {{ ucfirst($statusOption) }}   
                                                 </option>
                                             @endforeach
                                         </select>
                                     </td>
                                     @endif
                                     <td class="p-2 align-middle bg-transparent border-b dark:border-white/40 whitespace-nowrap shadow-transparent text-center">
-                                        <a href="javascript:;" @click="openViewModal({{ json_encode($appointment) }})" class="text-xs font-semibold leading-tight dark:text-white dark:opacity-80 text-slate-400"> View </a>
+                                        <a href="javascript:;" @click="openViewModal({{ json_encode($appointment) }})" class="text-xs font-semibold leading-tight text-blue-600 hover:underline"> View </a>
                                     </td>
                                 </tr>
                                 @empty
-                                    <p class="px-6">No patients yet.</p>
+                                    <tr>
+                                        <td colspan="5" class="py-8 text-center text-sm text-slate-400">
+                                            <i class="fa-regular fa-calendar-xmark text-2xl mb-2 block"></i>
+                                            No appointments found matching the selected filter criteria.
+                                        </td>
+                                    </tr>
                                 @endforelse
                             </tbody>
                         </table>

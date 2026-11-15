@@ -19,7 +19,8 @@ class PatientController extends Controller
     ) {}
 
     public function index(Request $request) {
-        $patients = $this->patientService->getPatients();
+        $filter = $request->query('filter', 'all');
+        $patients = $this->patientService->getPatients($filter);
 
         $patients = PatientResource::collection($patients);
 
@@ -28,7 +29,7 @@ class PatientController extends Controller
                 return json_decode(json_encode($patientResource->resolve()));
             });
 
-        return view('admin.patients.index', compact('patients'));
+        return view('admin.patients.index', compact('patients', 'filter'));
     }
 
     // API ROUTES

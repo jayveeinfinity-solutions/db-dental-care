@@ -4,10 +4,12 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\PatientProcedureController;
 use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
 
 Route::middleware('auth:sanctum')->group(function() {
@@ -23,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::patch('/user/update-name', [UserProfileController::class, 'updateName']);
         Route::patch('/user/update-password', [UserProfileController::class, 'updatePassword'])->name('user.update-password');
 
+        Route::get('appointments/available-slots', [AppointmentController::class, 'availableSlots']);
         Route::apiResource('appointments', AppointmentController::class);
         Route::patch('appointments/{appointment}/cancel', [AppointmentController::class, 'cancel']);
         Route::put('appointments/{appointment}/status', [AppointmentController::class, 'updateStatus']);
@@ -32,8 +35,11 @@ Route::middleware('auth:sanctum')->group(function() {
         });
         Route::post('patients', [PatientController::class, 'store'])->name('patient.store');
         Route::put('patients/{id}', [PatientController::class, 'update'])->name('patient.update');
-        Route::put('users/{id}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('user.update');
+        Route::put('users/{id}', [UserController::class, 'update'])->name('user.update');
         Route::post('patients/link', [PatientController::class, 'link'])->name('patient.link');
+
+        Route::get('patients/{patient}/procedures', [PatientProcedureController::class, 'index']);
+        Route::post('patients/{patient}/procedures', [PatientProcedureController::class, 'store']);
 
         Route::get('patients/search', [PatientController::class, 'search']);
         Route::get('services/search', [ServiceController::class, 'search']);

@@ -36,13 +36,14 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold uppercase text-slate-400">Service</label>
-                        <p class="text-sm font-semibold dark:text-white" x-text="appointment?.service?.name"></p>
+                        <label class="block text-xs font-bold uppercase text-slate-400">Services Requested</label>
+                        <p class="text-sm font-semibold dark:text-white" x-text="(appointment?.services && appointment?.services.length > 0) ? appointment.services.map(s => s.name).join(', ') : (appointment?.service?.name || 'Dental Service')"></p>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold uppercase text-slate-400">Date & Time</label>
+                        <label class="block text-xs font-bold uppercase text-slate-400">Date, Time & Duration</label>
                         <p class="text-sm font-semibold dark:text-white" x-text="appointment?.formatted_date"></p>
+                        <p class="text-xs text-slate-400" x-text="'Duration: ' + (appointment?.duration_minutes || 30) + ' minutes' + (appointment?.end_time ? ' (until ' + appointment.end_time + ')' : '')"></p>
                     </div>
 
                     <div>
@@ -66,14 +67,14 @@
                     </div>
 
                     <div x-show="appointment?.status === 'completed' && appointment?.history">
-                        <label class="block text-xs font-bold uppercase text-slate-400">Record / History</label>
+                        <label class="block text-xs font-bold uppercase text-slate-400">Dental Certificate</label>
                         <a 
                             :href="'/patient-history/' + appointment?.history?.id" 
                             target="_blank"
                             class="inline-flex items-center gap-1 text-sm font-bold text-blue-500 hover:underline"
                         >
                             <i class="fa-solid fa-file-pdf"></i>
-                            View PDF Record
+                            View Dental Certificate (PDF)
                         </a>
                     </div>
                 </div>
