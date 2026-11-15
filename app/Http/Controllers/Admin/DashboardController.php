@@ -18,16 +18,6 @@ class DashboardController extends Controller
         $upcomingAppointments = $this->dashboardService->getUpcomingAppointmentCount();
         $patientCount = $this->dashboardService->getPatientCount();
 
-        $todaysScheduleSequence = $this->dashboardService->getTodaysAppointmentsSequence();
-        $capacityPlanning = $this->dashboardService->getClinicCapacityData();
-
-        return view('admin.dashboard.index', compact(
-            'todaysAppointments', 
-            'pendingAppointments', 
-            'upcomingAppointments', 
-            'patientCount',
-            'todaysScheduleSequence',
-            'capacityPlanning'
-        ));
+        return view('admin.dashboard.index', compact('todaysAppointments', 'pendingAppointments', 'upcomingAppointments', 'patientCount'));
     }
 }

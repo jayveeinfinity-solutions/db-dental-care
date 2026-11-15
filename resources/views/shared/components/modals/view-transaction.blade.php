@@ -64,7 +64,7 @@
                             class="inline-flex items-center gap-2 px-6 py-2 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600 transition-all text-sm"
                         >
                             <i class="fa-solid fa-file-pdf"></i>
-                            View Dental Certificate (PDF)
+                            View PDF Record
                         </a>
                     </div>
                 </div>

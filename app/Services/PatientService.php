@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Exception;
-use Carbon\Carbon;
 use App\Models\Patient;
 use Illuminate\Support\Facades\DB;
 
@@ -17,24 +16,8 @@ class PatientService
         return $this->patientModel->count();
     }
 
-    public function getPatients($filter = 'all') {
+    public function getPatients() {
         return $this->patientModel
-            ->when($filter === 'today', function($query) {
-                $query->whereDate('created_at', Carbon::today())
-                      ->orWhereHas('appointments', fn($q) => $q->whereDate('scheduled_at', Carbon::today()));
-            })
-            ->when($filter === 'this_week', function($query) {
-                $start = Carbon::now()->startOfWeek()->startOfDay();
-                $end = Carbon::now()->endOfWeek()->endOfDay();
-                $query->whereBetween('created_at', [$start, $end])
-                      ->orWhereHas('appointments', fn($q) => $q->whereBetween('scheduled_at', [$start, $end]));
-            })
-            ->when($filter === 'this_month', function($query) {
-                $start = Carbon::now()->startOfMonth()->startOfDay();
-                $end = Carbon::now()->endOfMonth()->endOfDay();
-                $query->whereBetween('created_at', [$start, $end])
-                      ->orWhereHas('appointments', fn($q) => $q->whereBetween('scheduled_at', [$start, $end]));
-            })
             ->orderBy('last_name')
             ->get();
     }
@@ -46,8 +29,7 @@ class PatientService
             // Lock the table to safely read last ID
             $lastId = DB::table('patients')->lockForUpdate()->max('id') ?? 0;
             
-            // Globally standardized PX abbreviation for patient code
-            $data['code'] = 'PX-' . str_pad($lastId + 1, 5, '0', STR_PAD_LEFT);
+            $data['code'] = 'PAT-' . str_pad($lastId + 1, 5, '0', STR_PAD_LEFT);
 
             // Create patient
             $patient = Patient::create($data);
@@ -69,9 +51,7 @@ class PatientService
     {
         return DB::transaction(function () use ($code, $user_id) {
 
-            // Allow matching PX- or legacy PAT-
             $patient = Patient::where('code', $code)
-                ->orWhere('code', str_replace('PAT-', 'PX-', $code))
                 ->lockForUpdate() // prevent race condition
                 ->firstOrFail();
 
